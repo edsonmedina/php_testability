@@ -1,0 +1,18 @@
+{
+    "name" : "edsonmedina/php_testability",
+    "description": "Analyses and reports testability issues of a php codebase",
+    "autoload": {
+        "psr-0": {
+            "edsonmedina\\php_testability" : "src"
+        }
+    }
+    "license": "GPLv2",
+    "require-dev": {
+	    "phpunit/phpunit": "4.2.*",
+        "nikic/php-parser": "~1.0.0"
+    },
+    "config": {
+        "vendor-dir": "vendor/",
+        "bin-dir": "bin/"
+    }
+}
