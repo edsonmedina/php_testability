@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Shell wrapper for php_testability
+ * @author Edson Medina <edsonmedina@gmail.com>
+ */
+use edsonmedina\php_testability\StaticAnalyser;
+
+// turn off html errors
+ini_set('html_errors', 'off');
+
+// load autoloader
+$autoloader_locations = array (
+	__DIR__.'/../../autoload.php', 
+	__DIR__.'/vendor/autoload.php', 
+	__DIR__.'/../../../vendor/autoload.php'
+);
+foreach ($autoloader_locations as $file) {
+    if (file_exists($file)) {
+    	require_once $file;
+    }
+}
+
+// parse CLI arguments
+$cmd = new Commando\Command();
+$cmd->setHelp ('php_availability by Edson Medina');
+$cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->file()->default(__DIR__);
+$cmd->option('output')->require()->alias('o')->describeAs('Path for writing the report');
+
+// run
+$report = new StaticAnalyser ($cmd[0]);
+$report->run ();
