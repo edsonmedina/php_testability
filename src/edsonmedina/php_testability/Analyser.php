@@ -10,7 +10,6 @@ namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserInterface;
 
-use PhpParser\Parser;
 use PhpParser\Lexer;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
@@ -30,7 +29,7 @@ class Analyser implements AnalyserInterface
 		ini_set('xdebug.max_nesting_level', 2000);
 
 		$this->data = $data;
-		$this->parser = new Parser (new Lexer);
+		$this->parser = new \PhpParser\Parser (new Lexer);
 		$this->prettyPrinter = new PrettyPrinter\Standard;
 	}
 
@@ -40,10 +39,14 @@ class Analyser implements AnalyserInterface
 
 		try {
 		    $stmts = $this->parser->parse($code);
-		} catch (PhpParser\Error $e) {
+		} catch (\PhpParser\Error $e) {
 		    echo $filename . ' - Parse Error: ' . $e->getMessage();
 		}
 
+		foreach ($stmts as $i)
+		{
 
+
+		}
 	}
 }
