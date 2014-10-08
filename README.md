@@ -2,9 +2,6 @@
 
 Analyses and reports testability issues of a php codebase
 
-THIS IS STILL UNUSABLE.
-Check back in a few weeks.
-
 ## Installation
 ### Composer 
 
@@ -20,4 +17,5 @@ And run `composer update`.
 
 # Usage
 
-TODO
+THIS IS STILL UNUSABLE.
+Check back in a few weeks.
