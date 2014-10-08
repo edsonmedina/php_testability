@@ -1,17 +1,12 @@
 <?php
-
 namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportInterface;
+use edsonmedina\php_testability\ReportDataInterface;
 
 class HTMLReport implements ReportInterface
 {
-	public function addIssue ($filePath, $line, $type, $identifier)
-	{
-
-	}
-
-	public function generate()
+	public function generate (ReportDataInterface $data)
 	{
 
 	}

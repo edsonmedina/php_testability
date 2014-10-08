@@ -14,16 +14,19 @@ foreach ($autoloader_locations as $file) {
     }
 }
 
+error_reporting (E_ALL); // that's how we roll
+
 use edsonmedina\php_testability\FileIterator;
 use edsonmedina\php_testability\Analyser;
+use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\HTMLReport;
 use Commando\Command;
 
 // run
-$report   = new HTMLReport (); 
-$analyser = new Analyser ($report);
+$data     = new ReportData ();
+$analyser = new Analyser ($data);
 $iterator = new FileIterator (PATH, $analyser);
-
 $iterator->run ();
 
-$report->generate();
+$report = new HTMLReport (); 
+$report->generate ($data);

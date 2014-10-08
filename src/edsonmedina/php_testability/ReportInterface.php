@@ -2,8 +2,9 @@
 
 namespace edsonmedina\php_testability;
 
+use edsonmedina\php_testability\ReportDataInterface;
+
 interface ReportInterface  
 {
-	public function addIssue ($filePath, $line, $type, $identifier);
-	public function generate();
+	public function generate (ReportDataInterface $data);
 }
