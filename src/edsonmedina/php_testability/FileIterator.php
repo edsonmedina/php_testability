@@ -34,15 +34,7 @@ class FileIterator
 		$this->processedFiles = 0;
 		$this->excludedFiles  = 0;
 
-		$start_ts = microtime (TRUE);
-
 		$this->iterate ($this->baseDir);
-
-		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
-
-		echo "\nDone ({$total_time}s).\n\n";
-		echo "{$this->processedFiles} processed files.\n";
-		echo "{$this->excludedFiles} excluded files.\n";
 	}
 
 	/** 
@@ -99,5 +91,23 @@ class FileIterator
 		}
 
 		return false;
+	}
+
+	/**
+	 * getter for processedFiles
+	 * @return int
+	 */
+	public function getProcessedFiles ()
+	{
+		return $this->processedFiles;
+	}
+
+	/**
+	 * getter for excludedFiles
+	 * @return int
+	 */
+	public function getExcludedFiles ()
+	{
+		return $this->excludedFiles;
 	}
 }

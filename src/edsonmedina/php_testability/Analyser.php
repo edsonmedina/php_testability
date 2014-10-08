@@ -17,11 +17,13 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\PrettyPrinter;
 
 class Analyser implements AnalyserInterface
 {
 	private $data;
 	private $parser;
+	private $prettyPrinter;
 
 	public function __construct (ReportDataInterface $data) 
 	{
@@ -29,10 +31,19 @@ class Analyser implements AnalyserInterface
 
 		$this->data = $data;
 		$this->parser = new Parser (new Lexer);
+		$this->prettyPrinter = new PrettyPrinter\Standard;
 	}
 
 	public function scan ($filename) 
 	{
+		$code = file_get_contents ($filename);
+
+		try {
+		    $stmts = $this->parser->parse($code);
+		} catch (PhpParser\Error $e) {
+		    echo $filename . ' - Parse Error: ' . $e->getMessage();
+		}
+
 
 	}
 }
