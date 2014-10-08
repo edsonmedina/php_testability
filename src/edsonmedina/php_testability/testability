@@ -4,7 +4,6 @@
  * Shell wrapper for php_testability
  * @author Edson Medina <edsonmedina@gmail.com>
  */
-use edsonmedina\php_testability\StaticAnalyser;
 
 // turn off html errors
 ini_set('html_errors', 'off');
@@ -21,12 +20,14 @@ foreach ($autoloader_locations as $file) {
     }
 }
 
+use Commando\Command;
+
 // parse CLI arguments
-$cmd = new Commando\Command();
+$cmd = new Command();
 $cmd->setHelp ('php_availability by Edson Medina');
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->file()->default(__DIR__);
 $cmd->option('output')->require()->alias('o')->describeAs('Path for writing the report');
 
 // run
-$report = new StaticAnalyser ($cmd[0]);
-$report->run ();
+define ('PATH', $cmd[0]);
+require __DIR__.'/testability.php';
