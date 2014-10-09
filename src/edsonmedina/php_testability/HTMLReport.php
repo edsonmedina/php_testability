@@ -8,6 +8,6 @@ class HTMLReport implements ReportInterface
 {
 	public function generate (ReportDataInterface $data)
 	{
-
+		print_r ($data->dumpAllIssues());
 	}
 }

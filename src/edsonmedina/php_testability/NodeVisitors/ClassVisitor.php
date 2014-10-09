@@ -11,6 +11,8 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     private $currentClass    = null;
     private $currentMethod   = null;
     private $currentFunction = null;
+    private $hasReturn = false;
+    private $muted = false;
 
     public function __construct (ReportDataInterface $data)
     {
@@ -19,6 +21,10 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
+        if ($this->muted) {
+            return;
+        }
+
         if ($node instanceof Stmt\Class_) {
             $this->currentClass = $node->name;
         }
@@ -30,26 +36,74 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Stmt\Function_) {
             $this->currentFunction = $node->name;
         }
+
+        if ($node instanceof Stmt\Return_) {
+            $this->hasReturn = true;
+        }
+
+        if ($node instanceof Stmt\Interface_) {
+            $this->muted = true;
+        }
     }
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Stmt\Global_) {
-            // print_r ($node->vars);
-            echo $this->currentClass."::".$this->currentMethod."\n";
-            print_r ($node->vars);
+        // check for global variables
+        if ($node instanceof Stmt\Global_) 
+        {
+            $scope = $this->getScope();
+
+            foreach ($node->vars as $var) {
+                $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
+            }
         }
 
+        // end of class
         if ($node instanceof Stmt\Class_) {
             $this->currentClass = null;
         }
 
-        if ($node instanceof Stmt\ClassMethod) {
+        // end of method
+        if ($node instanceof Stmt\ClassMethod) 
+        {
+            if (!$this->hasReturn && !$this->muted && $node->stmts) {
+                $this->data->addIssue ($node->getLine(), 'no_return', $this->getScope(), '');
+            }
+
             $this->currentMethod = null;
+            $this->hasReturn = false;
         }
 
-        if ($node instanceof Stmt\Function_) {
+        // end of global function
+        if ($node instanceof Stmt\Function_) 
+        {
+            if (!$this->hasReturn && !$this->muted) {
+                $this->data->addIssue ($node->getLine(), 'no_return', $this->getScope(), '');
+            }
+
             $this->currentFunction = null;
+            $this->hasReturn = false;
+        }
+
+        // end of interface
+        if ($node instanceof Stmt\Interface_) {
+            $this->muted = false;
+        }
+    }
+
+    private function getScope ()
+    {
+        if (!is_null($this->currentFunction)) 
+        {
+            return $this->currentFunction;
+        }
+        elseif (!is_null($this->currentClass) && !is_null($this->currentMethod)) 
+        {
+            return $this->currentClass."::".$this->currentMethod;
+        }
+        else 
+        {
+            throw new \Exception ('Invalid scope');
         }
     }
 }

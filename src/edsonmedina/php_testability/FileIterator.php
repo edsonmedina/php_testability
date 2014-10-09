@@ -60,9 +60,9 @@ class FileIterator
 		elseif (is_file ($path) && !$this->hasPhpExtension($path))
 		{
 			// process file
-			echo ".";
 			$this->analyser->scan ($path);
 			$this->processedFilesCount++;
+			echo ".";
 		}
 	}
 

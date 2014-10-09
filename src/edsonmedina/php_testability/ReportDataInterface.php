@@ -3,5 +3,6 @@ namespace edsonmedina\php_testability;
 
 interface ReportDataInterface  
 {
-	public function addIssue ($filePath, $line, $type, $identifier);
+	public function addIssue ($line, $type, $scope, $identifier);
+	public function setCurrentFilename ($filename);
 }

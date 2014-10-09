@@ -42,6 +42,8 @@ class Analyser implements AnalyserInterface
 		$code = file_get_contents ($filename);
 		$traverser = new PhpParser\NodeTraverser;
 
+		$this->data->setCurrentFilename ($filename);
+
 		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data));
 
 		try 
