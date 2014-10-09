@@ -29,6 +29,7 @@ $start_ts  = microtime (TRUE);
 $data     = new ReportData ();
 $analyser = new Analyser ($data);
 $iterator = new FileIterator (PATH, $analyser);
+$iterator->setExcludedDirs (explode(',', EXCLUDE_DIRS));
 $iterator->run ();
 
 $report = new HTMLReport (); 
@@ -37,6 +38,6 @@ $report->generate ($data);
 $total_time = number_format (microtime (TRUE) - $start_ts, 2);
 
 echo "\nDone ({$total_time}s).\n\n";
-echo $iterator->getProcessedFiles()." processed files.\n";
-echo $iterator->getExcludedFiles()." excluded files.\n";
+echo $iterator->getProcessedFilesCount()." processed files.\n";
+echo $iterator->getExcludedFilesCount()." excluded files.\n";
 echo number_format (memory_get_peak_usage()/1024/1024, 2)." Mbytes used\n\n";

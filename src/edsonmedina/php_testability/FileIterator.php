@@ -12,8 +12,10 @@ class FileIterator
 	private $baseDir;
 	private $analyser;
 
-	private $processedFiles;
-	private $excludedFiles;
+	private $excludedDirs = array ();
+
+	private $processedFilesCount;
+	private $excludedFilesCount;
 
 	/**
 	 * Runs the static analyser
@@ -24,6 +26,9 @@ class FileIterator
 	{
 		$this->baseDir  = $baseDir;
 		$this->analyser = $analyser;
+
+		// default exclusions
+		$this->excludedDirs = array ('tests','.git','vendor','tmp','temp');
 	}
 
 	/**
@@ -31,8 +36,8 @@ class FileIterator
 	 */
 	public function run ()
 	{
-		$this->processedFiles = 0;
-		$this->excludedFiles  = 0;
+		$this->processedFilesCount = 0;
+		$this->excludedFilesCount  = 0;
 
 		$this->iterate ($this->baseDir);
 	}
@@ -60,21 +65,24 @@ class FileIterator
 			// process file
 			echo ".";
 			$this->analyser->scan ($path);
-			$this->processedFiles++;
+			$this->processedFilesCount++;
 		}
 	}
 
 	/**
 	 * Exclude filter for directories
 	 */
-	private function isDirExcluded ($path)
+	public function isDirExcluded ($path)
 	{
-		if (basename($path) == '.git') {
-			return true;
-		}
+		foreach ($this->excludedDirs as $needle) 
+		{
+			$needleLen = strlen($needle);
+			$pathChunk = substr($path, -$needleLen, $needleLen);
 
-		if (basename($path) == 'vendor') {
-			return true;
+			// check if matches end of $path
+			if ($pathChunk == $needle) {
+				return true;
+			}
 		}
 
 		return false;
@@ -94,20 +102,29 @@ class FileIterator
 	}
 
 	/**
-	 * getter for processedFiles
+	 * getter for processedFiles count
 	 * @return int
 	 */
-	public function getProcessedFiles ()
+	public function getProcessedFilesCount ()
 	{
-		return $this->processedFiles;
+		return $this->processedFilesCount;
 	}
 
 	/**
-	 * getter for excludedFiles
+	 * getter for excludedFiles count
 	 * @return int
 	 */
-	public function getExcludedFiles ()
+	public function getExcludedFilesCount ()
 	{
-		return $this->excludedFiles;
+		return $this->excludedFilesCount;
+	}
+
+	/**
+	 * Set list of excluded directories
+	 * @param array $dirs
+	 */
+	public function setExcludedDirs (array $dirs)
+	{
+		$this->excludedDirs = $dirs;
 	}
 }

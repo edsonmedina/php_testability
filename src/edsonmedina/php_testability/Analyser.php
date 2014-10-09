@@ -33,6 +33,10 @@ class Analyser implements AnalyserInterface
 		$this->prettyPrinter = new PrettyPrinter\Standard;
 	}
 
+	/**
+	 * Scan a php file
+	 * @param  string $filename 
+	 */
 	public function scan ($filename) 
 	{
 		$code = file_get_contents ($filename);
@@ -45,6 +49,10 @@ class Analyser implements AnalyserInterface
 
 		foreach ($stmts as $i)
 		{
+			// skip non-functions
+			if (!$i instanceof Stmt\Function_) {
+				continue;
+			}
 
 
 		}
