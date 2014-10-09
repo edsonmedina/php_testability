@@ -15,7 +15,6 @@ class FileIterator
 	private $excludedDirs = array ();
 
 	private $processedFilesCount;
-	private $excludedFilesCount;
 
 	/**
 	 * Runs the static analyser
@@ -37,8 +36,6 @@ class FileIterator
 	public function run ()
 	{
 		$this->processedFilesCount = 0;
-		$this->excludedFilesCount  = 0;
-
 		$this->iterate ($this->baseDir);
 	}
 
@@ -60,7 +57,7 @@ class FileIterator
 				$this->iterate ($path.DIRECTORY_SEPARATOR.$fileInfo->getFilename());
 			}
 		}
-		elseif (is_file ($path) && !$this->isFileExcluded($path))
+		elseif (is_file ($path) && !$this->hasPhpExtension($path))
 		{
 			// process file
 			echo ".";
@@ -76,11 +73,16 @@ class FileIterator
 	{
 		foreach ($this->excludedDirs as $needle) 
 		{
+			if (empty($needle)) {
+				continue;
+			}
+
 			$needleLen = strlen($needle);
 			$pathChunk = substr($path, -$needleLen, $needleLen);
 
 			// check if matches end of $path
 			if ($pathChunk == $needle) {
+				echo "EXCLUDED: $path ($needle)\n";
 				return true;
 			}
 		}
@@ -89,16 +91,11 @@ class FileIterator
 	}
 
 	/**
-	 * Exclude filter for files
+	 * Check for .php
 	 */
-	private function isFileExcluded ($path)
+	private function hasPhpExtension ($path)
 	{
-		if (substr($path, -4, 4) != '.php') {
-			$this->excludedFiles++;
-			return true;
-		}
-
-		return false;
+		return (substr($path, -4, 4) != '.php');
 	}
 
 	/**
@@ -108,15 +105,6 @@ class FileIterator
 	public function getProcessedFilesCount ()
 	{
 		return $this->processedFilesCount;
-	}
-
-	/**
-	 * getter for excludedFiles count
-	 * @return int
-	 */
-	public function getExcludedFilesCount ()
-	{
-		return $this->excludedFilesCount;
 	}
 
 	/**

@@ -9,14 +9,14 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserInterface;
+use edsonmedina\php_testability\NodeVisitors;
 
-use PhpParser\Lexer;
+use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\StaticCall;
-use PhpParser\PrettyPrinter;
 
 class Analyser implements AnalyserInterface
 {
@@ -29,8 +29,8 @@ class Analyser implements AnalyserInterface
 		ini_set('xdebug.max_nesting_level', 2000);
 
 		$this->data = $data;
-		$this->parser = new \PhpParser\Parser (new Lexer);
-		$this->prettyPrinter = new PrettyPrinter\Standard;
+		$this->parser = new PhpParser\Parser (new PhpParser\Lexer);
+		$this->prettyPrinter = new PhpParser\PrettyPrinter\Standard;
 	}
 
 	/**
@@ -40,21 +40,21 @@ class Analyser implements AnalyserInterface
 	public function scan ($filename) 
 	{
 		$code = file_get_contents ($filename);
+		$traverser = new PhpParser\NodeTraverser;
 
-		try {
-		    $stmts = $this->parser->parse($code);
-		} catch (\PhpParser\Error $e) {
-		    echo $filename . ' - Parse Error: ' . $e->getMessage();
-		}
+		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data));
 
-		foreach ($stmts as $i)
+		try 
 		{
-			// skip non-functions
-			if (!$i instanceof Stmt\Function_) {
-				continue;
-			}
+			// parse
+		    $stmts = $this->parser->parse ($code);
 
-
+		    // traverse
+		    $stmts = $traverser->traverse($stmts);
+		} 
+		catch (PhpParser\Error $e) 
+		{
+		    echo $filename . ' - Parse Error: ' . $e->getMessage();
 		}
 	}
 }

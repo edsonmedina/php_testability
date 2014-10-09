@@ -39,5 +39,4 @@ $total_time = number_format (microtime (TRUE) - $start_ts, 2);
 
 echo "\nDone ({$total_time}s).\n\n";
 echo $iterator->getProcessedFilesCount()." processed files.\n";
-echo $iterator->getExcludedFilesCount()." excluded files.\n";
-echo number_format (memory_get_peak_usage()/1024/1024, 2)." Mbytes used\n\n";
+echo number_format (memory_get_peak_usage()/1024/1024, 2)." Mbytes of memory used\n\n";
