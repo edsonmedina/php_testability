@@ -82,11 +82,9 @@ class FileIterator
 
 			// check if matches end of $path
 			if ($pathChunk == $needle) {
-				echo "EXCLUDED: $path ($needle)\n";
 				return true;
 			}
 		}
-
 		return false;
 	}
 

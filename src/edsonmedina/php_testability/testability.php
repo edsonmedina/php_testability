@@ -29,7 +29,11 @@ $start_ts  = microtime (TRUE);
 $data     = new ReportData ();
 $analyser = new Analyser ($data);
 $iterator = new FileIterator (PATH, $analyser);
-$iterator->setExcludedDirs (explode(',', EXCLUDE_DIRS));
+
+if (EXCLUDE_DIRS != '') {
+	$iterator->setExcludedDirs (explode(',', EXCLUDE_DIRS));
+}
+
 $iterator->run ();
 
 $report = new HTMLReport (); 
