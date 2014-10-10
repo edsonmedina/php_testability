@@ -49,6 +49,13 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
+        // check for code outside of classes/functions
+        if (!($node instanceof Stmt\Class_ || $node instanceof Stmt\Function_) && !($this->currentClass || $this->currentFunction))
+        {
+                $this->data->addIssue ($node->getLine(), 'code_on_global_space', '__main', '');
+                return;
+        }
+
         // check for global variables
         if ($node instanceof Stmt\Global_) 
         {
@@ -82,16 +89,40 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             $this->muted = false;
         }
 
-        // check for "new" statement
-        if ($node instanceof Expr\New_) 
-        {
+        // check for "new" statement (ie: $x = new Thing())
+        if ($node instanceof Expr\New_) {
             $this->data->addIssue ($node->getLine(), 'new', $this->getScope(), join('\\', $node->class->parts));
         }
 
         // check for exit/die statements
-        if ($node instanceof Expr\Exit_) 
-        {
+        if ($node instanceof Expr\Exit_) {
             $this->data->addIssue ($node->getLine(), 'exit', $this->getScope(), '');
+        }
+
+        // check for static method calls (ie: Things::doStuff())
+        if ($node instanceof Expr\StaticCall) {
+            $this->data->addIssue ($node->getLine(), 'static_call', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+        }
+
+        // check for class constant fetch from different class ($x = OtherClass::thing)
+        if ($node instanceof Expr\ClassConstFetch) 
+        {
+            if (!($this->currentClass && end($node->class->parts) == $this->currentClass)) {
+                $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+            } 
+        }
+
+        // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
+        if ($node instanceof Expr\StaticPropertyFetch) 
+        {
+            if (!($this->currentClass && end($node->class->parts) == $this->currentClass)) {
+                $this->data->addIssue ($node->getLine(), 'static_property_fetch', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+            } 
+        }
+
+        // check for global function calls
+        if ($node instanceof Expr\FuncCall) {
+            $this->data->addIssue ($node->getLine(), 'global_function_call', $this->getScope(), join('\\', $node->name->parts));
         }
     }
 
@@ -115,25 +146,20 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 // Expr\Closure
 // Expr\Eval_
 // Expr\ErrorSuppress  (@)
-// Expr\FuncCall
-// Expr\StaticCall
 // Expr\StaticPropertyFetch
 // Stmt\InlineHTML
 // 
 // conditions:
-// Stmt\If_ 
+// Stmt\If_   
 // Stmt\Else_
 // Stmt\Case
 // Stmt\ElseIf_
+// (also test for OR and ||)
 
-// look for New instances, static method calls, global function calls, code outside of functions/methods
-//
 // number of conditions (case, if, elseif, else, ?:, )
 // 
-// exit / die
 // require/include/require_once/include_once, 
-// echo, print, print_r/var_dump,
-// mail, file_get_contents, file_put_contents,
+// mail, file_get_contents, file_put_contents, fopen, fgets, sockets 
 // soap, 
 //   
 // these can only happen in a method with no user-code dependencies
