@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\NodeWrapper;
 
 use PhpParser;
 use PhpParser\Node\Expr;
@@ -22,57 +23,61 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
+        $obj = new NodeWrapper ($node);
+
         if ($this->muted) {
             return;
         }
 
-        if ($node instanceof Stmt\Class_) {
+        if ($obj->isClass()) {
             $this->currentClass = $node->name;
         }
 
-        if ($node instanceof Stmt\ClassMethod) {
+        if ($obj->isMethod()) {
             $this->currentMethod = $node->name;
         }
 
-        if ($node instanceof Stmt\Function_) {
+        if ($obj->isFunction()) {
             $this->currentFunction = $node->name;
         }
 
-        if ($node instanceof Stmt\Return_) {
+        if ($obj->isReturn()) {
             $this->hasReturn = true;
         }
 
-        if ($node instanceof Stmt\Interface_) {
+        if ($obj->isInterface()) {
             $this->muted = true;
         }
     }
 
     public function leaveNode (PhpParser\Node $node) 
     {
+        $obj = new NodeWrapper ($node);
+
         // check for code outside of classes/functions
-        if (!($node instanceof Stmt\Class_ || $node instanceof Stmt\Function_) && !($this->currentClass || $this->currentFunction))
+        if (!($obj->isClass() || $obj->isFunction()) && $this->inGlobalSpace())
         {
-                $this->data->addIssue ($node->getLine(), 'code_on_global_space', '__main', '');
+                $this->data->addIssue ($obj->line, 'code_on_global_space', '__main', '');
                 return;
         }
 
         // check for global variables
-        if ($node instanceof Stmt\Global_) 
+        if ($obj->isGlobal()) 
         {
             $scope = $this->getScope();
 
-            foreach ($node->vars as $var) {
+            foreach ($obj->getVarList() as $var) {
                 $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
             }
         }
 
         // end of class
-        if ($node instanceof Stmt\Class_) {
+        if ($obj->isClass()) {
             $this->currentClass = null;
         }
 
         // end of method or global function
-        if ($node instanceof Stmt\ClassMethod || $node instanceof Stmt\Function_) 
+        if ($obj->isMethod() || $obj->isFunction()) 
         {
             // check for a lacking return statement in the method/function
             if (!$this->hasReturn && !$this->muted && $node->stmts) {
@@ -85,12 +90,12 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // end of interface
-        if ($node instanceof Stmt\Interface_) {
+        if ($obj->isInterface()) {
             $this->muted = false;
         }
 
         // check for "new" statement (ie: $x = new Thing())
-        if ($node instanceof Expr\New_) {
+        if ($obj->isNew()) {
             $this->data->addIssue ($node->getLine(), 'new', $this->getScope(), join('\\', $node->class->parts));
         }
 
@@ -140,6 +145,11 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         {
             throw new \Exception ('Invalid scope');
         }
+    }
+
+    private function inGlobalSpace()
+    {
+        return !($this->currentClass || $this->currentFunction);
     }
 }
 
