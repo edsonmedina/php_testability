@@ -5,4 +5,5 @@ interface ReportDataInterface
 {
 	public function addIssue ($line, $type, $scope, $identifier);
 	public function setCurrentFilename ($filename);
+	public function getIssuesCountForPath ($path);
 }

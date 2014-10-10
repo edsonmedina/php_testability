@@ -44,4 +44,14 @@ class ReportData implements ReportDataInterface
 	{
 		return $this->issues;
 	}
+
+	/**
+	 * Returns the recursive sum of issues for path
+	 * @param  string $path 
+	 * @return integer 
+	 */
+	public function getIssuesCountForPath ($path)
+	{
+
+	}
 }

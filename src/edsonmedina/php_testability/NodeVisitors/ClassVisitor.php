@@ -3,6 +3,7 @@ namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
 
 use PhpParser;
+use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
 class ClassVisitor extends PhpParser\NodeVisitorAbstract
@@ -63,24 +64,15 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             $this->currentClass = null;
         }
 
-        // end of method
-        if ($node instanceof Stmt\ClassMethod) 
+        // end of method or global function
+        if ($node instanceof Stmt\ClassMethod || $node instanceof Stmt\Function_) 
         {
+            // check for a lacking return statement in the method/function
             if (!$this->hasReturn && !$this->muted && $node->stmts) {
-                $this->data->addIssue ($node->getLine(), 'no_return', $this->getScope(), '');
+                $this->data->addIssue ($node->getAttribute('endLine'), 'no_return', $this->getScope(), '');
             }
 
             $this->currentMethod = null;
-            $this->hasReturn = false;
-        }
-
-        // end of global function
-        if ($node instanceof Stmt\Function_) 
-        {
-            if (!$this->hasReturn && !$this->muted) {
-                $this->data->addIssue ($node->getLine(), 'no_return', $this->getScope(), '');
-            }
-
             $this->currentFunction = null;
             $this->hasReturn = false;
         }
@@ -88,6 +80,18 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         // end of interface
         if ($node instanceof Stmt\Interface_) {
             $this->muted = false;
+        }
+
+        // check for "new" statement
+        if ($node instanceof Expr\New_) 
+        {
+            $this->data->addIssue ($node->getLine(), 'new', $this->getScope(), join('\\', $node->class->parts));
+        }
+
+        // check for exit/die statements
+        if ($node instanceof Expr\Exit_) 
+        {
+            $this->data->addIssue ($node->getLine(), 'exit', $this->getScope(), '');
         }
     }
 
@@ -108,12 +112,21 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     }
 }
 
-// Stmt\Class_
-// Stmt\ClassMethod
-// Stmt\Return_
-// Stmt\Global_ 
+// Expr\Closure
+// Expr\Eval_
+// Expr\ErrorSuppress  (@)
+// Expr\FuncCall
+// Expr\StaticCall
+// Expr\StaticPropertyFetch
+// Stmt\InlineHTML
+// 
+// conditions:
+// Stmt\If_ 
+// Stmt\Else_
+// Stmt\Case
+// Stmt\ElseIf_
 
-// look for New instances, globals, return, static method calls, global function calls
+// look for New instances, static method calls, global function calls, code outside of functions/methods
 //
 // number of conditions (case, if, elseif, else, ?:, )
 // 

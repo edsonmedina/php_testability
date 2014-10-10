@@ -54,7 +54,7 @@ class Analyser implements AnalyserInterface
 		    // traverse
 		    $stmts = $traverser->traverse($stmts);
 		} 
-		catch (PhpParser\Error $e) 
+		catch (PhpParser\Error $e)
 		{
 		    echo $filename . ' - Parse Error: ' . $e->getMessage();
 		}
