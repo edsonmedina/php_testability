@@ -1,6 +1,6 @@
 # php_testability
 
-Analyses and reports testability issues of a php codebase
+Analyses and produces a report with testability issues of a php codebase
 
 ## Installation
 ### Composer 
