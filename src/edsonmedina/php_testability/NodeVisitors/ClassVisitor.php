@@ -30,15 +30,15 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         if ($obj->isClass()) {
-            $this->currentClass = $node->name;
+            $this->currentClass = $obj->getName();
         }
 
         if ($obj->isMethod()) {
-            $this->currentMethod = $node->name;
+            $this->currentMethod = $obj->getName();
         }
 
         if ($obj->isFunction()) {
-            $this->currentFunction = $node->name;
+            $this->currentFunction = $obj->getName();
         }
 
         if ($obj->isReturn()) {
@@ -80,8 +80,8 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         if ($obj->isMethod() || $obj->isFunction()) 
         {
             // check for a lacking return statement in the method/function
-            if (!$this->hasReturn && !$this->muted && $node->stmts) {
-                $this->data->addIssue ($node->getAttribute('endLine'), 'no_return', $this->getScope(), '');
+            if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) {
+                $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope(), '');
             }
 
             $this->currentMethod = null;
@@ -96,38 +96,38 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
         // check for "new" statement (ie: $x = new Thing())
         if ($obj->isNew()) {
-            $this->data->addIssue ($node->getLine(), 'new', $this->getScope(), join('\\', $node->class->parts));
+            $this->data->addIssue ($obj->line, 'new', $this->getScope(), $obj->getName());
         }
 
         // check for exit/die statements
-        if ($node instanceof Expr\Exit_) {
-            $this->data->addIssue ($node->getLine(), 'exit', $this->getScope(), '');
+        if ($obj->isExit()) {
+            $this->data->addIssue ($obj->line, 'exit', $this->getScope(), '');
         }
 
         // check for static method calls (ie: Things::doStuff())
-        if ($node instanceof Expr\StaticCall) {
-            $this->data->addIssue ($node->getLine(), 'static_call', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+        if ($obj->isStaticCall()) {
+            $this->data->addIssue ($obj->line, 'static_call', $this->getScope(), $obj->getName());
         }
 
         // check for class constant fetch from different class ($x = OtherClass::thing)
-        if ($node instanceof Expr\ClassConstFetch) 
+        if ($obj->isClassConstantFetch())
         {
-            if (!($this->currentClass && end($node->class->parts) == $this->currentClass)) {
-                $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+            if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
+                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->getScope(), $obj->getName());
             } 
         }
 
         // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
-        if ($node instanceof Expr\StaticPropertyFetch) 
+        if ($obj->isStaticPropertyFetch()) 
         {
-            if (!($this->currentClass && end($node->class->parts) == $this->currentClass)) {
-                $this->data->addIssue ($node->getLine(), 'static_property_fetch', $this->getScope(), join('\\', $node->class->parts).'::'.$node->name);
+            if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
+                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->getScope(), $obj->getName());
             } 
         }
 
         // check for global function calls
-        if ($node instanceof Expr\FuncCall) {
-            $this->data->addIssue ($node->getLine(), 'global_function_call', $this->getScope(), join('\\', $node->name->parts));
+        if ($obj->isFunctionCall()) {
+            $this->data->addIssue ($obj->line, 'global_function_call', $this->getScope(), $obj->getName());
         }
     }
 
