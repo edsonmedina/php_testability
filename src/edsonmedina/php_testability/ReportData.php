@@ -6,7 +6,8 @@ use edsonmedina\php_testability\ReportDataInterface;
 class ReportData implements ReportDataInterface
 {
 	private $currentFilename;
-	private $issues;
+	private $issues     = array ();
+	private $fileIssues = array ();
 
 	/**
 	 * Add new issue for the current filename
@@ -30,7 +31,7 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * getter for current filename
+	 * Getter for current filename
 	 */
 	public function getCurrentFilename ()
 	{
@@ -42,7 +43,7 @@ class ReportData implements ReportDataInterface
 	 */
 	public function dumpAllIssues ()
 	{
-		return $this->issues;
+		return array($this->issues, $this->fileIssues);
 	}
 
 	/**
@@ -53,5 +54,15 @@ class ReportData implements ReportDataInterface
 	public function getIssuesCountForPath ($path)
 	{
 
+	}
+
+	/**
+	 * Flags issues on file
+	 * @param int $line
+	 * @param string type
+	 */
+	public function addFileIssue ($line, $type)
+	{
+		@$this->fileIssues[$this->currentFilename][$type][$line] = true;
 	}
 }

@@ -25,25 +25,25 @@ class NodeWrapper
 	public function getName() 
 	{	
 		$name = '';
+		$separator = '';
 
 		if (!empty($this->node->class->parts)) 
 		{
-			if (is_array($this->node->class->parts)) 
-			{
-				$name .= join('\\', $this->node->class->parts);
-			} 
-			else 
-			{
+			if (is_array($this->node->class->parts)) {
+				$name .= join ('\\', $this->node->class->parts);
+			} else {
 				$name .= $this->node->class->parts;
 			}
 
-			$name .= empty($this->node->name) ? '' : '::'.$this->node->name;
+			$separator = '::';
 		}
-		else
-		{
-			$name .= empty($this->node->name) ? '' : $this->node->name;			
+
+		if ($this->node->name instanceof Expr\Variable) {
+			$name .= $separator . $this->node->getAttribute('name');
+		} elseif ($this->node->name) {
+			$name .= $separator . $this->node->name;
 		}
-		
+	
 		return $name;
 	}
 

@@ -57,7 +57,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         // check for code outside of classes/functions
         if (!($obj->isClass() || $obj->isFunction()) && $this->inGlobalSpace())
         {
-                $this->data->addIssue ($obj->line, 'code_on_global_space', '__main', '');
+                $this->data->addFileIssue ($obj->line, 'code_on_global_space');
                 return;
         }
 
@@ -83,7 +83,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) {
                 $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope(), '');
             }
-
+            
             $this->currentMethod = null;
             $this->currentFunction = null;
             $this->hasReturn = false;
@@ -149,7 +149,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
     private function inGlobalSpace()
     {
-        return !($this->currentClass || $this->currentFunction);
+        return (is_null($this->currentClass) && is_null($this->currentFunction));
     }
 }
 
