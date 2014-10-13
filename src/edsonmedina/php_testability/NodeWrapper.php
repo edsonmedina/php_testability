@@ -29,19 +29,34 @@ class NodeWrapper
 
 		if (!empty($this->node->class->parts)) 
 		{
-			if (is_array($this->node->class->parts)) {
+			if (is_array($this->node->class->parts)) 
+			{
+				// fully qualified names
 				$name .= join ('\\', $this->node->class->parts);
-			} else {
+			} 
+			else 
+			{
 				$name .= $this->node->class->parts;
 			}
 
 			$separator = '::';
 		}
 
-		if ($this->node->name instanceof Expr\Variable) {
+		if ($this->node->name instanceof Expr\Variable) 
+		{
 			$name .= $separator . $this->node->getAttribute('name');
-		} elseif ($this->node->name) {
-			$name .= $separator . $this->node->name;
+		} 
+		elseif ($this->node->name) 
+		{
+			// variable functions
+			if ($this->node->name instanceof Expr\ArrayDimFetch) 
+			{
+				$name .= 'variable function';
+			} 
+			else
+			{
+				$name .= $separator . $this->node->name;
+			}
 		}
 	
 		return $name;
@@ -55,8 +70,10 @@ class NodeWrapper
 		return ($this->node instanceof Stmt\Function_);
 	}
 
-	public function isSameClassAs ($classname) {
-		return end($this->node->class->parts) === $classname;
+	public function isSameClassAs ($classname) 
+	{
+		$name = end($this->node->class->parts);
+		return ($name === $classname || $name === 'self');
 	}
 
 	public function isMethod() {

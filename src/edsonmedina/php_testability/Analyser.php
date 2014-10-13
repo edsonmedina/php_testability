@@ -23,6 +23,7 @@ class Analyser implements AnalyserInterface
 	private $data;
 	private $parser;
 	private $prettyPrinter;
+	private $dictionary;
 
 	public function __construct (ReportDataInterface $data) 
 	{
@@ -31,6 +32,8 @@ class Analyser implements AnalyserInterface
 		$this->data = $data;
 		$this->parser = new PhpParser\Parser (new PhpParser\Lexer);
 		$this->prettyPrinter = new PhpParser\PrettyPrinter\Standard;
+
+		$this->dictionary = new Dictionary;
 	}
 
 	/**
@@ -44,7 +47,7 @@ class Analyser implements AnalyserInterface
 
 		$this->data->setCurrentFilename ($filename);
 
-		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data));
+		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data, $this->dictionary));
 
 		try 
 		{
@@ -57,7 +60,11 @@ class Analyser implements AnalyserInterface
 		} 
 		catch (PhpParser\Error $e)
 		{
-		    echo $filename . ' - Parse Error: ' . $e->getMessage();
+		    echo "\n\n" . $filename . ' - Parse Error: ' . $e->getMessage() . "\n";
+		}
+		catch (\Exception $e)
+		{
+		    echo "\n\n" . $filename . "\n" . $e->getMessage() . "\n";
 		}
 	}
 }

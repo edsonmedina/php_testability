@@ -7,6 +7,8 @@
 
 // turn off html errors
 ini_set('html_errors', 'off');
+ini_set('memory_limit', '1G');
+
 
 // load autoloader
 $autoloader_locations = array (

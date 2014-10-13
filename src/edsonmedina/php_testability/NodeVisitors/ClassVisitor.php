@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\DictionaryInterface;
 
 use PhpParser;
 use PhpParser\Node\Expr;
@@ -15,10 +16,13 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     private $currentFunction = null;
     private $hasReturn = false;
     private $muted = false;
+    private $phpInternalFunctions = array ();
+    private $dictionary;
 
-    public function __construct (ReportDataInterface $data)
+    public function __construct (ReportDataInterface $data, DictionaryInterface $dictionary)
     {
         $this->data = $data;
+        $this->dictionary = $dictionary;
     }
 
     public function enterNode (PhpParser\Node $node) 
@@ -64,7 +68,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         // check for global variables
         if ($obj->isGlobal()) 
         {
-            $scope = $this->getScope();
+            $scope = $this->getScope('global');
 
             foreach ($obj->getVarList() as $var) {
                 $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
@@ -81,7 +85,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         {
             // check for a lacking return statement in the method/function
             if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) {
-                $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope(), '');
+                $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
             }
             
             $this->currentMethod = null;
@@ -96,24 +100,24 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
         // check for "new" statement (ie: $x = new Thing())
         if ($obj->isNew()) {
-            $this->data->addIssue ($obj->line, 'new', $this->getScope(), $obj->getName());
+            $this->data->addIssue ($obj->line, 'new', $this->getScope('new'), $obj->getName());
         }
 
         // check for exit/die statements
         if ($obj->isExit()) {
-            $this->data->addIssue ($obj->line, 'exit', $this->getScope(), '');
+            $this->data->addIssue ($obj->line, 'exit', $this->getScope('exit'), '');
         }
 
         // check for static method calls (ie: Things::doStuff())
         if ($obj->isStaticCall()) {
-            $this->data->addIssue ($obj->line, 'static_call', $this->getScope(), $obj->getName());
+            $this->data->addIssue ($obj->line, 'static_call', $this->getScope('static call'), $obj->getName());
         }
 
         // check for class constant fetch from different class ($x = OtherClass::thing)
         if ($obj->isClassConstantFetch())
         {
             if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
-                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->getScope(), $obj->getName());
+                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->getScope('external class constant'), $obj->getName());
             } 
         }
 
@@ -121,29 +125,50 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         if ($obj->isStaticPropertyFetch()) 
         {
             if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
-                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->getScope(), $obj->getName());
+                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->getScope('static property'), $obj->getName());
             } 
         }
 
         // check for global function calls
-        if ($obj->isFunctionCall()) {
-            $this->data->addIssue ($obj->line, 'global_function_call', $this->getScope(), $obj->getName());
+        if ($obj->isFunctionCall()) 
+        {
+            $functionName = $obj->getName();
+
+            // skip internal php functions
+            if ($this->dictionary->isInternalFunction ($functionName)) {
+                return;
+            }
+
+            $this->data->addIssue ($obj->line, 'global_function_call', $this->getScope('global function call'), $functionName);
         }
     }
 
-    private function getScope ()
+    /**
+     * Returns the scope name
+     * @param  string $reference optional, is added to error message
+     * @return string 
+     */
+    private function getScope ($reference = '')
     {
         if (!is_null($this->currentFunction)) 
         {
             return $this->currentFunction;
         }
-        elseif (!is_null($this->currentClass) && !is_null($this->currentMethod)) 
+        elseif (!is_null($this->currentClass))
         {
-            return $this->currentClass."::".$this->currentMethod;
+            if (!is_null($this->currentMethod)) {
+                return $this->currentClass."::".$this->currentMethod;
+            }
+
+            return $this->currentClass;
         }
         else 
         {
-            throw new \Exception ('Invalid scope');
+            if (!empty($reference)) {
+                $reference = '('.$reference.')';
+            } 
+
+            throw new \Exception ('Analysys error: Invalid scope '.$reference);
         }
     }
 
