@@ -53,7 +53,7 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForPath ($path)
 	{
-
+		// TODO
 	}
 
 	/**
@@ -64,5 +64,24 @@ class ReportData implements ReportDataInterface
 	public function addFileIssue ($line, $type)
 	{
 		@$this->fileIssues[$this->currentFilename][$type][$line] = true;
+	}
+
+	/**
+	 * Returns list of files reported
+	 * @return array
+	 */
+	public function getFileList ()
+	{
+		return array_keys ($this->issues);
+	}
+
+	/**
+	 * Returns issues for file
+	 * @param  string $filename
+	 * @return array
+	 */
+	public function getFileIssues ($filename)
+	{
+		return $this->issues[$filename];
 	}
 }

@@ -6,5 +6,6 @@ use edsonmedina\php_testability\ReportDataInterface;
 
 interface ReportInterface  
 {
-	public function generate (ReportDataInterface $data);
+	public function __construct ($reportDir, ReportDataInterface $data);
+	public function generate ();
 }

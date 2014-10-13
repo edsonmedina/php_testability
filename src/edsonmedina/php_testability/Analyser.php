@@ -54,7 +54,6 @@ class Analyser implements AnalyserInterface
 			// parse
 		    $stmts = $this->parser->parse ($code);
 
-//print_R ($stmts); die();
 		    // traverse
 		    $stmts = $traverser->traverse($stmts);
 		} 

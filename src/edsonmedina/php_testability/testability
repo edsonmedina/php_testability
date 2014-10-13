@@ -28,11 +28,12 @@ use Commando\Command;
 $cmd = new Command();
 $cmd->setHelp ('php_availability by Edson Medina');
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->file()->default(__DIR__);
-$cmd->option('output')->require()->alias('o')->describeAs('Path for writing the report');
+$cmd->option('output')->alias('o')->describeAs('Path for writing the report')->default(__DIR__.'/report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude directories');
 
 // run
 define ('PATH', $cmd[0]);
 define ('EXCLUDE_DIRS', preg_replace('/\s*,\s*/',',',$cmd['exclude'])); // trim values
+define ('REPORT_DIR', $cmd['output']);
 
 require __DIR__.'/testability.php';

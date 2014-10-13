@@ -36,8 +36,8 @@ if (EXCLUDE_DIRS != '') {
 
 $iterator->run ();
 
-$report = new HTMLReport (); 
-$report->generate ($data);
+$report = new HTMLReport (REPORT_DIR, $data); 
+$report->generate ();
 
 $total_time = number_format (microtime (TRUE) - $start_ts, 2);
 

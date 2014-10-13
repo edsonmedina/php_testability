@@ -178,6 +178,8 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     }
 }
 
+// Notes:
+// 
 // Expr\Closure
 // Expr\Eval_
 // Expr\ErrorSuppress  (@)
