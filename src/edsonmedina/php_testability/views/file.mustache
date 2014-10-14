@@ -22,11 +22,20 @@
 			</td>
 		</tr>
 		{{/scopes}}
+		{{^scopes}}
+		<tr class="success">
+			<td> No issues </td>
+			<td><span class="label label-success">OK</span></td>
+		</tr>
+		{{/scopes}}
 	</tbody>
 </table>
 
 {{#lines}}
-<div class="codeline">     {{line}}.	{{code}}</div>
+{{#issues}}
+	<span class="label label-danger">{{type}} ({{name}})</span>
+{{/issues}}
+<div class="codeline{{#issues}} bg-danger{{/issues}}">{{line}}	{{code}}</div>
 {{/lines}}
 
 {{> partials/footer }}

@@ -53,11 +53,11 @@ class HTMLReport implements ReportInterface
 	{
 		// Load code and line numbers into array 
 		$content = file ($filename);
-		$code    = array ();
+		$code    = array (array ());
 
 		for ($i = 1, $len = count ($content); $i <= $len; $i++) 
 		{
-			@$code[$i]['line'] = $i;
+			@$code[$i]['line'] = str_pad($i, 6, ' ', STR_PAD_LEFT).".";
 			@$code[$i]['code'] = $content[$i-1];
 		}
 		$content = null;
