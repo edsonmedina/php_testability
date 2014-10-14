@@ -61,7 +61,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         // check for code outside of classes/functions
         if (!($obj->isClass() || $obj->isFunction()) && $this->inGlobalSpace())
         {
-                $this->data->addFileIssue ($obj->line, 'code_on_global_space');
+                $this->data->addIssue ($obj->line, 'code_on_global_space');
                 return;
         }
 

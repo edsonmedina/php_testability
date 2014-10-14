@@ -10,15 +10,22 @@ class ReportData implements ReportDataInterface
 	private $fileIssues = array ();
 
 	/**
-	 * Add new issue for the current filename
+	 * Add a new issue. Requires using setCurrentFilename first.
 	 * @param int $line line number for the issue
 	 * @param string $type 
 	 * @param string $scope
 	 * @param string $identifier of the current issue
 	 */
-	public function addIssue ($line, $type, $scope, $identifier)
+	public function addIssue ($line, $type, $scope = null, $identifier = null)
 	{
-		@$this->issues[$this->currentFilename][$scope][$type][] = array ($identifier, $line);
+		if (is_null($scope)) 
+		{
+			@$this->issues[$this->currentFilename]['global'][$type][$line] = true;
+		} 
+		else
+		{
+			@$this->issues[$this->currentFilename]['scoped'][$scope][$type][] = array ($identifier, $line);
+		}
 	}
 
 	/**
@@ -28,6 +35,7 @@ class ReportData implements ReportDataInterface
 	public function setCurrentFilename ($filename)
 	{
 		$this->currentFilename = $filename;
+		$this->issues[$filename] = array();
 	}
 
 	/**
@@ -43,7 +51,7 @@ class ReportData implements ReportDataInterface
 	 */
 	public function dumpAllIssues ()
 	{
-		return array($this->issues, $this->fileIssues);
+		return $this->issues;
 	}
 
 	/**
@@ -54,16 +62,8 @@ class ReportData implements ReportDataInterface
 	public function getIssuesCountForPath ($path)
 	{
 		// TODO
-	}
 
-	/**
-	 * Flags issues on file
-	 * @param int $line
-	 * @param string type
-	 */
-	public function addFileIssue ($line, $type)
-	{
-		@$this->fileIssues[$this->currentFilename][$type][$line] = true;
+
 	}
 
 	/**
@@ -80,7 +80,7 @@ class ReportData implements ReportDataInterface
 	 * @param  string $filename
 	 * @return array
 	 */
-	public function getFileIssues ($filename)
+	public function getIssuesForFile ($filename)
 	{
 		return $this->issues[$filename];
 	}

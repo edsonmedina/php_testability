@@ -27,6 +27,9 @@ class HTMLReport implements ReportInterface
 		$baseDir = $this->findBaseDirectory();
 
 		// TODO
+		// 
+		
+		file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
 
 		// print_r ($data->dumpAllIssues());
 		
