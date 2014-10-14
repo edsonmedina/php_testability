@@ -139,7 +139,7 @@ class HTMLReport implements ReportInterface
     				'issues' => 0//$this->data->getIssuesForDir ($pathname)
     			);
     		} 
-    		else 
+    		elseif ($fileInfo->getExtension() == 'php')
     		{
     			$files[] = array (
     				'file'   => $filename,
