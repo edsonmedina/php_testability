@@ -22,7 +22,7 @@ class Analyser implements AnalyserInterface
 {
 	private $data;
 	private $parser;
-	private $prettyPrinter;
+	// private $prettyPrinter;
 	private $dictionary;
 
 	public function __construct (ReportDataInterface $data) 
@@ -31,7 +31,7 @@ class Analyser implements AnalyserInterface
 
 		$this->data = $data;
 		$this->parser = new PhpParser\Parser (new PhpParser\Lexer);
-		$this->prettyPrinter = new PhpParser\PrettyPrinter\Standard;
+		// $this->prettyPrinter = new PhpParser\PrettyPrinter\Standard;
 
 		$this->dictionary = new Dictionary;
 	}
