@@ -107,6 +107,7 @@ class HTMLReport implements ReportInterface
 			'currentPath' => $relFilename,
 			'scopes'      => $scopes,
 			'lines'       => $code,
+			'date'        => date('r')
 			// 'untestable'  => $issues['global']
 		));
 
@@ -159,6 +160,7 @@ class HTMLReport implements ReportInterface
 			'currentPath' => $relPath,
 			'files'       => $files,
 			'dirs'        => $dirs,
+			'date'        => date('r')
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		
