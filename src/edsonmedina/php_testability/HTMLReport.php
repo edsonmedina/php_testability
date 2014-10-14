@@ -129,20 +129,21 @@ class HTMLReport implements ReportInterface
     			continue;
     		} 
     		
-    		$filename = $fileInfo->getFilename();
+    		$pathname = $fileInfo->getPathname();
+			$filename = $fileInfo->getFilename();
 
     		if ($fileInfo->isDir()) 
     		{
     			$dirs[] = array (
     				'name'   => $filename,
-    				'issues' => 0//$this->data->getIssuesForDir ($filename)
+    				'issues' => 0//$this->data->getIssuesForDir ($pathname)
     			);
     		} 
     		else 
     		{
     			$files[] = array (
     				'file'   => $filename,
-    				'issues' => $this->data->getIssuesForFile ($filename)
+    				'issues' => $this->data->getIssuesCountForFile ($pathname)
     			);
     		}
 		}
@@ -157,7 +158,7 @@ class HTMLReport implements ReportInterface
 		$output = $m->render ('dir', array (
 			'currentPath' => $relPath,
 			'files'       => $files,
-			'dirs'       => $dirs,
+			'dirs'        => $dirs,
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		

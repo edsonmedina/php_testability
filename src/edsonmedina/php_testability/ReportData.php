@@ -61,23 +61,32 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForFile ($filename)
 	{
-		$issues = $this->issues[$filename];
+		if (!isset($this->issues[$filename])) {
+			return 0;
+		}
 
-		$count = 0;
+		$issues = $this->issues[$filename];
+		$count  = 0;
 
 		// count scope issues
-		foreach ($issues['scoped'] as $scope => $report)
+		if (isset($issues['scoped'])) 
 		{
-			foreach ($report as $type => $list)
+			foreach (@$issues['scoped'] as $scope => $report)
 			{
-				$count += count($list);	
+				foreach ($report as $type => $list)
+				{
+					$count += count($list);	
+				}
 			}
 		}
 
 		// count global issues
-		foreach ($issues['global'] as $type => $list)
+		if (isset($issues['global'])) 
 		{
-			$count += count($list);	
+			foreach (@$issues['global'] as $type => $list)
+			{
+				$count += count($list);	
+			}
 		}
 
 		return $count;
