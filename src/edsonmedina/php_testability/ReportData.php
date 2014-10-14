@@ -59,7 +59,7 @@ class ReportData implements ReportDataInterface
 	 * @param  string $path 
 	 * @return integer 
 	 */
-	public function getIssuesCountForPath ($path)
+	public function getIssuesCountForFile ($filename)
 	{
 		// TODO
 

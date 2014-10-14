@@ -6,17 +6,20 @@ use edsonmedina\php_testability\ReportDataInterface;
 
 class HTMLReport implements ReportInterface
 {
+	private $baseDir   = '';
 	private $reportDir = '';
 	private $data;
 
-	public function __construct ($reportDir, ReportDataInterface $data)
+	/**
+	 * @param string              $baseDir   Where the code resides
+	 * @param string              $reportDir Where to generate the report 
+	 * @param ReportDataInterface $data      Report data
+	 */
+	public function __construct ($baseDir, $reportDir, ReportDataInterface $data)
 	{
-		if (!is_dir($reportDir)) {
-			mkdir ($reportDir);	
-		}
-
+		$this->baseDir   = $baseDir;
 		$this->reportDir = $reportDir;
-		$this->data = $data;
+		$this->data      = $data;
 	}
 
 	/**
@@ -24,54 +27,114 @@ class HTMLReport implements ReportInterface
 	 */
 	public function generate ()
 	{
-		$baseDir = $this->findBaseDirectory();
+		echo "\n\nGenerating report... ";
 
-		// TODO
-		// 
-		
+		if (!is_dir($this->reportDir)) {
+			mkdir ($this->reportDir);	
+		}
+
+		foreach ($this->data->getFileList() as $file) {
+			$this->generateFile ($file);
+		}
+
+		// $this->generateIndexFiles ();
+
+		// DEBUG
 		file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
 
-		// print_r ($data->dumpAllIssues());
-		
+		echo "OK.\n\n";
 	}
 
 	/**
-	 * Find highest common path for files
-	 * @return string
+	 * Generate file
+	 * @param string $filename
 	 */
-	public function findBaseDirectory ()
+	public function generateFile ($filename)
 	{
-		$list = $this->data->getFileList ();
-		
-		$baseDir = null;
+		// Load code and line numbers into array 
+		$content = file ($filename);
+		$code    = array ();
 
-		// FIXME for empty reports
-		$dirParts = explode (DIRECTORY_SEPARATOR, dirname($list[0]));
-
-		foreach ($list as $file)
+		for ($i = 1, $len = count ($content); $i <= $len; $i++) 
 		{
-			$matching = '';
-			$path = '';
+			@$code[$i]['line'] = $i;
+			@$code[$i]['code'] = $content[$i-1];
+		}
+		$content = null;
 
-			foreach ($dirParts as $dir)
+
+		// get issues per scope / line
+		$issues = $this->data->getIssuesForFile ($filename);
+
+		$scopes = array ();
+		
+		if (isset($issues['scoped'])) 
+		{
+			foreach ($issues['scoped'] as $scope => $report)
 			{
-				$path .= $dir . DIRECTORY_SEPARATOR; 
-				if (substr($file, 0, strlen($path)) === $path) {
-					$matching = $path;
-				}
-				else
-				{
-					break;
-				}
-			}
+				// count issues inside scope
+				$numIssues = 0;
+				foreach ($report as $type => $list) {
+					$numIssues += (count($list));
 
-			if (is_null($baseDir)) {
-				$baseDir = $path;	
-			} else {
-				$baseDir = (strlen($baseDir) > strlen($matching)) ? $matching : $baseDir;
+					// list issues per line
+					foreach ($list as $issue) 
+					{
+						list ($name, $lineNum) = $issue;
+						@$code[$lineNum]['issues'][] = array ('type' => $type, 'name' => $name);
+					}
+				}
+
+				$scopes[] = array (
+					'name'   => $scope, 
+					'issues' => $numIssues
+				);
 			}
 		}
+		$issues = null;
 
-		return $baseDir;
+		// render
+		$m = new \Mustache_Engine (array(
+			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
+		));
+
+		$relFilename = $this->convertPathToRelative ($filename);
+
+		$output = $m->render ('file', array (
+			'currentPath' => $relFilename,
+			'scopes'      => $scopes,
+			'lines'       => $code,
+			// 'untestable'  => $issues['global']
+		));
+
+		$this->saveFile ($relFilename.'.html', $output);
+	}
+
+	/**
+	 * Saves file to filesystem
+	 * @param string $filename RELATIVE filename
+	 * @param string $contents
+	 */
+	public function saveFile ($filename, $contents)
+	{
+		// make sure the directory exists
+		$dirname = $this->reportDir.'/'.dirname ($filename);
+
+		if ($dirname && !is_dir($dirname)) {
+			mkdir ($dirname, 0777, true);
+		}
+
+		// save
+		file_put_contents ($this->reportDir.'/'.$filename, $contents);
+	}
+
+	/**
+	 * Convert absolute path into relative
+	 * @param string $path
+	 * @return string $path
+	 */
+	public function convertPathToRelative ($path)
+	{
+		return substr ($path, strlen($this->baseDir)+1);
 	}
 }
