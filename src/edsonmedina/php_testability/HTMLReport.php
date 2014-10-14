@@ -60,7 +60,7 @@ class HTMLReport implements ReportInterface
 		for ($i = 1, $len = count ($content); $i <= $len; $i++) 
 		{
 			@$code[$i]['line'] = str_pad($i, 6, ' ', STR_PAD_LEFT).".";
-			@$code[$i]['code'] = $content[$i-1];
+			@$code[$i]['code'] = rtrim($content[$i-1]);
 		}
 		$content = null;
 
@@ -89,11 +89,31 @@ class HTMLReport implements ReportInterface
 				}
 
 				$scopes[] = array (
-					'name'   => $scope, 
+					'name'   => $scope . '()', 
 					'issues' => $numIssues
 				);
 			}
 		}
+
+		if (isset($issues['global'])) 
+		{
+			// add global issues
+			$count = 0;
+			foreach ($issues['global'] as $type => $list) 
+			{
+				foreach ($list as $lineNum => $unused) 
+				{
+						@$code[$lineNum]['issues'][] = array ('type' => $type);
+						$count++;
+				}
+			}
+
+			$scopes[] = array (
+				'name'   => '<global>',
+				'issues' => $count
+			);
+		}
+
 		$issues = null;
 
 		// render
@@ -137,7 +157,7 @@ class HTMLReport implements ReportInterface
     		{
     			$dirs[] = array (
     				'name'   => $filename,
-    				'issues' => 0//$this->data->getIssuesForDir ($pathname)
+    				'issues' => '??'//$this->data->getIssuesForDir ($pathname)
     			);
     		} 
     		elseif ($fileInfo->getExtension() == 'php')
