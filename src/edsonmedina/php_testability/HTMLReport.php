@@ -37,7 +37,9 @@ class HTMLReport implements ReportInterface
 			$this->generateFile ($file);
 		}
 
-		// $this->generateIndexFiles ();
+		foreach ($this->data->getDirList() as $path) {
+			$this->generateIndexFile ($path);
+		}
 
 		// DEBUG
 		file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
@@ -74,7 +76,8 @@ class HTMLReport implements ReportInterface
 			{
 				// count issues inside scope
 				$numIssues = 0;
-				foreach ($report as $type => $list) {
+				foreach ($report as $type => $list) 
+				{
 					$numIssues += (count($list));
 
 					// list issues per line
@@ -108,6 +111,56 @@ class HTMLReport implements ReportInterface
 		));
 
 		$this->saveFile ($relFilename.'.html', $output);
+	}
+
+	/**
+	 * Generate index file
+	 * @param string $path
+	 */
+	public function generateIndexFile ($path)
+	{
+		// list directory
+		$files = array ();
+		$dirs  = array ();
+		
+		foreach (new \DirectoryIterator($path) as $fileInfo) 
+		{
+    		if ($fileInfo->isDot()) {
+    			continue;
+    		} 
+    		
+    		$filename = $fileInfo->getFilename();
+
+    		if ($fileInfo->isDir()) 
+    		{
+    			$dirs[] = array (
+    				'name'   => $filename,
+    				'issues' => 0//$this->data->getIssuesForDir ($filename)
+    			);
+    		} 
+    		else 
+    		{
+    			$files[] = array (
+    				'file'   => $filename,
+    				'issues' => $this->data->getIssuesForFile ($filename)
+    			);
+    		}
+		}
+
+		// render
+		$m = new \Mustache_Engine (array(
+			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
+		));
+
+		$relPath = $this->convertPathToRelative ($path);
+
+		$output = $m->render ('dir', array (
+			'currentPath' => $relPath,
+			'files'       => $files,
+			'dirs'       => $dirs,
+		));
+
+		$this->saveFile ($relPath.'/index.html', $output);		
 	}
 
 	/**

@@ -9,33 +9,40 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span> <a href="#">../</a></td>
-			<td>...</td>
+			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="../index.html">../</a></td>
+			<td>&nbsp;</td>
 		</tr>
+		
+		{{#dirs}}
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span> <a href="#">client/</a></td>
-			<td><span class="badge">3452 Issues</span></td>
+			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="./{{name}}/index.html">{{name}}/</a></td>
+			<td>
+				{{#issues}}
+				<span class="badge">{{issues}} Issues</span>
+				{{/issues}}
+
+				{{^issues}}
+				<span class="label label-success">OK</span>
+				{{/issues}}
+			</td>
 		</tr>
+		{{/dirs}}
+
+		{{#files}}
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span> <a href="#">Source/</a></td>
-			<td><span class="label label-success">OK</span></td>
+			<td><a href="./{{file}}.html">{{file}}</a></td>
+			<td>
+				{{#issues}}
+				<span class="badge">{{issues}} Issues</span>
+				{{/issues}}
+
+				{{^issues}}
+				<span class="label label-success">OK</span>
+				{{/issues}}
+			</td>
 		</tr>
-		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span> <a href="#">src/</a></td>
-			<td>...</td>
-		</tr>
-		<tr>
-			<td><a href="#">file.php</a></td>
-			<td>...</td>
-		</tr>
-		<tr class="danger">
-			<td><a href="#">file2.php</a></td>
-			<td>...</td>
-		</tr>
-		<tr class="success">
-			<td><a href="#">file3.php</a></td>
-			<td>...</td>
-		</tr>
+		{{/files}}
+
 	</tbody>
 </table>
 

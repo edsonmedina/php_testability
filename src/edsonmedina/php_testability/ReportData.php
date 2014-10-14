@@ -61,9 +61,26 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForFile ($filename)
 	{
-		// TODO
+		$issues = $this->issues[$filename];
 
+		$count = 0;
 
+		// count scope issues
+		foreach ($issues['scoped'] as $scope => $report)
+		{
+			foreach ($report as $type => $list)
+			{
+				$count += count($list);	
+			}
+		}
+
+		// count global issues
+		foreach ($issues['global'] as $type => $list)
+		{
+			$count += count($list);	
+		}
+
+		return $count;
 	}
 
 	/**
@@ -82,6 +99,17 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesForFile ($filename)
 	{
-		return $this->issues[$filename];
+		return @$this->issues[$filename];
+	}
+
+	/**
+	 * Returns list of directories reported
+	 * @return array
+	 */
+	public function getDirList ()
+	{
+		// TODO also return directories with no issues
+		$dirnames = array_map ('dirname', array_keys ($this->issues));
+		return array_unique ($dirnames); 
 	}
 }
