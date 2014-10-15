@@ -42,7 +42,7 @@ class HTMLReport implements ReportInterface
 		}
 
 		// DEBUG
-		file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
+		file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
 
 		echo "OK.\n\n";
 	}
