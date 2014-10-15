@@ -36,6 +36,10 @@ class ReportData implements ReportDataInterface
 	public function setCurrentFilename ($filename)
 	{
 		$this->currentFilename = $filename;
+
+		if (!isset ($this->issues[$filename])) {
+			$this->issues[$filename] = array ();
+		}
 	}
 
 	/**
@@ -198,5 +202,20 @@ class ReportData implements ReportDataInterface
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Are there any files in directory?
+	 * @param string $dir
+	 * @return bool
+	 */
+	public function anyFilesInDirectory ($directory)
+	{
+		foreach (array_keys($this->issues) as $filename) {
+			if (substr($filename, 0, strlen($directory)) === $directory) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

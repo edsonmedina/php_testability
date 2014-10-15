@@ -107,4 +107,20 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals (0, $r->getGlobalIssuesCount ('invalid.php'));
 	}
+
+	public function testAnyFilesInsideDir ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('whatever.php');
+		$r->setCurrentFilename ('dir1/subdir1/file1.php');
+		$r->setCurrentFilename ('dir1/subdir1/file2.php');
+		$r->setCurrentFilename ('dir2/subdir2/file221.php');
+
+		$this->assertFalse ($r->anyFilesInDirectory('subdir1/'));
+		$this->assertFalse ($r->anyFilesInDirectory('dir2/subdir1/'));
+
+		$this->assertTrue ($r->anyFilesInDirectory('dir1/subdir1/'));
+		$this->assertTrue ($r->anyFilesInDirectory('dir2/subdir2/'));
+	}
 }
