@@ -121,8 +121,8 @@ class NodeWrapper
 		return ($this->node instanceof Expr\FuncCall);
 	}
 
-	public function hasNoChildren() {
-		return !($this->node->stmts);
+	public function hasChildren() {
+		return isset($this->node->stmts);
 	}
 
 	public function isUse() {
@@ -132,4 +132,13 @@ class NodeWrapper
 	public function isNamespace() {
 		return ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name);
 	}
+
+    /**
+     * Is node allowed on global space?
+     * @param NodeWrapper $node
+     * @param bool
+     */
+    public function isAllowedOnGlobalSpace () {
+        return ($this->isClass() || $this->isTrait() || $this->isFunction() || $this->isUse() || $this->isNamespace() || $this->isInterface());
+    }
 }

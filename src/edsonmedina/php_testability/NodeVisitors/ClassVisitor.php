@@ -30,33 +30,34 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     {
         $obj = new NodeWrapper ($node);
 
-        if ($this->muted) {
+        if ($this->muted) 
+        {
             return;
         }
-
-        if ($obj->isClass()) {
+        elseif ($obj->isClass()) 
+        {
             $this->currentClass = $obj->getName();
         }
-
-        if ($obj->isTrait()) {
+        elseif ($obj->isTrait()) 
+        {
             $this->currentTrait = $obj->getName();
         }
-
-        if ($obj->isMethod()) {
+        elseif ($obj->isMethod()) 
+        {
             $this->currentMethod = $obj->getName();
             $this->data->saveScopePosition ($this->getScope('start of method '.$this->currentMethod), $obj->line);
         }
-
-        if ($obj->isFunction()) {
+        elseif ($obj->isFunction()) 
+        {
             $this->currentFunction = $obj->getName();
             $this->data->saveScopePosition ($this->getScope('start of function '.$this->currentFunction), $obj->line);
         }
-
-        if ($obj->isReturn()) {
+        elseif ($obj->isReturn()) 
+        {
             $this->hasReturn = true;
         }
-
-        if ($obj->isInterface()) {
+        elseif ($obj->isInterface()) 
+        {
             $this->muted = true;
         }
     }
@@ -66,14 +67,14 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for code outside of classes/functions
-        if (!($obj->isClass() || $obj->isTrait() || $obj->isFunction() || $obj->isUse() || $obj->isNamespace() || $this->muted) && $this->inGlobalSpace())
+        if ($this->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
         {
                 $this->data->addIssue ($obj->line, 'code_on_global_space');
                 return;
         }
 
         // check for global variables
-        if ($obj->isGlobal()) 
+        elseif ($obj->isGlobal()) 
         {
             $scope = $this->getScope('global');
 
@@ -83,20 +84,20 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // end of class
-        if ($obj->isClass()) {
+        elseif ($obj->isClass()) {
             $this->currentClass = null;
         }
 
         // end of trait
-        if ($obj->isTrait()) {
+        elseif ($obj->isTrait()) {
             $this->currentTrait = null;
         }
 
         // end of method or global function
-        if ($obj->isMethod() || $obj->isFunction()) 
+        elseif ($obj->isMethod() || $obj->isFunction()) 
         {
             // check for a lacking return statement in the method/function
-            if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) 
+            if ($obj->hasChildren() && !$this->hasReturn && !$this->muted) 
             {
                 // TODO ignore constructor
                 $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
@@ -112,27 +113,27 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // end of interface
-        if ($obj->isInterface()) {
+        elseif ($obj->isInterface()) {
             $this->muted = false;
         }
 
         // check for "new" statement (ie: $x = new Thing())
-        if ($obj->isNew()) {
+        elseif ($obj->isNew()) {
             $this->data->addIssue ($obj->line, 'new', $this->getScope('new'), $obj->getName());
         }
 
         // check for exit/die statements
-        if ($obj->isExit()) {
+        elseif ($obj->isExit()) {
             $this->data->addIssue ($obj->line, 'exit', $this->getScope('exit'), '');
         }
 
         // check for static method calls (ie: Things::doStuff())
-        if ($obj->isStaticCall()) {
+        elseif ($obj->isStaticCall()) {
             $this->data->addIssue ($obj->line, 'static_call', $this->getScope('static call'), $obj->getName());
         }
 
         // check for class constant fetch from different class ($x = OtherClass::thing)
-        if ($obj->isClassConstantFetch())
+        elseif ($obj->isClassConstantFetch())
         {
             if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
                 $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->getScope('external class constant'), $obj->getName());
@@ -140,7 +141,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
-        if ($obj->isStaticPropertyFetch()) 
+        elseif ($obj->isStaticPropertyFetch()) 
         {
             if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
                 $this->data->addIssue ($obj->line, 'static_property_fetch', $this->getScope('static property'), $obj->getName());
@@ -148,7 +149,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // check for global function calls
-        if ($obj->isFunctionCall()) 
+        elseif ($obj->isFunctionCall()) 
         {
             $functionName = $obj->getName();
 
