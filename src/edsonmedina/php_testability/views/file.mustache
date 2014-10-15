@@ -35,7 +35,7 @@
 {{#issues}}
 	<span class="label label-danger">{{type}} {{#name}}({{.}}){{/name}}</span>
 {{/issues}}
-<div class="codeline{{#issues}} bg-danger{{/issues}}">{{line}}	{{code}}</div>
+<div class="codeline{{#issues}} bg-danger{{/issues}}"><a name="{{line}}" href="#{{line}}">{{line}}.</a>	{{code}}</div>
 {{/lines}}
 
 {{> partials/footer }}
