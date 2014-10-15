@@ -99,8 +99,9 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             // check for a lacking return statement in the method/function
             if ($obj->hasChildren() && !$this->hasReturn && !$this->muted) 
             {
-                // TODO ignore constructor
-                $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
+                if ($obj->getName() !== '__construct') {
+                    $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
+                }
             }
             
             if ($obj->isFunction()) {
