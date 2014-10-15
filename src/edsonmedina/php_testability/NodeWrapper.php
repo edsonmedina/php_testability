@@ -67,6 +67,10 @@ class NodeWrapper
 		return ($this->node instanceof Stmt\Class_);
 	}
 
+	public function isTrait() {
+		return ($this->node instanceof Stmt\Trait_);
+	}
+
 	public function isFunction() {
 		return ($this->node instanceof Stmt\Function_);
 	}

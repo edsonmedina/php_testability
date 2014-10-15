@@ -12,6 +12,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $currentClass    = null;
+    private $currentTrait    = null;
     private $currentMethod   = null;
     private $currentFunction = null;
     private $hasReturn = false;
@@ -37,12 +38,18 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             $this->currentClass = $obj->getName();
         }
 
+        if ($obj->isTrait()) {
+            $this->currentTrait = $obj->getName();
+        }
+
         if ($obj->isMethod()) {
             $this->currentMethod = $obj->getName();
+            $this->data->saveScopePosition ($this->getScope('start of method '.$this->currentMethod), $obj->line);
         }
 
         if ($obj->isFunction()) {
             $this->currentFunction = $obj->getName();
+            $this->data->saveScopePosition ($this->getScope('start of function '.$this->currentFunction), $obj->line);
         }
 
         if ($obj->isReturn()) {
@@ -59,7 +66,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for code outside of classes/functions
-        if (!($obj->isClass() || $obj->isFunction() || $obj->isUse() || $obj->isNamespace() || $this->muted) && $this->inGlobalSpace())
+        if (!($obj->isClass() || $obj->isTrait() || $obj->isFunction() || $obj->isUse() || $obj->isNamespace() || $this->muted) && $this->inGlobalSpace())
         {
                 $this->data->addIssue ($obj->line, 'code_on_global_space');
                 return;
@@ -80,6 +87,11 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             $this->currentClass = null;
         }
 
+        // end of trait
+        if ($obj->isTrait()) {
+            $this->currentTrait = null;
+        }
+
         // end of method or global function
         if ($obj->isMethod() || $obj->isFunction()) 
         {
@@ -90,8 +102,12 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
                 $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
             }
             
-            $this->currentMethod = null;
-            $this->currentFunction = null;
+            if ($obj->isFunction()) {
+                $this->currentFunction = null;
+            } else {
+                $this->currentMethod = null;
+            }
+            
             $this->hasReturn = false;
         }
 
@@ -156,13 +172,15 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         {
             return $this->currentFunction;
         }
-        elseif (!is_null($this->currentClass))
+        elseif (!is_null($this->currentClass) || !is_null($this->currentTrait))
         {
+            $scope = is_null($this->currentClass) ? $this->currentTrait : $this->currentClass;
+
             if (!is_null($this->currentMethod)) {
-                return $this->currentClass."::".$this->currentMethod;
+                return $scope."::".$this->currentMethod;
             }
 
-            return $this->currentClass;
+            return $scope;
         }
         else 
         {
@@ -174,9 +192,13 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
     }
 
+    /**
+     * Are we outside of any class / global method
+     * @return bool
+     */
     private function inGlobalSpace()
     {
-        return (is_null($this->currentClass) && is_null($this->currentFunction));
+        return (is_null($this->currentClass) && is_null($this->currentTrait) && is_null($this->currentFunction));
     }
 }
 
@@ -185,21 +207,4 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 // Expr\Closure
 // Expr\Eval_
 // Expr\ErrorSuppress  (@)
-// Expr\StaticPropertyFetch
 // Stmt\InlineHTML
-// 
-// conditions:
-// Stmt\If_   
-// Stmt\Else_
-// Stmt\Case
-// Stmt\ElseIf_
-// (also test for OR and ||)
-
-// number of conditions (case, if, elseif, else, ?:, )
-// 
-// require/include/require_once/include_once, 
-// mail, file_get_contents, file_put_contents, fopen, fgets, sockets 
-// soap, 
-//   
-// these can only happen in a method with no user-code dependencies
-

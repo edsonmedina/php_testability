@@ -5,9 +5,10 @@ use edsonmedina\php_testability\ReportDataInterface;
 
 class ReportData implements ReportDataInterface
 {
-	private $currentFilename;
+	private $currentFilename = null;
 	private $issues     = array ();
 	private $fileIssues = array ();
+	private $info       = array ();
 
 	/**
 	 * Add a new issue. Requires using setCurrentFilename first.
@@ -35,7 +36,6 @@ class ReportData implements ReportDataInterface
 	public function setCurrentFilename ($filename)
 	{
 		$this->currentFilename = $filename;
-		$this->issues[$filename] = array();
 	}
 
 	/**
@@ -108,7 +108,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesForFile ($filename)
 	{
-		return @$this->issues[$filename];
+		// TODO split this into specific methods (to avoid coupling)
+		return isset($this->issues[$filename]) ? $this->issues[$filename] : array ();
 	}
 
 	/**
@@ -120,5 +121,82 @@ class ReportData implements ReportDataInterface
 		// TODO also return directories with no issues
 		$dirnames = array_map ('dirname', array_keys ($this->issues));
 		return array_unique ($dirnames); 
+	}
+
+	/**
+	 * Save scope start line
+	 * @param string $scope name
+	 * @param int $lineNum line number
+	 */
+	public function saveScopePosition ($scope, $lineNum)
+	{
+		if (!isset($this->info[$this->currentFilename])) {
+			$this->info[$this->currentFilename] = array ();
+		}
+
+		$this->info[$this->currentFilename][$scope] = $lineNum;
+	}
+
+	/**
+	 * Get scope start line
+	 * @param string $filename
+	 * @param string $scope
+	 */
+	public function getScopePosition ($filename, $scope)
+	{
+		if (isset($this->info[$filename][$scope])) {
+			return $this->info[$filename][$scope];
+		}
+
+		throw new \Exception ('Unknown scope '.$scope.' in '.$filename);
+	}
+
+	/**
+	 * Return list of scopes in file
+	 * @param  string $filename 
+	 * @return array
+	 */
+	public function getScopesForFile ($filename)
+	{
+		return isset($this->info[$filename]) ? array_keys($this->info[$filename]) : array ();
+	}
+
+	/**
+	 * Get issue count for scope
+	 * @param string $filename
+	 * @param string $scope
+	 */
+	public function getIssuesCountForScope ($filename, $scope)
+	{
+		if (!isset($this->issues[$filename]['scoped'][$scope])) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ($this->issues[$filename]['scoped'][$scope] as $type => $list)
+		{
+			$count += count($list);
+		}
+
+		return $count;
+	}
+
+	/**
+	 * Get issue count for global space
+	 * @param string $filename
+	 */
+	public function getGlobalIssuesCount ($filename)
+	{
+		if (!isset($this->issues[$filename]['global'])) {
+			return 0;
+		}
+
+		$count = 0;
+		foreach ($this->issues[$filename]['global'] as $type => $list) 
+		{
+			$count += count($list);
+		}
+
+		return $count;
 	}
 }

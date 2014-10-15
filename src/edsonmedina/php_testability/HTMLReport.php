@@ -59,27 +59,36 @@ class HTMLReport implements ReportInterface
 
 		for ($i = 1, $len = count ($content); $i <= $len; $i++) 
 		{
-			@$code[$i]['line'] = str_pad($i, 6, ' ', STR_PAD_LEFT).".";
+			@$code[$i]['line'] = $i;
 			@$code[$i]['code'] = rtrim($content[$i-1]);
 		}
 		$content = null;
 
 
+		// get scopes
+		$fileScopes = $this->data->getScopesForFile ($filename);
+		$scopes     = array ();
+
+		foreach ($fileScopes as $scope) 
+		{
+			$scopes[] = array (
+				'name'     => $scope . '()',
+				'position' => $this->data->getScopePosition ($filename, $scope),
+				'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
+			);
+		}
+
+
 		// get issues per scope / line
 		$issues = $this->data->getIssuesForFile ($filename);
-
-		$scopes = array ();
 		
 		if (isset($issues['scoped'])) 
 		{
+			// TODO move $issues[scoped] into a getter method
 			foreach ($issues['scoped'] as $scope => $report)
 			{
-				// count issues inside scope
-				$numIssues = 0;
 				foreach ($report as $type => $list) 
 				{
-					$numIssues += (count($list));
-
 					// list issues per line
 					foreach ($list as $issue) 
 					{
@@ -87,30 +96,24 @@ class HTMLReport implements ReportInterface
 						@$code[$lineNum]['issues'][] = array ('type' => $type, 'name' => $name);
 					}
 				}
-
-				$scopes[] = array (
-					'name'   => $scope . '()', 
-					'issues' => $numIssues
-				);
 			}
 		}
 
 		if (isset($issues['global'])) 
 		{
 			// add global issues
-			$count = 0;
 			foreach ($issues['global'] as $type => $list) 
 			{
-				foreach ($list as $lineNum => $unused) 
+				foreach (array_keys($list) as $lineNum) 
 				{
-						@$code[$lineNum]['issues'][] = array ('type' => $type);
-						$count++;
+					@$code[$lineNum]['issues'][] = array ('type' => $type);
 				}
 			}
 
 			$scopes[] = array (
-				'name'   => '<global>',
-				'issues' => $count
+				'name'     => '<global>',
+				'position' => '',
+				'issues'   => $this->data->getGlobalIssuesCount ($filename)
 			);
 		}
 
@@ -127,7 +130,7 @@ class HTMLReport implements ReportInterface
 			'currentPath' => $relFilename,
 			'scopes'      => $scopes,
 			'lines'       => $code,
-			'date'        => date('r')
+			'date'        => date('r'),
 			// 'untestable'  => $issues['global']
 		));
 
