@@ -28,12 +28,17 @@ use Commando\Command;
 $cmd = new Command();
 $cmd->setHelp ('php_testability by Edson Medina');
 // TODO check if file exists
-$cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->file()->default(__DIR__); 
+$cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(__DIR__); 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report')->default(__DIR__.'/report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude directories');
 
 // run
 define ('PATH', $cmd[0]);
+
+if (!file_exists(PATH)) {
+	die ("\nInvalid path:\n".PATH."\n\n");
+}
+
 define ('EXCLUDE_DIRS', preg_replace('/\s*,\s*/',',',$cmd['exclude'])); // trim values
 define ('REPORT_DIR', $cmd['output']);
 
