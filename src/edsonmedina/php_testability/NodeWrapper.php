@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability;
 
 use PhpParser;
+use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
@@ -118,5 +119,13 @@ class NodeWrapper
 
 	public function hasNoChildren() {
 		return !($this->node->stmts);
+	}
+
+	public function isUse() {
+		return ($this->node instanceof Stmt\UseUse || $this->node instanceof Stmt\Use_);
+	}
+
+	public function isNamespace() {
+		return ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name);
 	}
 }

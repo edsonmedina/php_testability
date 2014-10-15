@@ -59,7 +59,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for code outside of classes/functions
-        if (!($obj->isClass() || $obj->isFunction()) && $this->inGlobalSpace())
+        if (!($obj->isClass() || $obj->isFunction() || $obj->isUse() || $obj->isNamespace() || $this->muted) && $this->inGlobalSpace())
         {
                 $this->data->addIssue ($obj->line, 'code_on_global_space');
                 return;
@@ -84,7 +84,9 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         if ($obj->isMethod() || $obj->isFunction()) 
         {
             // check for a lacking return statement in the method/function
-            if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) {
+            if (!$this->hasReturn && !$this->muted && $obj->hasNoChildren()) 
+            {
+                // TODO ignore constructor
                 $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
             }
             
