@@ -155,4 +155,18 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (8,  $r->getIssuesCountForDirectory('dir/subdir/'));
 		$this->assertEquals (10, $r->getIssuesCountForDirectory('dir/'));
 	}
+
+	public function testGetDirList ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('/whatever.php');
+		$r->setCurrentFilename ('/dir/subdir/file1.php');
+		$r->setCurrentFilename ('/dir/subdir/file2.php');
+		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir3/file.php');
+
+		$expected = array ('/', '/dir', '/dir/subdir', '/dir/subdir/subdir2', '/dir/subdir/subdir2/subdir3');
+
+		$this->assertEquals ($expected, $r->getDirList());
+	}
 }

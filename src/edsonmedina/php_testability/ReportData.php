@@ -104,7 +104,7 @@ class ReportData implements ReportDataInterface
 	{
 		$count = 0;
 		foreach (array_keys($this->issues) as $filename) {
-			if (strpos($filename, $path) === 0) {
+			if ($path == '' || strpos($filename, $path) === 0) {
 				$count += $this->getIssuesCountForFile ($filename);
 			}
 		}
@@ -137,9 +137,28 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getDirList ()
 	{
-		// TODO also return directories with no issues
+		// get dir names from reported files
 		$dirnames = array_map ('dirname', array_keys ($this->issues));
-		return array_unique ($dirnames); 
+		$dirnames = array_fill_keys ($dirnames, true);
+
+		// fill gaps
+		foreach (array_keys($dirnames) as $dir) 
+		{
+			$parts = explode (DIRECTORY_SEPARATOR, $dir);
+			
+			for ($n = 2, $len = count($parts); $n <= $len; $n++)
+			{
+				$path = join (DIRECTORY_SEPARATOR, array_slice($parts, 0, $n));
+
+				if (!isset($dirnames[$path])) {
+					$dirnames[$path] = true;
+				}
+			}
+		}
+
+		ksort ($dirnames);
+
+		return array_keys ($dirnames);
 	}
 
 	/**
