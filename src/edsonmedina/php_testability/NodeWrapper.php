@@ -133,6 +133,10 @@ class NodeWrapper
 		return ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name);
 	}
 
+	public function isThrow() {
+		return ($this->node instanceof Stmt\Throw_);
+	}
+
     /**
      * Is node allowed on global space?
      * @param NodeWrapper $node

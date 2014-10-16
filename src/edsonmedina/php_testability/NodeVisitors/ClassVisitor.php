@@ -15,8 +15,9 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     private $currentTrait    = null;
     private $currentMethod   = null;
     private $currentFunction = null;
-    private $hasReturn = false;
-    private $muted = false;
+    private $insideThrow = false;
+    private $hasReturn   = false;
+    private $muted       = false;
     private $phpInternalFunctions = array ();
     private $dictionary;
 
@@ -59,6 +60,10 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         elseif ($obj->isInterface()) 
         {
             $this->muted = true;
+        }
+        elseif ($obj->isThrow()) 
+        {
+            $this->insideThrow = true;
         }
     }
 
@@ -123,7 +128,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // check for "new" statement (ie: $x = new Thing())
-        elseif ($obj->isNew()) {
+        elseif ($obj->isNew() && !$this->insideThrow) {
             $this->data->addIssue ($obj->line, 'new', $this->getScope('new'), $obj->getName());
         }
 
@@ -164,6 +169,11 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             }
 
             $this->data->addIssue ($obj->line, 'global_function_call', $this->getScope('global function call'), $functionName);
+        }
+
+        elseif ($obj->isThrow()) 
+        {
+            $this->insideThrow = false;
         }
     }
 
