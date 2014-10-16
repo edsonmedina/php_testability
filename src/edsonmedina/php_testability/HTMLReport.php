@@ -167,7 +167,8 @@ class HTMLReport implements ReportInterface
     		{
     			$files[] = array (
     				'file'   => $filename,
-    				'issues' => $this->data->getIssuesCountForFile ($pathname)
+    				'issues' => $this->data->getIssuesCountForFile ($pathname),
+    				'untestable' => $this->data->isFileUntestable ($pathname) 
     			);
     		}
 		}

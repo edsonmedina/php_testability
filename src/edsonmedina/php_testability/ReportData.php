@@ -75,7 +75,7 @@ class ReportData implements ReportDataInterface
 		// count scope issues
 		if (isset($issues['scoped'])) 
 		{
-			foreach (@$issues['scoped'] as $scope => $report)
+			foreach ($issues['scoped'] as $scope => $report)
 			{
 				foreach ($report as $type => $list)
 				{
@@ -85,13 +85,7 @@ class ReportData implements ReportDataInterface
 		}
 
 		// count global issues
-		if (isset($issues['global'])) 
-		{
-			foreach (@$issues['global'] as $type => $list)
-			{
-				$count += count($list);	
-			}
-		}
+		$count += $this->getGlobalIssuesCount ($filename);
 
 		return $count;
 	}
@@ -190,7 +184,7 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Return list of scopes in file
+	 * Return list of scopes in file. Needs prior saveScopePosition() usage.
 	 * @param  string $filename 
 	 * @return array
 	 */
@@ -206,12 +200,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForScope ($filename, $scope)
 	{
-		if (!isset($this->issues[$filename]['scoped'][$scope])) {
-			return 0;
-		}
-
 		$count = 0;
-		foreach ($this->issues[$filename]['scoped'][$scope] as $type => $list)
+		foreach ($this->getIssuesForScope ($filename, $scope) as $type => $list)
 		{
 			$count += count($list);
 		}
@@ -222,17 +212,21 @@ class ReportData implements ReportDataInterface
 	/**
 	 * Get issue count for global space
 	 * @param string $filename
+	 * @return int
 	 */
 	public function getGlobalIssuesCount ($filename)
 	{
-		if (!isset($this->issues[$filename]['global'])) {
-			return 0;
-		}
+		$noScopes = empty($this->issues[$filename]['scoped']);
 
 		$count = 0;
-		foreach ($this->issues[$filename]['global'] as $type => $list) 
+		foreach ($this->getGlobalIssuesForFile ($filename) as $type => $list) 
 		{
-			$count += count($list);
+			// If code_on_global_space on a file without scopes, don't count
+			// (all the file will have the same issue)
+			if (!($noScopes && $type == 'code_on_global_space'))
+			{
+				$count += count($list);
+			}
 		}
 
 		return $count;
@@ -251,5 +245,43 @@ class ReportData implements ReportDataInterface
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get global isses for file
+	 * @param string $filename
+	 * @return array
+	 */
+	public function getGlobalIssuesForFile ($filename)
+	{
+		if (!isset($this->issues[$filename]['global'])) {
+			return array ();
+		}
+
+		return $this->issues[$filename]['global'];
+	}
+
+	/**
+	 * Get scoped isses for file
+	 * @param string $filename
+	 * @return array
+	 */
+	public function getIssuesForScope ($filename, $scope)
+	{
+		if (!isset($this->issues[$filename]['scoped'][$scope])) {
+			return array ();
+		}
+
+		return $this->issues[$filename]['scoped'][$scope];
+	}
+
+	/**
+	 * Is file unstestable (no testable scopes)? Needs prior saveScopePosition() usage.
+	 * @param string $filename
+	 * @return bool
+	 */
+	public function isFileUntestable ($filename)
+	{
+		return (count($this->getScopesForFile($filename)) === 0);
 	}
 }

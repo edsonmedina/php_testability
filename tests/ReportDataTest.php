@@ -156,6 +156,33 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (10, $r->getIssuesCountForDirectory('dir/'));
 	}
 
+	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndNoScope ()
+	{
+		$r = new ReportData;
+
+		// file with no scopes, so code_on_global_space are
+		// irrelevant, file is untestable anyway
+		$r->setCurrentFilename ('whatever.php');
+		$r->addIssue (8,  'code_on_global_space');
+		$r->addIssue (16, 'code_on_global_space');
+		$r->addIssue (65, 'other');
+
+		$this->assertEquals (1, $r->getGlobalIssuesCount ('whatever.php'));
+	}
+
+	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndScopes ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('whatever.php');
+		$r->addIssue (8,  'code_on_global_space');
+		$r->addIssue (16, 'code_on_global_space');
+		$r->addIssue (65, 'other');
+		$r->addIssue (30, 'some issue', 'Whatever::doThings', '$var');
+
+		$this->assertEquals (3, $r->getGlobalIssuesCount ('whatever.php'));
+	}
+
 	public function testGetDirList ()
 	{
 		$r = new ReportData;
@@ -168,5 +195,22 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$expected = array ('/', '/dir', '/dir/subdir', '/dir/subdir/subdir2', '/dir/subdir/subdir2/subdir3');
 
 		$this->assertEquals ($expected, $r->getDirList());
+	}
+
+	public function testIsFileUntestable ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('/whatever.php');
+
+		$r->addIssue (8,  'code_on_global_space');
+		$r->addIssue (16, 'code_on_global_space');
+		$r->addIssue (65, 'other');
+
+		$this->assertTrue ($r->isFileUntestable ('/whatever.php'));
+
+		$r->saveScopePosition ('Whatever::doThings', 150);
+
+		$this->assertFalse ($r->isFileUntestable ('/whatever.php'));
 	}
 }

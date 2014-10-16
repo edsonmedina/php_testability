@@ -46,12 +46,12 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         elseif ($obj->isMethod()) 
         {
             $this->currentMethod = $obj->getName();
-            $this->data->saveScopePosition ($this->getScope('start of method '.$this->currentMethod), $obj->line);
+            $this->data->saveScopePosition ($this->getScope($this->currentMethod), $obj->line);
         }
         elseif ($obj->isFunction()) 
         {
             $this->currentFunction = $obj->getName();
-            $this->data->saveScopePosition ($this->getScope('start of function '.$this->currentFunction), $obj->line);
+            $this->data->saveScopePosition ($this->getScope($this->currentFunction), $obj->line);
         }
         elseif ($obj->isReturn()) 
         {

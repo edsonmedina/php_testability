@@ -18,7 +18,7 @@
 			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="./{{name}}/index.html">{{name}}/</a></td>
 			<td>
 				{{#issues}}
-				<span class="badge">{{issues}} Issues</span>
+				<span class="label label-danger">{{issues}} Issues</span>
 				{{/issues}}
 
 				{{^issues}}
@@ -32,13 +32,18 @@
 		<tr>
 			<td><a href="./{{file}}.html">{{file}}</a></td>
 			<td>
-				{{#issues}}
-				<span class="badge">{{issues}} Issues</span>
-				{{/issues}}
+				{{#untestable}}
+				<span class="badge">Untestable</span>
+				{{/untestable}}
+				{{^untestable}}
+					{{#issues}}
+				<span class="label label-danger">{{issues}} Issues</span>
+					{{/issues}}
 
-				{{^issues}}
+					{{^issues}}
 				<span class="label label-success">OK</span>
-				{{/issues}}
+					{{/issues}}
+				{{/untestable}}
 			</td>
 		</tr>
 		{{/files}}
