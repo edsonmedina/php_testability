@@ -11,9 +11,9 @@ class HTMLReport implements ReportInterface
 	private $data;
 
 	/**
-	 * @param string              $baseDir   Where the code resides
-	 * @param string              $reportDir Where to generate the report 
-	 * @param ReportDataInterface $data      Report data
+	 * @param string $baseDir   Where the code resides
+	 * @param string $reportDir Where to generate the report 
+	 * @param ReportDataInterface $data  Report data
 	 */
 	public function __construct ($baseDir, $reportDir, ReportDataInterface $data)
 	{
@@ -160,7 +160,7 @@ class HTMLReport implements ReportInterface
     		{
     			$dirs[] = array (
     				'name'   => $filename,
-    				'issues' => '??'//$this->data->getIssuesForDir ($pathname)
+    				'issues' => $this->data->getIssuesCountForDirectory ($pathname)
     			);
     		} 
     		elseif ($fileInfo->getExtension() == 'php')

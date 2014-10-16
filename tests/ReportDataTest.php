@@ -123,4 +123,36 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue ($r->anyFilesInDirectory('dir1/subdir1/'));
 		$this->assertTrue ($r->anyFilesInDirectory('dir2/subdir2/'));
 	}
+
+	public function testGetIssuesCountForDirectory ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('whatever.php');
+		$r->addIssue (8, 'some issue');
+
+		$r->setCurrentFilename ('dir/file1.php');
+		$r->addIssue (66, 'some issue');
+		$r->addIssue (93, 'some issue');
+
+		$r->setCurrentFilename ('dir/subdir/file1.php');
+		$r->addIssue (40, 'some issue');
+
+		$r->setCurrentFilename ('dir/subdir/file2.php');
+		$r->addIssue (13, 'some issue');
+		$r->addIssue (54, 'some issue');
+		$r->addIssue (78, 'some issue');
+
+		$r->setCurrentFilename ('dir/subdir/file3.php');
+		$r->addIssue (8, 'some issue');
+		$r->addIssue (9, 'some issue');
+
+		$r->setCurrentFilename ('dir/subdir/subsubdir/file1.php');
+		$r->addIssue (48, 'some issue');
+		$r->addIssue (97, 'some issue');
+
+		$this->assertEquals (2,  $r->getIssuesCountForDirectory('dir/subdir/subsubdir/'));
+		$this->assertEquals (8,  $r->getIssuesCountForDirectory('dir/subdir/'));
+		$this->assertEquals (10, $r->getIssuesCountForDirectory('dir/'));
+	}
 }

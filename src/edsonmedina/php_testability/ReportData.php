@@ -97,6 +97,21 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
+	 * get number of issues for directory (recursive)
+	 * @param string $path
+	 */
+	public function getIssuesCountForDirectory ($path)
+	{
+		$count = 0;
+		foreach (array_keys($this->issues) as $filename) {
+			if (strpos($filename, $path) === 0) {
+				$count += $this->getIssuesCountForFile ($filename);
+			}
+		}
+		return $count;
+	}
+
+	/**
 	 * Returns list of files reported
 	 * @return array
 	 */
@@ -212,7 +227,7 @@ class ReportData implements ReportDataInterface
 	public function anyFilesInDirectory ($directory)
 	{
 		foreach (array_keys($this->issues) as $filename) {
-			if (substr($filename, 0, strlen($directory)) === $directory) {
+			if (strpos($filename, $directory) === 0) {
 				return true;
 			}
 		}
