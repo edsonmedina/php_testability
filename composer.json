@@ -25,7 +25,7 @@
 	    "phpunit/phpunit": "4.3.*"
     },
     "bin": [
-        "testability"
+        "src/testability"
     ],
     "config": {
         "bin-dir": "bin"
