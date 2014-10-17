@@ -18,6 +18,5 @@ interface ReportDataInterface
 	public function getIssuesCountForFile ($filename);
 	public function getIssuesCountForScope ($filename, $scope);
 	public function getGlobalIssuesCount ($filename);
-	public function anyFilesInDirectory ($directory);
 	public function isFileUntestable ($filename);
 }

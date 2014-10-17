@@ -233,21 +233,6 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Are there any files in directory?
-	 * @param string $dir
-	 * @return bool
-	 */
-	public function anyFilesInDirectory ($directory)
-	{
-		foreach (array_keys($this->issues) as $filename) {
-			if (strpos($filename, $directory) === 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Get global isses for file
 	 * @param string $filename
 	 * @return array
