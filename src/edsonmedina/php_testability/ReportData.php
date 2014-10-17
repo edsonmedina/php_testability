@@ -301,7 +301,7 @@ class ReportData implements ReportDataInterface
 
 		foreach ($this->getFileList() as $file)
 		{
-			if (strpos($file, $path) === 0) 
+			if (strpos($file, $path . DIRECTORY_SEPARATOR) === 0) 
 			{
 				// "normal" children
 				if (dirname($file) === $path) {
