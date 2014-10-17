@@ -7,7 +7,7 @@
 
 // turn off html errors
 ini_set('html_errors', 'off');
-ini_set('memory_limit', '1G');
+// ini_set('memory_limit', '1G');
 error_reporting (E_ALL); // that's how we roll
 
 // load autoloader
