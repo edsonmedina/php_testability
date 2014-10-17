@@ -106,7 +106,7 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Returns list of files reported
+	 * Returns list of all reported files
 	 * @return array
 	 */
 	public function getFileList ()
@@ -126,7 +126,7 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Returns list of all directories reported
+	 * Returns list of all directories reported (with gap dirs filled)
 	 * @return array
 	 */
 	public function getFullDirList ()
@@ -268,5 +268,38 @@ class ReportData implements ReportDataInterface
 	public function isFileUntestable ($filename)
 	{
 		return (count($this->getScopesForFile($filename)) === 0);
+	}
+
+	/**
+	 * Returns a list of files and directories for path (direct children only, gaps filled)
+	 * @param string $path
+	 * @return array
+	 */
+	public function listDirectory ($path)
+	{
+		$path = rtrim ($path, DIRECTORY_SEPARATOR);
+		$list = array ();
+
+		foreach ($this->getFileList() as $file)
+		{
+			if (strpos($file, $path) === 0) 
+			{
+				// "normal" children
+				if (dirname($file) === $path) {
+					$list[] = $file;
+					continue;
+				}
+
+				// gaps
+				else {
+					while (dirname($file) !== $path) {
+						$file = dirname ($file);
+					}
+					$list[] = $file;
+				}
+			}
+		}
+
+		return array_unique($list);
 	}
 }

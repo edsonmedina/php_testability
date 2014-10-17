@@ -8,14 +8,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		{{^isBaseDir}}
 		<tr>
 			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="../index.html">../</a></td>
 			<td>&nbsp;</td>
 		</tr>
+		{{/isBaseDir}}
 		
 		{{#dirs}}
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="./{{name}}/index.html">{{name}}/</a></td>
+			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="{{name}}/index.html">{{name}}/</a></td>
 			<td>
 				{{#issues}}
 				<span class="label label-danger">{{issues}} Issues</span>
@@ -30,7 +32,7 @@
 
 		{{#files}}
 		<tr>
-			<td><a href="./{{file}}.html">{{file}}</a></td>
+			<td><a href="{{file}}.html">{{file}}</a></td>
 			<td>
 				{{#untestable}}
 				<span class="badge">Untestable</span>

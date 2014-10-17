@@ -17,7 +17,7 @@ class HTMLReport implements ReportInterface
 	 */
 	public function __construct ($baseDir, $reportDir, ReportDataInterface $data)
 	{
-		$this->baseDir   = $baseDir;
+		$this->baseDir   = rtrim($baseDir, DIRECTORY_SEPARATOR);
 		$this->reportDir = $reportDir;
 		$this->data      = $data;
 	}
@@ -37,7 +37,7 @@ class HTMLReport implements ReportInterface
 			$this->generateFile ($file);
 		}
 
-		foreach ($this->data->getDirList() as $path) {
+		foreach ($this->data->getFullDirList() as $path) {
 			$this->generateIndexFile ($path);
 		}
 
@@ -147,28 +147,23 @@ class HTMLReport implements ReportInterface
 		$files = array ();
 		$dirs  = array ();
 		
-		foreach (new \DirectoryIterator($path) as $fileInfo) 
+		foreach ($this->data->listDirectory($path) as $filename) 
 		{
-    		if ($fileInfo->isDot()) {
-    			continue;
-    		} 
-    		
-    		$pathname = $fileInfo->getPathname();
-			$filename = $fileInfo->getFilename();
-
-    		if ($fileInfo->isDir()) 
+			// directory
+    		if (is_dir($filename)) 
     		{
     			$dirs[] = array (
-    				'name'   => $filename,
-    				'issues' => $this->data->getIssuesCountForDirectory ($pathname)
+    				'name'   => basename($filename),
+    				'issues' => $this->data->getIssuesCountForDirectory ($filename),
     			);
     		} 
-    		elseif ($fileInfo->getExtension() == 'php')
+    		// file
+    		elseif (substr ($filename, -4, 4) == '.php')
     		{
     			$files[] = array (
-    				'file'   => $filename,
-    				'issues' => $this->data->getIssuesCountForFile ($pathname),
-    				'untestable' => $this->data->isFileUntestable ($pathname) 
+    				'file'   => basename($filename),
+    				'issues' => $this->data->getIssuesCountForFile ($filename),
+    				'untestable' => $this->data->isFileUntestable ($filename) 
     			);
     		}
 		}
@@ -184,7 +179,8 @@ class HTMLReport implements ReportInterface
 			'currentPath' => $relPath,
 			'files'       => $files,
 			'dirs'        => $dirs,
-			'date'        => date('r')
+			'date'        => date('r'),
+			'isBaseDir' => ($this->baseDir === $path)
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		

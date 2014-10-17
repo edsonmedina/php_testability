@@ -197,4 +197,19 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$this->assertFalse ($r->isFileUntestable ('/whatever.php'));
 	}
+
+	public function testListDirectory ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('/whatever.php');
+		$r->setCurrentFilename ('/dir/subdir/file1.php');
+		$r->setCurrentFilename ('/dir/subdir/file2.php');
+		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir2/file.php');
+		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir3/file3.php');
+
+		$expected = array ('/dir/subdir/file1.php', '/dir/subdir/file2.php', '/dir/subdir/subdir2');
+
+		$this->assertEquals ($expected, $r->listDirectory('/dir/subdir/'));
+	}
 }
