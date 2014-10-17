@@ -31,11 +31,11 @@ if (!$loaded) {
 
 // parse CLI arguments
 $cmd = new Commando\Command();
-$cmd->setHelp ('php_testability by Edson Medina');
+$cmd->setHelp ("PHP_Testability by Edson Medina.\n\nUsage: testability [options] [path]");
 // TODO check if file exists
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(__DIR__); 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report')->default('./report');
-$cmd->option('exclude')->alias('x')->describeAs('Exclude directories');
+$cmd->option('exclude')->alias('x')->describeAs('Exclude (comma-separated) directories');
 $cmd->option('debug')->alias('g')->describeAs('Output debugging information (and debug.log)')->boolean();
 
 // run
