@@ -53,6 +53,10 @@ class HTMLReport implements ReportInterface
 	 */
 	public function generateFile ($filename)
 	{
+		if (DEBUG) {
+			echo "Generating file {$path}...\n";
+		}
+
 		// Load code and line numbers into array 
 		$content = file ($filename);
 		$code    = array (array ());
@@ -143,6 +147,10 @@ class HTMLReport implements ReportInterface
 	 */
 	public function generateIndexFile ($path)
 	{
+		if (DEBUG) {
+			echo "Generating index file for {$path}...\n";
+		}
+
 		// list directory
 		$files = array ();
 		$dirs  = array ();
@@ -193,6 +201,10 @@ class HTMLReport implements ReportInterface
 	 */
 	public function saveFile ($filename, $contents)
 	{
+		if (DEBUG) {
+			echo "Saving file {$filename}...\n";
+		}
+
 		// make sure the directory exists
 		$dirname = $this->reportDir.'/'.dirname ($filename);
 
