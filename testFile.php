@@ -15,6 +15,7 @@ class Whatever
        	$a = OtherClass::thing;
        	$b = Whatever::notThisOne;
 
+        array_map ('Blah::something', array(1,2,3));
        	// $y = Utils::$name;
 
         dothis();
