@@ -31,7 +31,7 @@ $cmd->setHelp ('php_testability by Edson Medina');
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(__DIR__); 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report')->default(__DIR__.'/report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude directories');
-$cmd->option('debug')->alias('g')->describeAs('Output debugging information')->boolean();
+$cmd->option('debug')->alias('g')->describeAs('Output debugging information (and debug.log)')->boolean();
 
 // run
 define ('PATH', $cmd[0]);

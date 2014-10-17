@@ -41,8 +41,9 @@ class HTMLReport implements ReportInterface
 			$this->generateIndexFile ($path);
 		}
 
-		// DEBUG
-		file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
+		if (DEBUG) {
+			file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
+		}
 
 		echo "OK.\n\n";
 	}
