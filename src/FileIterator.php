@@ -25,9 +25,6 @@ class FileIterator
 	{
 		$this->baseDir  = $baseDir;
 		$this->analyser = $analyser;
-
-		// default exclusions
-		$this->excludedDirs = array ('tests','.git','vendor','tmp','temp');
 	}
 
 	/**
