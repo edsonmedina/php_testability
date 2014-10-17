@@ -202,10 +202,6 @@ class HTMLReport implements ReportInterface
 	 */
 	public function saveFile ($filename, $contents)
 	{
-		if (DEBUG) {
-			echo "Saving file {$filename}...\n";
-		}
-
 		// make sure the directory exists
 		$dirname = $this->reportDir.'/'.dirname ($filename);
 
