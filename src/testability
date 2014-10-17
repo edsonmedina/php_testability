@@ -8,11 +8,12 @@
 // turn off html errors
 ini_set('html_errors', 'off');
 ini_set('memory_limit', '1G');
-
+error_reporting (E_ALL); // that's how we roll
 
 // load autoloader
 $autoloader_locations = array (
-	__DIR__.'/../../autoload.php',  
+	__DIR__.'/../autoload.php',
+	__DIR__.'/../../autoload.php',
 	__DIR__.'/../vendor/autoload.php'
 );
 foreach ($autoloader_locations as $file) {
@@ -21,10 +22,8 @@ foreach ($autoloader_locations as $file) {
     }
 }
 
-use Commando\Command;
-
 // parse CLI arguments
-$cmd = new Command();
+$cmd = new Commando\Command();
 $cmd->setHelp ('php_testability by Edson Medina');
 // TODO check if file exists
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(__DIR__); 
@@ -43,4 +42,4 @@ define ('EXCLUDE_DIRS', preg_replace('/\s*,\s*/',',',$cmd['exclude'])); // trim 
 define ('REPORT_DIR', $cmd['output']);
 define ('DEBUG', $cmd['debug']);
 
-require __DIR__.'/testability.php';
+edsonmedina\php_testability\Testability::runReport();
