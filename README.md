@@ -17,11 +17,21 @@ And run `composer update`.
 
 # Usage
 
-`vendor/bin/testability . -o report` will analyse the current directory and generate an HTML report into report/
+Analyse the current directory and generate an HTML report into report/
 
-`vendor/bin/testability . -x vendor,tmp,upload,config` will exclude those dirs
+`vendor/bin/testability . -o report` 
 
-`vendor/bin/testability --help` will show you an help page with all the available options.
+
+Exclude some directories
+
+`vendor/bin/testability . -x vendor,tmp,upload,config -o report` 
+
+
+Check all the available options.
+
+`vendor/bin/testability --help` 
+
+
 
 
 
