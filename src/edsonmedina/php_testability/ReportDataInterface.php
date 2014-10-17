@@ -7,7 +7,7 @@ interface ReportDataInterface
 	public function setCurrentFilename ($filename);
 	public function getCurrentFilename ();
 	public function getFileList ();
-	public function getDirList ();
+	public function getFullDirList ();
 	public function getIssuesForFile ($filename);
 	public function saveScopePosition ($scope, $lineNum);
 	public function getScopePosition ($filename, $scope);

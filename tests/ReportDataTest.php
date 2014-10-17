@@ -194,7 +194,7 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$expected = array ('/', '/dir', '/dir/subdir', '/dir/subdir/subdir2', '/dir/subdir/subdir2/subdir3');
 
-		$this->assertEquals ($expected, $r->getDirList());
+		$this->assertEquals ($expected, $r->getFullDirList());
 	}
 
 	public function testIsFileUntestable ()

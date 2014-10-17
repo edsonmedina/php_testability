@@ -126,10 +126,10 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Returns list of directories reported
+	 * Returns list of all directories reported
 	 * @return array
 	 */
-	public function getDirList ()
+	public function getFullDirList ()
 	{
 		// get dir names from reported files
 		$dirnames = array_map ('dirname', array_keys ($this->issues));
