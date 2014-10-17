@@ -12,14 +12,21 @@ error_reporting (E_ALL); // that's how we roll
 
 // load autoloader
 $autoloader_locations = array (
-	__DIR__.'/../autoload.php',
-	__DIR__.'/../../autoload.php',
-	__DIR__.'/../vendor/autoload.php'
+	__DIR__.'/../../../autoload.php', // from installed bin or src dir
+	__DIR__.'/../vendor/autoload.php' // from dev version
 );
-foreach ($autoloader_locations as $file) {
-    if (file_exists($file)) {
+$loaded = false;
+foreach ($autoloader_locations as $file) 
+{
+    if (file_exists($file)) 
+    {
     	require_once $file;
+    	$loaded = true;
+    	break;
     }
+}
+if (!$loaded) {
+	die ("Can't find autoloader ".__DIR__."\n");
 }
 
 // parse CLI arguments
