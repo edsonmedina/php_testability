@@ -1,4 +1,4 @@
-# php_testability
+# PHP_Testability
 
 Analyses and produces a report with testability issues of a php codebase.
 
