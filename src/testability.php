@@ -5,8 +5,7 @@
  */
 $autoloader_locations = array (
 	__DIR__.'/../../autoload.php', 
-	__DIR__.'/vendor/autoload.php', 
-	__DIR__.'/../../../vendor/autoload.php'
+	__DIR__.'/../vendor/autoload.php'
 );
 foreach ($autoloader_locations as $file) {
     if (file_exists($file)) {

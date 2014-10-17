@@ -26,5 +26,13 @@
     },
     "bin": [
         "testability"
-    ]
+    ],
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
 }
