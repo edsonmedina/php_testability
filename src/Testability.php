@@ -26,7 +26,8 @@ class Testability
 			$iterator->setExcludedDirs (explode(',', EXCLUDE_DIRS));
 		}
 
-		echo "Analysing code...\n";
+		echo "\nPHP_Testability by Edson Medina\n";
+		echo "Analysing code on ".PATH."...\n";
 		$iterator->run ();
 
 		$report = new HTMLReport (PATH, REPORT_DIR, $data); 
