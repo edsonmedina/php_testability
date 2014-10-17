@@ -27,7 +27,7 @@ class Testability
 		}
 
 		echo "\nPHP_Testability by Edson Medina\n";
-		echo "Analysing code on ".PATH."...\n";
+		echo "Analysing code on '".PATH."'...\n";
 		$iterator->run ();
 
 		$report = new HTMLReport (PATH, REPORT_DIR, $data); 

@@ -27,7 +27,7 @@ class HTMLReport implements ReportInterface
 	 */
 	public function generate ()
 	{
-		echo "\n\nGenerating report to {$this->reportDir}... ";
+		echo "\n\nGenerating report to {$this->reportDir} ... ";
 
 		if (!is_dir($this->reportDir)) {
 			mkdir ($this->reportDir);	
