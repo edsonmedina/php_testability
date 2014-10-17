@@ -32,7 +32,11 @@ Check all the available options.
 `vendor/bin/testability --help` 
 
 
+# Results
 
+Open report/index.html on your browser. You shoule see something like this:
+
+![Screenshot](http://edsonmedina.github.io/php_testability_website/images/dir_report.png)
 
 
 Have fun.
