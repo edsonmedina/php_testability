@@ -54,7 +54,7 @@ class HTMLReport implements ReportInterface
 	public function generateFile ($filename)
 	{
 		if (DEBUG) {
-			echo "Generating file {$path}...\n";
+			echo "Generating file {$filename}...\n";
 		}
 
 		// Load code and line numbers into array 
