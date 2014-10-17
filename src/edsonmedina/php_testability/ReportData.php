@@ -35,7 +35,7 @@ class ReportData implements ReportDataInterface
 	 */
 	public function setCurrentFilename ($filename)
 	{
-		$this->currentFilename = $filename;
+		$this->currentFilename = rtrim($filename, DIRECTORY_SEPARATOR);
 
 		if (!isset ($this->issues[$filename])) {
 			$this->issues[$filename] = array ();
@@ -65,6 +65,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForFile ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		if (!isset($this->issues[$filename])) {
 			return 0;
 		}
@@ -96,6 +98,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForDirectory ($path)
 	{
+		$path = rtrim($path, DIRECTORY_SEPARATOR);
+
 		$count = 0;
 		foreach (array_keys($this->issues) as $filename) {
 			if ($path == '' || strpos($filename, $path) === 0) {
@@ -121,6 +125,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesForFile ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		// TODO split this into specific methods (to avoid coupling)
 		return isset($this->issues[$filename]) ? $this->issues[$filename] : array ();
 	}
@@ -176,6 +182,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getScopePosition ($filename, $scope)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		if (isset($this->info[$filename][$scope])) {
 			return $this->info[$filename][$scope];
 		}
@@ -190,6 +198,7 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getScopesForFile ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
 		return isset($this->info[$filename]) ? array_keys($this->info[$filename]) : array ();
 	}
 
@@ -200,6 +209,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesCountForScope ($filename, $scope)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		$count = 0;
 		foreach ($this->getIssuesForScope ($filename, $scope) as $type => $list)
 		{
@@ -216,6 +227,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getGlobalIssuesCount ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		$noScopes = empty($this->issues[$filename]['scoped']);
 
 		$count = 0;
@@ -239,6 +252,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getGlobalIssuesForFile ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		if (!isset($this->issues[$filename]['global'])) {
 			return array ();
 		}
@@ -253,6 +268,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function getIssuesForScope ($filename, $scope)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		if (!isset($this->issues[$filename]['scoped'][$scope])) {
 			return array ();
 		}
@@ -267,6 +284,8 @@ class ReportData implements ReportDataInterface
 	 */
 	public function isFileUntestable ($filename)
 	{
+		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
+
 		return (count($this->getScopesForFile($filename)) === 0);
 	}
 
