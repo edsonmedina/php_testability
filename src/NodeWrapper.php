@@ -137,6 +137,10 @@ class NodeWrapper
 		return ($this->node instanceof Stmt\Throw_);
 	}
 
+	public function isInclude() {
+		return ($this->node instanceof Expr\Include_);
+	}
+
     /**
      * Is node allowed on global space?
      * @param NodeWrapper $node

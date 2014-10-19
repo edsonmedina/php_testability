@@ -17,6 +17,9 @@ class Whatever
 
         $xx::doBadThings();
 
+        include 'dangerousFile.php';
+        include_once 'dangerousFile2.php';
+
         array_map ('Blah::something', array(1,2,3));
        	// $y = Utils::$name;
 
@@ -33,6 +36,7 @@ function dothis()
 
     $ss = Zzz::numberOfThings;
 
+    require 'iReallyShouldnt.php';
     $varClass::method1();
 
     callThisFunc();
