@@ -7,7 +7,7 @@ use edsonmedina\php_testability\AnalyserScope;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class ClassVisitor extends PhpParser\NodeVisitorAbstract
+class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
@@ -18,23 +18,18 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $this->scope = $scope;
     }
 
-    public function enterNode (PhpParser\Node $node) 
-    {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isClass()) 
-        {
-            $this->scope->startClass ($obj->getName());
-        }
-    }
-
     public function leaveNode (PhpParser\Node $node) 
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        // check for global variables
+        if ($obj->isGlobal()) 
         {
-            $this->scope->endClass();
+            $scope = $this->scope->getScopeName();
+
+            foreach ($obj->getVarList() as $var) {
+                $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ use edsonmedina\php_testability\AnalyserScope;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class ClassVisitor extends PhpParser\NodeVisitorAbstract
+class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
@@ -18,23 +18,17 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $this->scope = $scope;
     }
 
-    public function enterNode (PhpParser\Node $node) 
-    {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isClass()) 
-        {
-            $this->scope->startClass ($obj->getName());
-        }
-    }
-
     public function leaveNode (PhpParser\Node $node) 
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
+        if ($obj->isStaticPropertyFetch()) 
         {
-            $this->scope->endClass();
+            if (!($this->scope->insideClass() && $obj->isSameClassAs($this->scope->getClassName()))) 
+            {
+                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
+            } 
         }
     }
 }

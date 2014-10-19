@@ -7,7 +7,7 @@ use edsonmedina\php_testability\AnalyserScope;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class ClassVisitor extends PhpParser\NodeVisitorAbstract
+class InterfaceVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
@@ -22,7 +22,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        if ($obj->isInterface()) 
         {
             $this->scope->startClass ($obj->getName());
         }
@@ -32,7 +32,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        if ($obj->isInterface()) 
         {
             $this->scope->endClass();
         }

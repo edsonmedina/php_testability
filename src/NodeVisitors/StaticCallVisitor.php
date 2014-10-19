@@ -7,7 +7,7 @@ use edsonmedina\php_testability\AnalyserScope;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class ClassVisitor extends PhpParser\NodeVisitorAbstract
+class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
@@ -18,23 +18,14 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         $this->scope = $scope;
     }
 
-    public function enterNode (PhpParser\Node $node) 
-    {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isClass()) 
-        {
-            $this->scope->startClass ($obj->getName());
-        }
-    }
-
     public function leaveNode (PhpParser\Node $node) 
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        // check for static method calls (ie: Things::doStuff())
+        if ($obj->isStaticCall() && !$this->scope->inGlobalSpace()) 
         {
-            $this->scope->endClass();
+            $this->data->addIssue ($obj->line, 'static_call', $this->scope->getScopeName(), $obj->getName());
         }
     }
 }

@@ -24,15 +24,30 @@ class Analyser implements AnalyserInterface
 	private $data;
 	private $parser;
 	private $dictionary;
+	private $traverser;
+	private $scope;
 
 	public function __construct (ReportDataInterface $data) 
 	{
-		ini_set('xdebug.max_nesting_level', 2000);
-
-		$this->data = $data;
-		$this->parser = new PhpParser\Parser (new PhpParser\Lexer);
-
+		$this->data       = $data;
+		$this->parser     = new PhpParser\Parser (new PhpParser\Lexer);
+		$this->scope      = new AnalyserScope;
 		$this->dictionary = new Dictionary;
+
+		$this->traverser = new PhpParser\NodeTraverser;
+		$this->traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($this->data, $this->dictionary, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\ClassVisitor      ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\TraitVisitor      ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\NewVisitor        ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\ExitVisitor       ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\MethodVisitor     ($this->data, $this->scope));
 	}
 
 	/**
@@ -42,13 +57,6 @@ class Analyser implements AnalyserInterface
 	public function scan ($filename) 
 	{
 		$code = file_get_contents ($filename);
-		$traverser = new PhpParser\NodeTraverser;
-
-		$scope = new AnalyserScope;
-
-		$this->data->setCurrentFilename ($filename);
-
-		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data, $this->dictionary, $scope));
 
 		try 
 		{
@@ -56,7 +64,10 @@ class Analyser implements AnalyserInterface
 		    $stmts = $this->parser->parse ($code);
 
 		    // traverse
-		    $stmts = $traverser->traverse($stmts);
+			$this->scope->reset();
+			$this->data->setCurrentFilename ($filename);
+		    
+		    $this->traverser->traverse ($stmts);
 		} 
 		catch (PhpParser\Error $e)
 		{

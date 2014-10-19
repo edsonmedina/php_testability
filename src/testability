@@ -5,9 +5,8 @@
  * @author Edson Medina <edsonmedina@gmail.com>
  */
 
-// turn off html errors
 ini_set('html_errors', 'off');
-// ini_set('memory_limit', '1G');
+ini_set('xdebug.max_nesting_level', 2000);
 error_reporting (E_ALL); // that's how we roll
 
 // load autoloader

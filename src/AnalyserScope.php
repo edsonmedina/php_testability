@@ -9,16 +9,21 @@ namespace edsonmedina\php_testability;
 class AnalyserScope 
 {
     private $currentClass    = null;
-    private $currentTrait    = null;
     private $currentMethod   = null;
     private $currentFunction = null;
-    private $insideThrow  = false;
+
+    public function reset ()
+    {
+        $this->currentClass    = null;
+        $this->currentMethod   = null;
+        $this->currentFunction = null;
+    }
 
     public function startClass ($name)
     {
-    	if ($this->insideClassOrTrait()) 
+    	if ($this->insideClass()) 
     	{
-    		throw new Exception ("Can't define class {$name} inside class/method");
+    		throw new \Exception ("Can't define class {$name} inside class/method");
     	}
 
     	$this->currentClass = $name;
@@ -28,52 +33,32 @@ class AnalyserScope
     {
     	if (is_null($this->currentClass)) 
     	{
-    		throw new Exception ("Class not started {$name}");
+    		throw new \Exception ("Class not started {$name}");
     	}
 
     	$this->currentClass = null;
     }
 
-    public function startTrait ($name)
+    public function insideClass ()
     {
-    	if ($this->insideClassOrTrait()) 
-    	{
-    		throw new Exception ("Can't define trait {$name} inside class/method");
-    	}
-
-    	$this->currentTrait = $name;
+    	return !(is_null($this->currentClass));
     }
 
-    public function endTrait ()
+    public function getClassName ()
     {
-    	if (is_null($this->currentTrait)) 
+    	if (!$this->insideClass())
     	{
-    		throw new Exception ("Trait not started {$name}");
+    		throw new \Exception ("No class started");
     	}
 
-    	$this->currentClass = null;
-    }
-
-    public function insideClassOrTrait ()
-    {
-    	return (!is_null($this->currentClass) || !is_null($this->currentTrait));
-    }
-
-    public function getBundleName ()
-    {
-    	if (!$this->insideClassOrTrait())
-    	{
-    		throw new Exception ("No class/trait started");
-    	}
-
-    	return is_null ($this->currentClass) ? $this->currentTrait : $this->currentClass;
+    	return $this->currentClass;
     }
 
     public function startMethod ($name)
     {
-    	if (!$this->insideClassOrTrait())
+    	if (!$this->insideClass())
     	{
-    		throw new Exception ("Declaring method {$name} outside of class/trait");
+    		throw new \Exception ("Declaring method {$name} outside of class");
     	}
 
     	$this->currentMethod = $name;
@@ -83,7 +68,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentMethod)) 
     	{
-    		throw new Exception ("Method not started {$name}");
+    		throw new \Exception ("Method not started {$name}");
     	}
 
     	$this->currentMethod = null;
@@ -91,9 +76,9 @@ class AnalyserScope
 
     public function startFunction ($name)
     {
-    	if ($this->insideClassOrTrait())
+    	if ($this->insideClass())
     	{
-    		throw new Exception ("Declaring global function {$name} inside of class/trait");
+    		throw new \Exception ("Declaring global function {$name} inside of class");
     	}
 
     	$this->currentFunction = $name;
@@ -103,7 +88,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentFunction)) 
     	{
-    		throw new Exception ("Function not started {$name}");
+    		throw new \Exception ("Function not started {$name}");
     	}
 
     	$this->currentFunction = null;
@@ -119,9 +104,9 @@ class AnalyserScope
         {
             return $this->currentFunction;
         }
-        elseif (!is_null($this->currentClass) || !is_null($this->currentTrait))
+        elseif (!is_null($this->currentClass))
         {
-            $scope = is_null($this->currentClass) ? $this->currentTrait : $this->currentClass;
+            $scope = $this->currentClass;
 
             if (!is_null($this->currentMethod)) {
                 return $scope."::".$this->currentMethod;
@@ -131,7 +116,7 @@ class AnalyserScope
         }
         else 
         {
-            throw new Exception ('Analysys error: Invalid scope');
+        	throw new \Exception ("Invalid scope");
         }
     }
 
@@ -141,6 +126,6 @@ class AnalyserScope
      */
     public function inGlobalSpace()
     {
-        return (is_null($this->currentClass) && is_null($this->currentTrait) && is_null($this->currentFunction));
+        return (is_null($this->currentClass) && is_null($this->currentFunction));
     }
 }

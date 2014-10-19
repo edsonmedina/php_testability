@@ -7,7 +7,7 @@ use edsonmedina\php_testability\AnalyserScope;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class ClassVisitor extends PhpParser\NodeVisitorAbstract
+class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
@@ -22,19 +22,10 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
     {
         $obj = new NodeWrapper ($node);
 
-        if ($obj->isClass()) 
+        // check for code outside of classes/functions
+        if ($this->scope->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
         {
-            $this->scope->startClass ($obj->getName());
-        }
-    }
-
-    public function leaveNode (PhpParser\Node $node) 
-    {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isClass()) 
-        {
-            $this->scope->endClass();
+            $this->data->addIssue ($obj->line, 'code_on_global_space');
         }
     }
 }

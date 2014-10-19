@@ -15,11 +15,13 @@ class Whatever
        	$a = OtherClass::thing;
        	$b = Whatever::notThisOne;
 
+        $xx::doBadThings();
+
         array_map ('Blah::something', array(1,2,3));
        	// $y = Utils::$name;
 
         dothis();
-		die('fff');
+		    die('fff');
     }
 }
 
@@ -31,11 +33,17 @@ function dothis()
 
     $ss = Zzz::numberOfThings;
 
+    $varClass::method1();
+
+    callThisFunc();
+
     Stuff::dependency();
 }
 
 # some more
 
 thisScrewsTheFile();
+
+BadThings::happen();
 
 $BLAH = 'ugly';

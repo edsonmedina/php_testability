@@ -5,16 +5,12 @@ use edsonmedina\php_testability\AnalyserScope;
 
 class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 {
-	public function testInsideClassOrTrait ()
+	public function testinsideClass ()
 	{
 		$s = new AnalyserScope;
-		$this->assertFalse ($s->insideClassOrTrait());
+		$this->assertFalse ($s->insideClass());
 
 		$s->startClass ('whatever');
-		$this->assertTrue ($s->insideClassOrTrait());
-
-		$s->endClass();
-		$s->startTrait ('whatever2');
-		$this->assertTrue ($s->insideClassOrTrait());
+		$this->assertTrue ($s->insideClass());
 	}
 }
