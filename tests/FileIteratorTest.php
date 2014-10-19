@@ -29,10 +29,10 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 		$fileIterator = new FileIterator ('', $analyser);
 
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/somedir'));
-		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/tests'));
-		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/.git'));
-		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/vendor'));
-		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/tmp'));
-		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/temp'));
+		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/tests'));
+		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/.git'));
+		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/vendor'));
+		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/tmp'));
+		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/temp'));
 	}	
 }
