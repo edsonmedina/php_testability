@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\DictionaryInterface;
 
 use PhpParser;
@@ -11,19 +12,17 @@ use PhpParser\Node\Stmt;
 class ClassVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
-    private $currentClass    = null;
-    private $currentTrait    = null;
-    private $currentMethod   = null;
-    private $currentFunction = null;
     private $insideThrow = false;
     private $hasReturn   = false;
     private $muted       = false;
     private $phpInternalFunctions = array ();
     private $dictionary;
+    private $scope;
 
-    public function __construct (ReportDataInterface $data, DictionaryInterface $dictionary)
+    public function __construct (ReportDataInterface $data, DictionaryInterface $dictionary, AnalyserScope $scope)
     {
-        $this->data = $data;
+        $this->data  = $data;
+        $this->scope = $scope;
         $this->dictionary = $dictionary;
     }
 
@@ -37,21 +36,21 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
         elseif ($obj->isClass()) 
         {
-            $this->currentClass = $obj->getName();
+            $this->scope->startClass ($obj->getName());
         }
         elseif ($obj->isTrait()) 
         {
-            $this->currentTrait = $obj->getName();
+            $this->scope->startTrait ($obj->getName());
         }
         elseif ($obj->isMethod()) 
         {
-            $this->currentMethod = $obj->getName();
-            $this->data->saveScopePosition ($this->getScope($this->currentMethod), $obj->line);
+            $this->scope->startMethod ($obj->getName());
+            $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
         }
         elseif ($obj->isFunction()) 
         {
-            $this->currentFunction = $obj->getName();
-            $this->data->saveScopePosition ($this->getScope($this->currentFunction), $obj->line);
+            $this->scope->startFunction ($obj->getName());
+            $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
         }
         elseif ($obj->isReturn()) 
         {
@@ -81,7 +80,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         // check for code outside of classes/functions
-        elseif ($this->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
+        elseif ($this->scope->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
         {
                 $this->data->addIssue ($obj->line, 'code_on_global_space');
                 return;
@@ -90,7 +89,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
         // check for global variables
         elseif ($obj->isGlobal()) 
         {
-            $scope = $this->getScope('global');
+            $scope = $this->scope->getScopeName();
 
             foreach ($obj->getVarList() as $var) {
                 $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
@@ -99,12 +98,12 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
         // end of class
         elseif ($obj->isClass()) {
-            $this->currentClass = null;
+            $this->scope->endClass();
         }
 
         // end of trait
         elseif ($obj->isTrait()) {
-            $this->currentTrait = null;
+            $this->scope->endTrait();
         }
 
         // end of method or global function
@@ -114,14 +113,14 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             if ($obj->hasChildren() && !$this->hasReturn) 
             {
                 if ($obj->getName() !== '__construct') {
-                    $this->data->addIssue ($obj->endLine, 'no_return', $this->getScope('end of method/function'), '');
+                    $this->data->addIssue ($obj->endLine, 'no_return', $this->scope->getScopeName(), '');
                 }
             }
             
             if ($obj->isFunction()) {
-                $this->currentFunction = null;
+                $this->scope->endFunction();
             } else {
-                $this->currentMethod = null;
+                $this->scope->endMethod();
             }
             
             $this->hasReturn = false;
@@ -129,32 +128,32 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
 
         // check for "new" statement (ie: $x = new Thing())
         elseif ($obj->isNew() && !$this->insideThrow) {
-            $this->data->addIssue ($obj->line, 'new', $this->getScope('new'), $obj->getName());
+            $this->data->addIssue ($obj->line, 'new', $this->scope->getScopeName(), $obj->getName());
         }
 
         // check for exit/die statements
         elseif ($obj->isExit()) {
-            $this->data->addIssue ($obj->line, 'exit', $this->getScope('exit'), '');
+            $this->data->addIssue ($obj->line, 'exit', $this->scope->getScopeName(), '');
         }
 
         // check for static method calls (ie: Things::doStuff())
         elseif ($obj->isStaticCall()) {
-            $this->data->addIssue ($obj->line, 'static_call', $this->getScope('static call'), $obj->getName());
+            $this->data->addIssue ($obj->line, 'static_call', $this->scope->getScopeName(), $obj->getName());
         }
 
         // check for class constant fetch from different class ($x = OtherClass::thing)
         elseif ($obj->isClassConstantFetch())
         {
-            if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
-                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->getScope('external class constant'), $obj->getName());
+            if (!($this->scope->insideClassOrTrait() && $obj->isSameClassAs($this->scope->getBundleName()))) {
+                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
             } 
         }
 
         // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
         elseif ($obj->isStaticPropertyFetch()) 
         {
-            if (!($this->currentClass && $obj->isSameClassAs($this->currentClass))) {
-                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->getScope('static property'), $obj->getName());
+            if (!($this->scope->insideClassOrTrait() && $obj->isSameClassAs($this->scope->getBundleName()))) {
+                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
             } 
         }
 
@@ -168,7 +167,7 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
                 return;
             }
 
-            $this->data->addIssue ($obj->line, 'global_function_call', $this->getScope('global function call'), $functionName);
+            $this->data->addIssue ($obj->line, 'global_function_call', $this->scope->getScopeName(), $functionName);
         }
 
         elseif ($obj->isThrow()) 
@@ -176,51 +175,4 @@ class ClassVisitor extends PhpParser\NodeVisitorAbstract
             $this->insideThrow = false;
         }
     }
-
-    /**
-     * Returns the scope name
-     * @param  string $reference optional, is added to error message
-     * @return string 
-     */
-    private function getScope ($reference = '')
-    {
-        if (!is_null($this->currentFunction)) 
-        {
-            return $this->currentFunction;
-        }
-        elseif (!is_null($this->currentClass) || !is_null($this->currentTrait))
-        {
-            $scope = is_null($this->currentClass) ? $this->currentTrait : $this->currentClass;
-
-            if (!is_null($this->currentMethod)) {
-                return $scope."::".$this->currentMethod;
-            }
-
-            return $scope;
-        }
-        else 
-        {
-            if (!empty($reference)) {
-                $reference = '('.$reference.')';
-            } 
-
-            throw new \Exception ('Analysys error: Invalid scope '.$reference);
-        }
-    }
-
-    /**
-     * Are we outside of any class / global method
-     * @return bool
-     */
-    private function inGlobalSpace()
-    {
-        return (is_null($this->currentClass) && is_null($this->currentTrait) && is_null($this->currentFunction));
-    }
 }
-
-// Notes:
-// 
-// Expr\Closure
-// Expr\Eval_
-// Expr\ErrorSuppress  (@)
-// Stmt\InlineHTML

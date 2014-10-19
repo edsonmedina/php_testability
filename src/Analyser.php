@@ -9,6 +9,7 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserInterface;
+use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\NodeVisitors;
 
 use PhpParser;
@@ -22,7 +23,6 @@ class Analyser implements AnalyserInterface
 {
 	private $data;
 	private $parser;
-	// private $prettyPrinter;
 	private $dictionary;
 
 	public function __construct (ReportDataInterface $data) 
@@ -31,7 +31,6 @@ class Analyser implements AnalyserInterface
 
 		$this->data = $data;
 		$this->parser = new PhpParser\Parser (new PhpParser\Lexer);
-		// $this->prettyPrinter = new PhpParser\PrettyPrinter\Standard;
 
 		$this->dictionary = new Dictionary;
 	}
@@ -45,9 +44,11 @@ class Analyser implements AnalyserInterface
 		$code = file_get_contents ($filename);
 		$traverser = new PhpParser\NodeTraverser;
 
+		$scope = new AnalyserScope;
+
 		$this->data->setCurrentFilename ($filename);
 
-		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data, $this->dictionary));
+		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($this->data, $this->dictionary, $scope));
 
 		try 
 		{
