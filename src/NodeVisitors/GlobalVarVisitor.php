@@ -23,7 +23,7 @@ class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for global variables
-        if ($obj->isGlobal()) 
+        if ($obj->isGlobal() && $this->scope->insideClass()) 
         {
             $scope = $this->scope->getScopeName();
 
