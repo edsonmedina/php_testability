@@ -321,4 +321,16 @@ class ReportData implements ReportDataInterface
 
 		return array_unique($list);
 	}
+
+	/**
+	 * @return array filenames
+	 */
+	public function listFilesWithNoIssues ()
+	{
+		$result = array_filter ($this->issues, function ($list) {
+			return !count($list);
+		});
+
+		return array_keys ($result);
+	}
 }

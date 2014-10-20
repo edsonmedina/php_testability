@@ -40,6 +40,8 @@ class HTMLReport
 			$this->generateIndexFile ($path);
 		}
 
+		$this->generateDashboard ();
+
 		if (DEBUG) {
 			echo "Generating debug.log...\n";
 			file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
@@ -79,7 +81,8 @@ class HTMLReport
 			$scopes[] = array (
 				'name'     => $scope . '()',
 				'position' => $this->data->getScopePosition ($filename, $scope),
-				'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
+				'issues'   => $this->data->getIssuesCountForScope ($filename, $scope),
+				'rootPath' => $this->getRelativePathToRoot (dirname($filename))
 			);
 		}
 
@@ -136,7 +139,7 @@ class HTMLReport
 			'scopes'      => $scopes,
 			'lines'       => $code,
 			'date'        => date('r'),
-			// 'untestable'  => $issues['global']
+			'rootPath'    => $this->getRelativePathToRoot (dirname($filename))
 		));
 
 		$this->saveFile ($relFilename.'.html', $output);
@@ -196,6 +199,40 @@ class HTMLReport
 	}
 
 	/**
+	 * Generates the dashboard
+	 */
+	public function generateDashboard ()
+	{
+		// total issues
+
+		// hotlist
+
+		// ready to test
+		$readyToTest = $this->data->listFilesWithNoIssues();
+		foreach ($readyToTest as $key => $val) {
+			$readyToTest[$key] = $this->convertPathToRelative($val);
+		}
+
+		// issues by type 
+
+		// classes most dependend on
+
+		// classes with most dependencies
+
+		// render
+		$m = new \Mustache_Engine (array(
+			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
+		));
+
+		$output = $m->render ('dashboard', array (
+			'readyToTest' => $readyToTest,
+			'date'        => date('r')
+		));
+
+		$this->saveFile ('dashboard.html', $output);		
+	}
+
+	/**
 	 * Saves file to filesystem
 	 * @param string $filename RELATIVE filename
 	 * @param string $contents
@@ -221,5 +258,21 @@ class HTMLReport
 	public function convertPathToRelative ($path)
 	{
 		return substr ($path, strlen($this->baseDir)+1);
+	}
+
+	/**
+	 * Get relative path to root
+	 * @param string $path
+	 * @return string $relativePath (ie: ../../../)
+	 */
+	public function getRelativePathToRoot ($path)
+	{
+		// remove trailing slash
+		$path = rtrim ($path, DIRECTORY_SEPARATOR);
+
+		$relativePath = $this->convertPathToRelative ($path);
+		$parts = explode (DIRECTORY_SEPARATOR, $relativePath);
+
+		return str_repeat ('../', count($parts));
 	}
 }

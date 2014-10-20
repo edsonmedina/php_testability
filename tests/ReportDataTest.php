@@ -212,4 +212,24 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals ($expected, $r->listDirectory('/dir/subdir/'));
 	}
+
+	public function testListFilesWithNoIssues ()
+	{
+		$r = new ReportData;
+
+		$r->setCurrentFilename ('/whatever.php');
+		$r->addIssue (65, 'other');
+
+		$r->setCurrentFilename ('/whatever2.php');
+
+		$r->setCurrentFilename ('/whatever3.php');
+
+		$r->setCurrentFilename ('/whatever4.php');
+		$r->addIssue (4,  'code_on_global_space');
+		$r->addIssue (9,  'code_on_global_space');
+
+		$expected = array ('/whatever2.php','/whatever3.php');
+
+		$this->assertEquals ($expected, $r->listFilesWithNoIssues ());
+	}
 }

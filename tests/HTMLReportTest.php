@@ -12,4 +12,14 @@ class HTMLReportTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals ('is/fine.php', $report->convertPathToRelative('/Whatever/path/files/are/is/fine.php'));
 	}	
+
+	public function testGetRelativePathToRoot ()
+	{
+		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')->disableOriginalConstructor()->getMock();
+		$report = new HTMLReport ('/Whatever/path/files/are', '', $data);
+
+		$path = '/Whatever/path/files/are/subdir/subsubdir/';
+
+		$this->assertEquals ('../../', $report->getRelativePathToRoot ($path));
+	}
 }

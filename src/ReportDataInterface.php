@@ -20,4 +20,5 @@ interface ReportDataInterface
 	public function getGlobalIssuesCount ($filename);
 	public function isFileUntestable ($filename);
 	public function listDirectory ($path);
+	public function listFilesWithNoIssues ();
 }
