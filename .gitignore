@@ -4,3 +4,5 @@ composer.phar
 composer.lock
 debug.log
 report/*
+clover.xml
+tmp/*

@@ -4,6 +4,8 @@
  * Shell wrapper for php_testability
  * @author Edson Medina <edsonmedina@gmail.com>
  */
+use Commando\Command;
+use edsonmedina\php_testability\Testability;
 
 ini_set('html_errors', 'off');
 ini_set('xdebug.max_nesting_level', 2000);
@@ -29,22 +31,26 @@ if (!$loaded) {
 }
 
 // parse CLI arguments
-$cmd = new Commando\Command();
+$cmd = new Command();
 $cmd->setHelp ("PHP_Testability by Edson Medina.\n\nUsage: testability [options] [path]");
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(__DIR__); 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report (default: report)')->default('./report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude (comma-separated) directories (default: tests,.git,.svn,vendor,tmp,temp)')->default('tests,.git,vendor,tmp,temp');
 $cmd->option('debug')->alias('g')->describeAs('Output debugging information (and debug.log)')->boolean();
+$cmd->option('clover')->describeAs('Import clover xml report')->file();
 
 // run
-define ('PATH', rtrim($cmd[0], DIRECTORY_SEPARATOR));
+$path = rtrim(realpath($cmd[0]), DIRECTORY_SEPARATOR);
 
-if (!file_exists(PATH)) {
-	die ("\nInvalid path:\n".PATH."\n\n");
+if (!file_exists($path)) {
+	die ("\nInvalid path:\n".$path."\n\n");
 }
 
-define ('EXCLUDE_DIRS', preg_replace('/\s*,\s*/',',',$cmd['exclude'])); // trim values
-define ('REPORT_DIR', $cmd['output']);
+$excludeDirs = preg_replace('/\s*,\s*/',',',$cmd['exclude']); // trim values
+
 define ('DEBUG', $cmd['debug']);
 
-edsonmedina\php_testability\Testability::runReport();
+$testability = new Testability ($path, $cmd['output']);
+$testability->setExcludeDirs   ($excludeDirs);
+$testability->setCloverReport  ($cmd['clover']);
+$testability->runReport();

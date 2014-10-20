@@ -13,24 +13,51 @@ use edsonmedina\php_testability\HTMLReport;
 
 class Testability
 {
-	static function runReport ()
+	private $path;
+	private $excludeDirs;
+	private $reportDir;
+	private $cloverXML;
+
+	public function __construct ($path, $reportDir)
+	{
+		$this->path = $path;
+		$this->reportDir = $reportDir;
+	}
+
+	public function setExcludeDirs ($exclude)
+	{
+		$this->excludeDirs = $exclude;
+	}
+
+	public function setCloverReport ($file)
+	{
+		$this->cloverXML = $file;
+	}
+
+	public function runReport ()
 	{
 		$start_ts  = microtime (TRUE);
 
 		// run
 		$data     = new ReportData ();
 		$analyser = new Analyser ($data);
-		$iterator = new FileIterator (PATH, $analyser);
+		$iterator = new FileIterator ($this->path, $analyser);
 
-		if (EXCLUDE_DIRS != '') {
-			$iterator->setExcludedDirs (explode(',', EXCLUDE_DIRS));
+		if (!empty($this->excludeDirs)) {
+			$iterator->setExcludedDirs (explode(',', $this->excludeDirs));
 		}
 
 		echo "\nPHP_Testability by Edson Medina\n";
-		echo "Analysing code on \"".PATH."\"...\n";
+		echo "Analysing code on \"".$this->path."\"...\n";
 		$iterator->run ();
 
-		$report = new HTMLReport (PATH, REPORT_DIR, $data); 
+		if ($this->cloverXML) {
+			echo "\n\nImporting clover report...\n";
+			$clover = file_get_contents ($this->cloverXML);
+			echo "NOT IMPLEMENTED YET. SORRY.\n";
+		}
+
+		$report = new HTMLReport ($this->path, $this->reportDir, $data); 
 		$report->generate ();
 
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
