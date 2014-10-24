@@ -72,11 +72,11 @@ class Analyser implements AnalyserInterface
 		} 
 		catch (PhpParser\Error $e)
 		{
-		    echo "\n\n" . $filename . ' - Parse Error: ' . $e->getMessage() . "\n";
+		    echo "\n\nParse Error: " . $e->getMessage() . " ({$filename})\n";
 		}
 		catch (\Exception $e)
 		{
-		    echo "\n\n" . $filename . "\n" . $e->getMessage() . "\n";
+		    echo "\n\n" . $e->getMessage() . " (in {$filename})\n";
 		}
 	}
 }
