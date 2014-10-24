@@ -33,6 +33,9 @@ class Whatever
 function dothis()
 {
     global $diddy;
+    
+    $y = new Whatever ();
+    $y->methodMan();
 
     $ss = Zzz::numberOfThings;
 

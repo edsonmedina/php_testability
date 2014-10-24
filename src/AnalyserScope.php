@@ -23,7 +23,7 @@ class AnalyserScope
     {
     	if ($this->insideClass()) 
     	{
-    		throw new \Exception ("Can't define class {$name} inside class/method");
+    		throw new \Exception ("Can't define class {$name} inside class ".$this->currentClass);
     	}
 
     	$this->currentClass = $name;
@@ -78,7 +78,7 @@ class AnalyserScope
     {
     	if ($this->insideClass())
     	{
-    		throw new \Exception ("Declaring global function {$name} inside of class");
+    		throw new \Exception ("Declaring global function {$name} inside of ".$this->currentClass."::".$this->currentMethod);
     	}
 
     	$this->currentFunction = $name;
