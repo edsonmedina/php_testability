@@ -28,7 +28,7 @@ class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
             $scope = $this->scope->getScopeName();
 
             foreach ($obj->getVarList() as $var) {
-                $this->data->addIssue ($var->getLine(), 'global', $scope, $var->name);
+                $this->data->addIssue ($var->getLine(), 'global', $scope, '$'.$var->name);
             }
         }
     }
