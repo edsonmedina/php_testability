@@ -24,7 +24,7 @@ class IncludeVisitor extends PhpParser\NodeVisitorAbstract
 
         if ($obj->isInclude() && !$this->scope->inGlobalSpace()) 
         {
-            $this->data->addIssue ($obj->line, 'include', $this->scope->getScopeName(), $obj->getName());
+            $this->data->addIssue ($obj->line, 'include', $this->scope->getScopeName(), $node->expr->value);
         }
     }
 }
