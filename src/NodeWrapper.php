@@ -47,17 +47,13 @@ class NodeWrapper
 		{
 			$name .= $separator . $this->node->getAttribute('name');
 		} 
-		elseif ($this->node->name) 
+		if ($this->node->name instanceof Expr\ArrayDimFetch) 
 		{
-			// variable functions
-			if ($this->node->name instanceof Expr\ArrayDimFetch) 
-			{
-				$name .= 'variable function';
-			} 
-			else
-			{
-				$name .= $separator . $this->node->name;
-			}
+			$name .= 'variable function';
+		} 
+		else
+		{
+			$name .= $separator . $this->node->name;
 		}
 	
 		return $name;
@@ -103,6 +99,14 @@ class NodeWrapper
 
 	public function isExit() {
 		return ($this->node instanceof Expr\Exit_);
+	}
+
+	public function isVariable() {
+		return ($this->node instanceof Expr\Variable);
+	}
+
+	public function isArrayDimFetch() {
+		return ($this->node instanceof Expr\ArrayDimFetch);
 	}
 
 	public function isStaticCall() {

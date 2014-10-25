@@ -40,6 +40,7 @@ class Analyser implements AnalyserInterface
 		$this->traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($this->data, $this->dictionary, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\ClassVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\TraitVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($this->data, $this->scope));

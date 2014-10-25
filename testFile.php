@@ -37,6 +37,9 @@ function dothis()
     $y = new Whatever ();
     $y->methodMan();
 
+    $w = $_GLOBALS['whatever'];
+    $p1 = $_GET['p1'];
+
     $ss = Zzz::numberOfThings;
 
     require 'iReallyShouldnt.php';
