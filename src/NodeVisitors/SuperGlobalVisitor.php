@@ -27,7 +27,7 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
         {
             $scope = $this->scope->getScopeName();
 
-            $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$node->var->name);
+            $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$obj->getName());
         }
     }
 }

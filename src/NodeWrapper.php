@@ -47,7 +47,7 @@ class NodeWrapper
 		{
 			$name .= $separator . $this->node->getAttribute('name');
 		} 
-		if ($this->node->name instanceof Expr\ArrayDimFetch) 
+		elseif ($this->node->name instanceof Expr\ArrayDimFetch) 
 		{
 			$name .= 'variable function';
 		} 
