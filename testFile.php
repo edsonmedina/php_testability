@@ -13,6 +13,11 @@ class Whatever
 
        	$x = new StdClass();
        	$a = OtherClass::thing;
+
+        Whatever::methodMan();
+        self::methodMan();
+        parent::methodMan();
+
        	$b = Whatever::notThisOne;
 
         $xx::doBadThings();
