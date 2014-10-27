@@ -11,7 +11,8 @@
     "homepage": "https://github.com/edsonmedina/php_testability/",
     "autoload": {
         "psr-0": {
-            "edsonmedina\\php_testability" : "src"
+            "edsonmedina\\php_testability" : "src",
+            "edsonmedina\\php_testability\\NodeVisitors" : "src\\NodeVisitors"
         }
     },
     "license": "GPL-2.0+",
