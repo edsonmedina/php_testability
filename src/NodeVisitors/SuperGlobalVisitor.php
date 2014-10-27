@@ -11,11 +11,14 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
+    private $_list;
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope)
     {
         $this->data  = $data;
         $this->scope = $scope;
+
+        $this->_list = array ('GLOBALS','_SERVER','_GET','_POST','_FILES','_COOKIE','_SESSION','_REQUEST','_ENV');
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -27,7 +30,14 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
         {
             $scope = $this->scope->getScopeName();
 
-            $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$obj->getName());
+            if ($node->var->name)
+            {
+                if (in_array ($node->var->name, $this->_list))
+                {
+                    $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$node->var->name);
+                }
+            }
+// print_r ($node);
         }
     }
 }

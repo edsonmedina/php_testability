@@ -37,8 +37,10 @@ function dothis()
     $y = new Whatever ();
     $y->methodMan();
 
-    $w = $_GLOBALS['whatever'];
+    $w = $GLOBALS['whatever']['subnode'][$index];
     $p1 = $_GET['p1'];
+
+    $normalArray['whatever']['happens'] = 'in vegas';
 
     $ss = Zzz::numberOfThings;
 
