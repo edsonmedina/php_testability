@@ -63,4 +63,8 @@ thisScrewsTheFile();
 
 BadThings::happen();
 
+global $thingy;
+
+$y = $_GET['y'];
+
 $BLAH = 'ugly';
