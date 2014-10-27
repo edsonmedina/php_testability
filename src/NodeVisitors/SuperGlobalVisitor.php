@@ -23,7 +23,7 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for super globals
-        if ($obj->isArrayDimFetch())
+        if ($obj->isArrayDimFetch() && !$this->scope->inGlobalSpace())
         {
             $scope = $this->scope->getScopeName();
 
