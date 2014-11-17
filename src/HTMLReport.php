@@ -8,17 +8,20 @@ class HTMLReport
 	private $baseDir   = '';
 	private $reportDir = '';
 	private $data;
+	private $outputCSV;
 
 	/**
 	 * @param string $baseDir   Where the code resides
 	 * @param string $reportDir Where to generate the report 
 	 * @param ReportDataInterface $data  Report data
+	 * @param bool $outputCSV 	Output CSV files per directory
 	 */
-	public function __construct ($baseDir, $reportDir, ReportDataInterface $data)
+	public function __construct ($baseDir, $reportDir, ReportDataInterface $data, $outputCSV = false)
 	{
 		$this->baseDir   = rtrim($baseDir, DIRECTORY_SEPARATOR);
 		$this->reportDir = $reportDir;
 		$this->data      = $data;
+		$this->outputCSV = $outputCSV;
 	}
 
 	/**
@@ -38,6 +41,9 @@ class HTMLReport
 
 		foreach ($this->data->getFullDirList() as $path) {
 			$this->generateIndexFile ($path);
+			if ($this->outputCSV) {
+				$this->generateCSV ($path);
+			}
 		}
 
 		if (DEBUG) {
@@ -193,6 +199,22 @@ class HTMLReport
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		
+	}
+
+	/**
+	 * Generate CSV files
+	 * @param string $path
+	 */
+	public function generateCSV ($path)
+	{
+		if (DEBUG) {
+			echo "Generating index file for {$path}...\n";
+		}
+
+		$total = $this->data->getIssuesCountForDirectory ($path);
+
+		$relPath = $this->convertPathToRelative ($path);
+		$this->saveFile ($relPath.'/total.csv', '"Total Issues"'.PHP_EOL.$total);
 	}
 
 	/**

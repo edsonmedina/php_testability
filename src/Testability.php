@@ -17,6 +17,7 @@ class Testability
 	private $excludeDirs;
 	private $reportDir;
 	private $cloverXML;
+	private $shouldOutputCSV;
 
 	public function __construct ($path, $reportDir)
 	{
@@ -32,6 +33,11 @@ class Testability
 	public function setCloverReport ($file)
 	{
 		$this->cloverXML = $file;
+	}
+
+	public function setCSV ($value)
+	{
+		$this->shouldOutputCSV = $value;
 	}
 
 	public function runReport ()
@@ -51,14 +57,17 @@ class Testability
 		echo "Analysing code on \"".$this->path."\"...\n";
 		$iterator->run ();
 
+		// code coverage 
 		if ($this->cloverXML) {
 			echo "\n\nImporting clover report...\n";
 			$clover = file_get_contents ($this->cloverXML);
 			echo "NOT IMPLEMENTED YET. SORRY.\n";
 		}
 
-		$report = new HTMLReport ($this->path, $this->reportDir, $data); 
+		// generate HTML report
+		$report = new HTMLReport ($this->path, $this->reportDir, $data, $this->shouldOutputCSV); 
 		$report->generate ();
+
 
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
 
