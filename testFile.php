@@ -28,6 +28,8 @@ class Whatever
         array_map ('Blah::something', array(1,2,3));
        	// $y = Utils::$name;
 
+        $thing = (new \Some\ClassThing())->doSomething($_GET['blah'])->run();
+
         dothis();
 		    die('fff');
     }
