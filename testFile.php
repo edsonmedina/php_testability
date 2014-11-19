@@ -54,7 +54,11 @@ function dothis()
     require 'iReallyShouldnt.php';
     $varClass::method1();
 
-    callThisFunc();
+    try 
+    {
+        callThisFunc();
+    }
+    catch (Exception $e) {}
 
     Stuff::dependency();
 }

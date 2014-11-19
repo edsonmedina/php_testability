@@ -145,6 +145,10 @@ class NodeWrapper
 		return ($this->node instanceof Expr\Include_);
 	}
 
+	public function isCatch() {
+		return ($this->node instanceof Stmt\Catch_);
+	}
+
     /**
      * Is node allowed on global space?
      * @param NodeWrapper $node
