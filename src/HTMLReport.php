@@ -29,8 +29,6 @@ class HTMLReport
 	 */
 	public function generate ()
 	{
-		echo "\n\nGenerating report to {$this->reportDir} ... ";
-
 		if (!is_dir($this->reportDir)) {
 			mkdir ($this->reportDir);	
 		}
@@ -50,8 +48,6 @@ class HTMLReport
 			echo "Generating debug.log...\n";
 			file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
 		}
-
-		echo "OK.\n\n";
 	}
 
 	/**
