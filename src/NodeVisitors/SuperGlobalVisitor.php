@@ -37,7 +37,6 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
                     $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$node->var->name);
                 }
             }
-// print_r ($node);
         }
     }
 }

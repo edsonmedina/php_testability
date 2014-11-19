@@ -34,7 +34,7 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for "new" statement (ie: $x = new Thing())
-        if ($obj->isNew() && $this->scope->insideClass() && !$this->insideThrow) 
+        if ($obj->isNew() && !$this->scope->inGlobalSpace() && !$this->insideThrow) 
         {
             $this->data->addIssue ($obj->line, 'new', $this->scope->getScopeName(), $obj->getName());
         }

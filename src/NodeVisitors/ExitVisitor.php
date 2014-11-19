@@ -23,7 +23,7 @@ class ExitVisitor extends PhpParser\NodeVisitorAbstract
         $obj = new NodeWrapper ($node);
 
         // check for exit/die statements
-        if ($obj->isExit() && $this->scope->insideClass()) 
+        if ($obj->isExit() && !$this->scope->inGlobalSpace()) 
         {
             $this->data->addIssue ($obj->line, 'exit', $this->scope->getScopeName(), '');
         }
