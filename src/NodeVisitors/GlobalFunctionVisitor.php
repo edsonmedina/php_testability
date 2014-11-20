@@ -45,7 +45,10 @@ class GlobalFunctionVisitor extends PhpParser\NodeVisitorAbstract
             // check for a lacking return statement in the function
             if ($obj->hasChildren() && !$this->hasReturn) 
             {
-                $this->data->addIssue ($obj->endLine, 'no_return', $this->scope->getScopeName(), '');
+                if ($this->scope->getScopeName() !== '__autoload') 
+                {
+                    $this->data->addIssue ($obj->endLine, 'no_return', $this->scope->getScopeName(), '');
+                }
             }
             
             $this->scope->endFunction();

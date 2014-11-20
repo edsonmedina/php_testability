@@ -45,7 +45,9 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
             // check for a lacking return statement in the method/function
             if ($obj->hasChildren() && !$this->hasReturn) 
             {
-                if ($obj->getName() !== '__construct') 
+                $ignoreList = array ('__construct', '__clone', '__set', '__unset', '__wakeup', '__invoke');
+
+                if (!in_array ($obj->getName(), $ignoreList)) 
                 {
                     $this->data->addIssue ($obj->endLine, 'no_return', $this->scope->getScopeName(), '');
                 }

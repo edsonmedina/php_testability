@@ -33,6 +33,13 @@ class Whatever
         dothis();
 		    die('fff');
     }
+
+    public function __set ($name, $val)
+    {
+        $this->values[$name] = $val;
+
+        // no return
+    }
 }
 
 // another one here
@@ -74,3 +81,9 @@ global $thingy;
 $y = $_GET['y'];
 
 $BLAH = 'ugly';
+
+function __autoload ($xxx)
+{
+    $x = 1;
+    // no return
+}
