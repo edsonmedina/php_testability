@@ -22,7 +22,7 @@ class Whatever
 
         $xx::doBadThings();
 
-        include 'dangerousFile.php';
+        include $dir.'dangerousFile.php';
         include_once 'dangerousFile2.php';
 
         array_map ('Blah::something', array(1,2,3));
