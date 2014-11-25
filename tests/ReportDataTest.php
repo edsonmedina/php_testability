@@ -112,32 +112,39 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	{
 		$r = new ReportData;
 
-		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (8, 'some issue');
+		$r->setCurrentFilename ($this->fixPath('whatever.php'));
+		$r->addIssue (8, 'some issue', 'Whatever::foo');
 
-		$r->setCurrentFilename ('dir/file1.php');
-		$r->addIssue (66, 'some issue');
-		$r->addIssue (93, 'some issue');
+		$r->setCurrentFilename ($this->fixPath('dir/file1.php'));
+		$r->addIssue (66, 'some issue', 'Whatever2::foo');
+		$r->addIssue (93, 'some issue', 'Whatever2::foo2');
 
-		$r->setCurrentFilename ('dir/subdir/file1.php');
-		$r->addIssue (40, 'some issue');
+		$r->setCurrentFilename ($this->fixPath('dir/subdir/file1.php'));
+		$r->addIssue (40, 'some issue', 'Whatever3::foo');
 
-		$r->setCurrentFilename ('dir/subdir/file2.php');
-		$r->addIssue (13, 'some issue');
-		$r->addIssue (54, 'some issue');
-		$r->addIssue (78, 'some issue');
+		// some code on global space
+		$r->setCurrentFilename ($this->fixPath('dir/subdir/file2.php'));
+		$r->addIssue (13, 'some issue', 'Whatever4::foo');
+		$r->addIssue (54, 'some issue', 'Whatever5::foo');
+		$r->addIssue (78, 'code_on_global_space');
 
-		$r->setCurrentFilename ('dir/subdir/file3.php');
-		$r->addIssue (8, 'some issue');
-		$r->addIssue (9, 'some issue');
+		// similar dir name
+		$r->setCurrentFilename ($this->fixPath('dir/subdir_z/file9.php'));
+		$r->addIssue (8, 'some issue', 'Whatever101::foo');
+		$r->addIssue (9, 'code_on_global_space');
 
-		$r->setCurrentFilename ('dir/subdir/subsubdir/file1.php');
-		$r->addIssue (48, 'some issue');
-		$r->addIssue (97, 'some issue');
+		// no scopes - no count
+		$r->setCurrentFilename ($this->fixPath('dir/subdir/file3.php'));
+		$r->addIssue (8, 'code_on_global_space');
+		$r->addIssue (9, 'code_on_global_space');
 
-		$this->assertEquals (2,  $r->getIssuesCountForDirectory('dir/subdir/subsubdir/'));
-		$this->assertEquals (8,  $r->getIssuesCountForDirectory('dir/subdir/'));
-		$this->assertEquals (10, $r->getIssuesCountForDirectory('dir/'));
+		$r->setCurrentFilename ($this->fixPath('dir/subdir/subsubdir/file1.php'));
+		$r->addIssue (48, 'some issue', 'Whatever6::foo');
+		$r->addIssue (97, 'some issue', 'Whatever6::foo');
+
+		$this->assertEquals (2,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/subsubdir/')));
+		$this->assertEquals (6,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/')));
+		$this->assertEquals (10, $r->getIssuesCountForDirectory($this->fixPath('dir/')));
 	}
 
 	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndNoScope ()
@@ -171,12 +178,18 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	{
 		$r = new ReportData;
 
-		$r->setCurrentFilename ('/whatever.php');
-		$r->setCurrentFilename ('/dir/subdir/file1.php');
-		$r->setCurrentFilename ('/dir/subdir/file2.php');
-		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir3/file.php');
+		$r->setCurrentFilename ($this->fixPath('/whatever.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/file1.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/file2.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/subdir2/subdir3/file.php'));
 
-		$expected = array ('/', '/dir', '/dir/subdir', '/dir/subdir/subdir2', '/dir/subdir/subdir2/subdir3');
+		$expected = array (
+			$this->fixPath('/'),
+			$this->fixPath('/dir'),
+			$this->fixPath('/dir/subdir'),
+			$this->fixPath('/dir/subdir/subdir2'),
+			$this->fixPath('/dir/subdir/subdir2/subdir3')
+		);
 
 		$this->assertEquals ($expected, $r->getFullDirList());
 	}
@@ -185,31 +198,50 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	{
 		$r = new ReportData;
 
-		$r->setCurrentFilename ('/whatever.php');
-
+		$r->setCurrentFilename ('whatever.php');
 		$r->addIssue (8,  'code_on_global_space');
 		$r->addIssue (16, 'code_on_global_space');
 		$r->addIssue (65, 'other');
 
-		$this->assertTrue ($r->isFileUntestable ('/whatever.php'));
+		$this->assertTrue ($r->isFileUntestable ('whatever.php'));
 
+		$r->addIssue (8, 'some_scoped_issue', 'Class1::method2');
 		$r->saveScopePosition ('Whatever::doThings', 150);
 
-		$this->assertFalse ($r->isFileUntestable ('/whatever.php'));
+		$this->assertFalse ($r->isFileUntestable ('whatever.php'));
 	}
 
 	public function testListDirectory ()
 	{
 		$r = new ReportData;
 
-		$r->setCurrentFilename ('/whatever.php');
-		$r->setCurrentFilename ('/dir/subdir/file1.php');
-		$r->setCurrentFilename ('/dir/subdir/file2.php');
-		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir2/file.php');
-		$r->setCurrentFilename ('/dir/subdir/subdir2/subdir3/file3.php');
+		$r->setCurrentFilename ($this->fixPath('/whatever.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/file1.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/file2.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/subdir2/subdir2/file.php'));
+		$r->setCurrentFilename ($this->fixPath('/dir/subdir/subdir2/subdir3/file3.php'));
 
-		$expected = array ('/dir/subdir/file1.php', '/dir/subdir/file2.php', '/dir/subdir/subdir2');
+		$expected = array (
+			$this->fixPath('/dir/subdir/file1.php'),
+			$this->fixPath('/dir/subdir/file2.php'),
+			$this->fixPath('/dir/subdir/subdir2')
+		);
 
-		$this->assertEquals ($expected, $r->listDirectory('/dir/subdir/'));
+		$this->assertEquals ($expected, $r->listDirectory($this->fixPath('/dir/subdir/')));
+	}
+
+	/**
+	 * This helps making tests work on windows
+	 */
+	private function fixPath ($path)
+	{
+		if (DIRECTORY_SEPARATOR == '/')
+		{
+			return $path;
+		}
+		else
+		{
+			return str_replace ('/', DIRECTORY_SEPARATOR, $path);
+		}
 	}
 }

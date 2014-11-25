@@ -106,7 +106,7 @@ class ReportData implements ReportDataInterface
 		{
 			if (!$this->isFileUntestable($filename)) 
 			{
-				if ($path == '' || strpos($filename, $path) === 0) 
+				if ($path == '' || strpos($filename, $path.DIRECTORY_SEPARATOR) === 0) 
 				{
 					$count += $this->getIssuesCountForFile ($filename);
 				}
@@ -292,8 +292,7 @@ class ReportData implements ReportDataInterface
 	public function isFileUntestable ($filename)
 	{
 		$filename = rtrim($filename, DIRECTORY_SEPARATOR);
-
-		return (count($this->getScopesForFile($filename)) === 0);
+		return (empty($this->issues[$filename]['scoped']) && count($this->getScopesForFile($filename)) === 0);
 	}
 
 	/**
