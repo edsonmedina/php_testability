@@ -101,11 +101,18 @@ class ReportData implements ReportDataInterface
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
 
 		$count = 0;
-		foreach (array_keys($this->issues) as $filename) {
-			if ($path == '' || strpos($filename, $path) === 0) {
-				$count += $this->getIssuesCountForFile ($filename);
+		
+		foreach (array_keys($this->issues) as $filename) 
+		{
+			if (!$this->isFileUntestable($filename)) 
+			{
+				if ($path == '' || strpos($filename, $path) === 0) 
+				{
+					$count += $this->getIssuesCountForFile ($filename);
+				}
 			}
 		}
+		
 		return $count;
 	}
 
