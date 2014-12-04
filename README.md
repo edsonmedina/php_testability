@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edsonmedina/php_testability.svg?branch=master)](https://travis-ci.org/edsonmedina/php_testability/)
+
 # PHP_Testability
 
 Analyses and produces a report with testability issues of a php codebase.
