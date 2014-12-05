@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/edsonmedina/php_testability.svg?branch=master)](https://travis-ci.org/edsonmedina/php_testability/)
 [![Code Climate](https://codeclimate.com/github/edsonmedina/php_testability/badges/gpa.svg)](https://codeclimate.com/github/edsonmedina/php_testability)
+[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/edsonmedina/php_testability/master.svg?style=flat)](https://scrutinizer-ci.com/g/edsonmedina/php_testability/?branch=master)
 
 # PHP_Testability
 
