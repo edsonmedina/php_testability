@@ -7,6 +7,8 @@
 Analyses and produces a report with testability issues of a php codebase.
 
 ## Installation
+PHP_Testability requires at least PHP 5.3 to run.
+
 ### Composer 
 
 Add `edsonmedina/php_testability` as a dependency to your project's `composer.json` file if you use [Composer](http://getcomposer.org/) to manage the dependencies of your project. 
