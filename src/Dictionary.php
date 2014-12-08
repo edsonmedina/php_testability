@@ -7,7 +7,8 @@ class Dictionary implements DictionaryInterface
 
 	public function __construct ()
 	{
-		$this->phpInternalFunctions = array_fill_keys(get_defined_functions()['internal'], true);
+		$list = get_defined_functions();
+		$this->phpInternalFunctions = array_fill_keys($list['internal'], true);
 	}
 
 	public function isInternalFunction ($functionName)
