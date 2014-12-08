@@ -53,7 +53,10 @@ class NodeWrapper
 		} 
 		else
 		{
-			$name .= $separator . $this->node->name;
+			if (!empty($this->node->name)) 
+			{
+				$name .= $separator . $this->node->name;
+			}
 		}
 	
 		return $name;
