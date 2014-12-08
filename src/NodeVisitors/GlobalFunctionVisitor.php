@@ -10,7 +10,6 @@ use PhpParser\Node\Expr;
 class GlobalFunctionVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
-    private $hasReturn = false;
     private $scope;
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope)
@@ -25,13 +24,8 @@ class GlobalFunctionVisitor extends PhpParser\NodeVisitorAbstract
 
         if ($obj->isFunction()) 
         {
-            $this->hasReturn = false;
             $this->scope->startFunction ($obj->getName());
             $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
-        }
-        elseif ($obj->isReturn()) 
-        {
-            $this->hasReturn = true;
         }
     }
 
@@ -42,17 +36,7 @@ class GlobalFunctionVisitor extends PhpParser\NodeVisitorAbstract
         // end of method or global function
         if ($obj->isFunction()) 
         {
-            // check for a lacking return statement in the function
-            if ($obj->hasChildren() && !$this->hasReturn) 
-            {
-                if ($this->scope->getScopeName() !== '__autoload') 
-                {
-                    $this->data->addIssue ($obj->endLine, 'no_return', $this->scope->getScopeName(), '');
-                }
-            }
-            
             $this->scope->endFunction();
-            $this->hasReturn = false;
         }
     }
 }

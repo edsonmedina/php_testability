@@ -96,10 +96,6 @@ class NodeWrapper
 		return ($this->node instanceof Expr\New_);
 	}
 
-	public function isReturn() {
-		return ($this->node instanceof Stmt\Return_);
-	}
-
 	public function isExit() {
 		return ($this->node instanceof Expr\Exit_);
 	}
