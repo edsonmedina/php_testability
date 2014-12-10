@@ -55,12 +55,22 @@ class Whatever
         // no return
     }
 
-    public function __set ($name, $val)
+    function __set ($name, $val)
     {
         $this->values[$name] = $val;
 
         // no return (not reported on __set methods)
     }
+
+    private function privateParts ()
+    {
+        // this method is untestable
+    }
+
+    protected function privateParts2 ()
+    {
+        // this one too
+    } 
 }
 
 // this contains several of the same issues
