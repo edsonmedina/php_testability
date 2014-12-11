@@ -42,7 +42,7 @@ Check all the available options.
 
 Open report/index.html on your browser. You shoule see something like this:
 
-![Screenshot](http://edsonmedina.github.io/php_testability_website/images/dir_report.png)
+![Screenshot](http://www.cianeto.com/php_testability.png)
 
 
 If you click on a file with issues, it'll show you a code browser and will highlight the lines with issues.
