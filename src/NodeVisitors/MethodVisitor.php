@@ -27,6 +27,7 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
             $this->scope->startMethod ($obj->getName());
             $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
 
+            // report non public methods
             if ($node->isPrivate()) 
             {
                 $this->data->addIssue ($obj->line, 'private_method', $this->scope->getScopeName(), $obj->getName());
