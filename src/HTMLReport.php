@@ -127,18 +127,17 @@ class HTMLReport
 		$issues = null;
 
 		// render
-		$m = new \Mustache_Engine (array(
+		$view = new \Mustache_Engine (array(
 			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
 		$relFilename = $this->convertPathToRelative ($filename);
 
-		$output = $m->render ('file', array (
+		$output = $view->render ('file', array (
 			'currentPath' => $relFilename,
 			'scopes'      => $scopes,
 			'lines'       => $code,
 			'date'        => date('r'),
-			// 'untestable'  => $issues['global']
 		));
 
 		$this->saveFile ($relFilename.'.html', $output);
