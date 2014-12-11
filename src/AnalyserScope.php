@@ -33,7 +33,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentClass)) 
     	{
-    		throw new \Exception ("Class not started `{$name}`");
+    		throw new \Exception ("Class not started");
     	}
 
     	$this->currentClass = null;
