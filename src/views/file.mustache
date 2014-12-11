@@ -40,7 +40,10 @@
 
 {{#lines}}
 {{#issues}}
-	<span class="label label-danger">{{type}} {{#name}}({{.}}){{/name}}</span>
+	<span class="label label-danger">
+		<a href="https://github.com/edsonmedina/php_testability/wiki/issue.{{type}}"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+		{{type}} {{#name}}({{.}}){{/name}}
+	</span> &nbsp;
 {{/issues}}
 <div class="codeline{{#issues}} bg-danger{{/issues}}"><a name="{{line}}" href="#{{line}}">{{line}}.</a>	{{code}}</div>
 {{/lines}}
