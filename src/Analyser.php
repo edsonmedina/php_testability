@@ -13,11 +13,6 @@ use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\NodeVisitors;
 
 use PhpParser;
-use PhpParser\Node;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Stmt;
-use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Expr\StaticCall;
 
 class Analyser implements AnalyserInterface
 {
@@ -32,27 +27,8 @@ class Analyser implements AnalyserInterface
 		$this->data       = $data;
 		$this->parser     = new PhpParser\Parser (new PhpParser\Lexer);
 		$this->scope      = new AnalyserScope;
-		$this->dictionary = new Dictionary;
 
-		// TODO: move this to a factory
-		$this->traverser = new PhpParser\NodeTraverser;
-		$this->traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($this->data, $this->dictionary, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\ClassVisitor      ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\TraitVisitor      ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\NewVisitor        ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\ExitVisitor       ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\MethodVisitor     ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($this->data, $this->scope));
-		$this->traverser->addVisitor (new NodeVisitors\CatchVisitor      ($this->data, $this->scope));
+		$this->traverser = (new TraverserFactory())->getInstance ($this->data, $this->scope);
 	}
 
 	/**
