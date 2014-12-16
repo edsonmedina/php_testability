@@ -198,6 +198,7 @@ class HTMLReport
 
 	/**
 	 * Generate CSV files
+	 * TODO: this method shouldn't be here, it needs a class of its own
 	 * @param string $path
 	 */
 	public function generateCSV ($path)
