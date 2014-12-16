@@ -5,6 +5,10 @@ use edsonmedina\php_testability\ReportData;
 
 class ReportDataTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::getCurrentFilename
+	 */
 	public function testSetGetCurrentFilename ()
 	{
 		$r = new ReportData;
@@ -14,6 +18,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals ('whatever.php', $r->getCurrentFilename());
 	}	
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForFile
+	 */
 	public function testGetIssuesCountForFile ()
 	{
 		$r = new ReportData;
@@ -32,6 +41,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (2, $r->getIssuesCountForFile ('file2.php'));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getFileList
+	 */
 	public function testGetFileList ()
 	{
 		$r = new ReportData;
@@ -47,6 +61,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals ($expected, $r->getFileList());
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::saveScopePosition
+	 * @covers edsonmedina\php_testability\ReportData::getScopePosition
+	 */
 	public function saveGetScopePosition ()
 	{
 		$r = new ReportData;
@@ -68,6 +87,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$r->getScopePosition ('invalid.php', 'ZZZ::doesntExist'); 
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForScope
+	 */
 	public function testGetIssuesCountForScope ()
 	{
 		$r = new ReportData;
@@ -88,6 +112,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (0, $r->getIssuesCountForScope ('whatever.php', 'Whatever::blablabla')); // doesn't exist
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 */
 	public function testGetGlobalIssuesCount ()
 	{
 		$r = new ReportData;
@@ -108,6 +137,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (0, $r->getGlobalIssuesCount ('invalid.php'));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForDirectory
+	 */
 	public function testGetIssuesCountForDirectory ()
 	{
 		$r = new ReportData;
@@ -147,6 +181,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (10, $r->getIssuesCountForDirectory($this->fixPath('dir/')));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 */
 	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndNoScope ()
 	{
 		$r = new ReportData;
@@ -161,6 +200,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (1, $r->getGlobalIssuesCount ('whatever.php'));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 */
 	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndScopes ()
 	{
 		$r = new ReportData;
@@ -174,6 +218,10 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals (3, $r->getGlobalIssuesCount ('whatever.php'));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::getFullDirList
+	 */
 	public function testGetDirList ()
 	{
 		$r = new ReportData;
@@ -194,6 +242,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals ($expected, $r->getFullDirList());
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::addIssue
+	 * @covers edsonmedina\php_testability\ReportData::isFileUntestable
+	 */
 	public function testIsFileUntestable ()
 	{
 		$r = new ReportData;
@@ -211,6 +264,10 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse ($r->isFileUntestable ('whatever.php'));
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
+	 * @covers edsonmedina\php_testability\ReportData::listDirectory
+	 */
 	public function testListDirectory ()
 	{
 		$r = new ReportData;

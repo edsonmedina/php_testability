@@ -5,6 +5,9 @@ use edsonmedina\php_testability\HTMLReport;
 
 class HTMLReportTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @covers edsonmedina\php_testability\HTMLReport::convertPathToRelative
+	 */
 	public function testConvertPathToRelative ()
 	{
 		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')->disableOriginalConstructor()->getMock();

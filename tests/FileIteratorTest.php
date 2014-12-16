@@ -5,6 +5,10 @@ use edsonmedina\php_testability\FileIterator;
 
 class FileIteratorTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @covers edsonmedina\php_testability\FileIterator::setExcludedDirs
+	 * @covers edsonmedina\php_testability\FileIterator::isDirExcluded
+	 */
 	public function testIsDirExcluded ()
 	{
 		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
@@ -22,6 +26,9 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/temp'));
 	}	
 
+	/**
+	 * @covers edsonmedina\php_testability\FileIterator::isDirExcluded
+	 */
 	public function testIsDirExcludedDefaultValues ()
 	{
 		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();

@@ -5,6 +5,9 @@ use edsonmedina\php_testability\AnalyserScope;
 
 class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::insideClass
+	 */
 	public function testInsideClass ()
 	{
 		$s = new AnalyserScope;
@@ -14,6 +17,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue ($s->insideClass());
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::startClass
+	 */
 	public function testStartClassInsideClass ()
 	{
 		$s = new AnalyserScope;
@@ -23,6 +29,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s->startClass ('whatever2');
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endClass
+	 */
 	public function testEndClass ()
 	{
 		$s = new AnalyserScope;
@@ -32,6 +41,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse ($s->insideClass());
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endClass
+	 */
 	public function testEndClassWithoutClass ()
 	{
 		$s = new AnalyserScope;
@@ -40,12 +52,18 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s->endClass();
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::inGlobalSpace
+	 */
 	public function testInGlobalSpace ()
 	{
 		$s = new AnalyserScope;
 		$this->assertTrue($s->inGlobalSpace());	
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::inGlobalSpace
+	 */
 	public function testInGlobalSpaceInsideClass ()
 	{
 		$s = new AnalyserScope;
@@ -53,6 +71,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($s->inGlobalSpace());	
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::inGlobalSpace
+	 */
 	public function testInGlobalSpaceInsideFunction ()
 	{
 		$s = new AnalyserScope;
@@ -60,6 +81,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($s->inGlobalSpace());	
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::reset
+	 */
 	public function testReset()
 	{
 		$s = new AnalyserScope;
@@ -68,6 +92,9 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($s->insideClass());	
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getClassName
+	 */
 	public function testGetClassName ()
 	{
 		$s = new AnalyserScope;
@@ -75,10 +102,33 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('whatever', $s->getClassName());	
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getClassName
+	 */
 	public function testGetClassNameWithoutClass ()
 	{
 		$s = new AnalyserScope;
 		$this->setExpectedException('\Exception');
 		$s->getClassName();
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 */
+	public function testGetScopeNameWithNoScope ()
+	{
+		$s = new AnalyserScope;
+		$this->setExpectedException('\Exception');
+		$s->getScopeName();
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 */
+	public function testGetScopeNameInFunction ()
+	{
+		$s = new AnalyserScope;
+		$s->startFunction('test1');
+		$this->assertEquals ('test1', $s->getScopeName());
 	}
 }

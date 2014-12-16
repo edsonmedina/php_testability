@@ -24,16 +24,15 @@ class Analyser implements AnalyserInterface
 
 	public function __construct (ReportDataInterface $data) 
 	{
-		$this->data       = $data;
-		$this->parser     = new PhpParser\Parser (new PhpParser\Lexer);
-		$this->scope      = new AnalyserScope;
-
+		$this->data      = $data;
+		$this->parser    = new PhpParser\Parser (new PhpParser\Lexer);
+		$this->scope     = new AnalyserScope;
 		$this->traverser = (new TraverserFactory())->getInstance ($this->data, $this->scope);
 	}
 
 	/**
 	 * Scan a php file
-	 * @param  string $filename 
+	 * @param string $filename 
 	 */
 	public function scan ($filename) 
 	{
