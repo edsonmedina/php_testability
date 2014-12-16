@@ -12,6 +12,9 @@ class Whatever
         global $boom, 
         	   $bass;
 
+        // this variable can't be relied
+        static $cache;
+
         // new instances
        	$x = new StdClass();
 
@@ -51,15 +54,11 @@ class Whatever
 
         // exit
         die('fff');
-
-        // no return
     }
 
     function __set ($name, $val)
     {
         $this->values[$name] = $val;
-
-        // no return (not reported on __set methods)
     }
 
     private function privateParts ()

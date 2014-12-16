@@ -62,6 +62,7 @@ class NodeWrapper
 		return $name;
 	}
 
+	// TODO: refactor - inline these checks
 	public function isClass() {
 		return ($this->node instanceof Stmt\Class_);
 	}
@@ -146,6 +147,10 @@ class NodeWrapper
 
 	public function isCatch() {
 		return ($this->node instanceof Stmt\Catch_);
+	}
+
+	public function isStaticVariable() {
+		return ($this->node instanceof Stmt\Static_);
 	}
 
     /**

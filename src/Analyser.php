@@ -34,6 +34,7 @@ class Analyser implements AnalyserInterface
 		$this->scope      = new AnalyserScope;
 		$this->dictionary = new Dictionary;
 
+		// TODO: move this to a factory
 		$this->traverser = new PhpParser\NodeTraverser;
 		$this->traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($this->data, $this->scope));
@@ -41,6 +42,7 @@ class Analyser implements AnalyserInterface
 		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($this->data, $this->dictionary, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($this->data, $this->scope));
+		$this->traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\ClassVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\TraitVisitor      ($this->data, $this->scope));
 		$this->traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($this->data, $this->scope));
