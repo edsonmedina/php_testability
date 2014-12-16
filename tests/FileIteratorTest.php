@@ -10,7 +10,7 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
 
 		$fileIterator = new FileIterator ('', $analyser);
-		$fileIterator->setExcludedDirs (array('whatever/thirdparty', 'other'));
+		$fileIterator->setExcludedDirs (array('whatever/thirdparty', '', 'other'));
 
 		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/thirdparty'));
 		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/other'));
@@ -34,5 +34,5 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/vendor'));
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/tmp'));
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/temp'));
-	}	
+	}
 }
