@@ -23,10 +23,8 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for super globals
-        if ($obj->isArrayDimFetch() && !$this->scope->inGlobalSpace())
+        if ($node instanceof Expr\ArrayDimFetch && !$this->scope->inGlobalSpace())
         {
             $scope = $this->scope->getScopeName();
 
@@ -34,6 +32,7 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
             {
                 if (in_array ($node->var->name, $this->_list))
                 {
+                    $obj = new NodeWrapper ($node);
                     $this->data->addIssue ($obj->line, 'super_global', $scope, '$'.$node->var->name);
                 }
             }

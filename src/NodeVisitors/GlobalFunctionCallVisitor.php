@@ -23,11 +23,10 @@ class GlobalFunctionCallVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for global function calls
-        if ($obj->isFunctionCall() && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\FuncCall && !$this->scope->inGlobalSpace()) 
         {
+            $obj = new NodeWrapper ($node);
             $functionName = $obj->getName();
 
             // skip internal php functions

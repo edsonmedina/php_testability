@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
-use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class CatchVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -20,11 +20,10 @@ class CatchVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for empty catch() statements
-        if ($obj->isCatch() && !$this->scope->inGlobalSpace() && empty($node->stmts)) 
+        if ($node instanceof Stmt\Catch_ && !$this->scope->inGlobalSpace() && empty($node->stmts)) 
         {
+            $obj = new NodeWrapper ($node);
             $this->data->addIssue ($obj->line, 'empty_catch', $this->scope->getScopeName(), '');
         }
     }

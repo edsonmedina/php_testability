@@ -20,11 +20,11 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
-        if ($obj->isStaticPropertyFetch()) 
+        if ($node instanceof Expr\StaticPropertyFetch) 
         {
+            $obj = new NodeWrapper ($node);
+
             if (!($this->scope->insideClass() && $obj->isSameClassAs($this->scope->getClassName()))) 
             {
                 $this->data->addIssue ($obj->line, 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());

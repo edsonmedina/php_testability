@@ -6,6 +6,8 @@ use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
 use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class NewVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -21,9 +23,7 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isThrow()) 
+        if ($node instanceof Stmt\Throw_) 
         {
             $this->insideThrow = true;
         }
@@ -31,15 +31,14 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for "new" statement (ie: $x = new Thing())
-        if ($obj->isNew() && !$this->scope->inGlobalSpace() && !$this->insideThrow) 
+        if ($node instanceof Expr\New_ && !$this->scope->inGlobalSpace() && !$this->insideThrow) 
         {
+            $obj = new NodeWrapper ($node);
             $this->data->addIssue ($obj->line, 'new', $this->scope->getScopeName(), $obj->getName());
         }
 
-        elseif ($obj->isThrow()) 
+        elseif ($node instanceof Stmt\Throw_) 
         {
             $this->insideThrow = false;
         }

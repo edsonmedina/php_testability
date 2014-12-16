@@ -20,10 +20,10 @@ class ClassConstantFetchVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isClassConstantFetch() && !$this->scope->inGlobalSpace())
+        if ($node instanceof Expr\ClassConstFetch && !$this->scope->inGlobalSpace())
         {
+            $obj = new NodeWrapper ($node);
+            
             // check for class constant fetch from different class ($x = OtherClass::thing)
             if ($this->scope->insideClass())
             {

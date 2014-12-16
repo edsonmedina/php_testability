@@ -20,12 +20,11 @@ class IncludeVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isInclude() && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\Include_ && !$this->scope->inGlobalSpace()) 
         {
             if ($this->scope->getScopeName() !== '__autoload') 
             {
+                $obj = new NodeWrapper ($node);
                 $this->data->addIssue ($obj->line, 'include', $this->scope->getScopeName(), $node->expr->value);
             }
         }

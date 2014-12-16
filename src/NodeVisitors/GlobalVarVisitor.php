@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
-use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -20,11 +20,10 @@ class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for global variables
-        if ($obj->isGlobal() && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Stmt\Global_ && !$this->scope->inGlobalSpace()) 
         {
+            $obj = new NodeWrapper ($node);
             $scope = $this->scope->getScopeName();
 
             foreach ($obj->getVarList() as $var) {

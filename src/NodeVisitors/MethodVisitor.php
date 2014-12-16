@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
-use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class MethodVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -20,10 +20,9 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isMethod()) 
+        if ($node instanceof Stmt\ClassMethod) 
         {
+            $obj = new NodeWrapper ($node);
             $this->scope->startMethod ($obj->getName());
             $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
 
@@ -41,10 +40,8 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // end of method or global function
-        if ($obj->isMethod()) 
+        if ($node instanceof Stmt\ClassMethod) 
         {
             $this->scope->endMethod();
         }

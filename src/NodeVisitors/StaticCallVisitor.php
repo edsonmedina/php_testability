@@ -20,11 +20,10 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
         // check for static method calls (ie: Things::doStuff())
-        if ($obj->isStaticCall() && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\StaticCall && !$this->scope->inGlobalSpace()) 
         {
+            $obj = new NodeWrapper ($node);
             $this->data->addIssue ($obj->line, 'static_call', $this->scope->getScopeName(), $obj->getName());
         }
     }

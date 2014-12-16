@@ -5,6 +5,7 @@ use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
+use PhpParser\Node\Stmt;
 
 class StaticVariableVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -20,10 +21,9 @@ class StaticVariableVisitor extends PhpParser\NodeVisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isStaticVariable()) 
+        if ($node instanceof Stmt\Static_) 
         {
+            $obj = new NodeWrapper ($node);
             $this->data->addIssue ($obj->line, 'static_var', $this->scope->getScopeName(), $obj->getName());
         }
     }

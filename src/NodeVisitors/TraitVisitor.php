@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
 
 use PhpParser;
-use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class TraitVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -20,19 +20,16 @@ class TraitVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isTrait()) 
+        if ($node instanceof Stmt\Trait_) 
         {
+            $obj = new NodeWrapper ($node);
             $this->scope->startClass ($obj->getName());
         }
     }
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        $obj = new NodeWrapper ($node);
-
-        if ($obj->isTrait()) 
+        if ($node instanceof Stmt\Trait_) 
         {
             $this->scope->endClass();
         }

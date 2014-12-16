@@ -62,95 +62,15 @@ class NodeWrapper
 		return $name;
 	}
 
-	// TODO: refactor - inline these checks
-	public function isClass() {
-		return ($this->node instanceof Stmt\Class_);
-	}
-
-	public function isTrait() {
-		return ($this->node instanceof Stmt\Trait_);
-	}
-
-	public function isFunction() {
-		return ($this->node instanceof Stmt\Function_);
-	}
-
 	public function isSameClassAs ($classname) 
 	{
 		$name = end($this->node->class->parts);
 		return ($name === $classname || $name === 'self');
 	}
 
-	public function isMethod() {
-		return ($this->node instanceof Stmt\ClassMethod);
-	}
-
-	public function isGlobal() {
-		return ($this->node instanceof Stmt\Global_);
-	}
-
-	public function isInterface() {
-		return ($this->node instanceof Stmt\Interface_);
-	}
-
-	public function isNew() {
-		return ($this->node instanceof Expr\New_);
-	}
-
-	public function isExit() {
-		return ($this->node instanceof Expr\Exit_);
-	}
-
-	public function isVariable() {
-		return ($this->node instanceof Expr\Variable);
-	}
-
-	public function isArrayDimFetch() {
-		return ($this->node instanceof Expr\ArrayDimFetch);
-	}
-
-	public function isStaticCall() {
-		return ($this->node instanceof Expr\StaticCall);
-	}
-
-	public function isClassConstantFetch() {
-		return ($this->node instanceof Expr\ClassConstFetch);
-	}
-
-	public function isStaticPropertyFetch() {
-		return ($this->node instanceof Expr\StaticPropertyFetch);
-	}
-
-	public function isFunctionCall() {
-		return ($this->node instanceof Expr\FuncCall);
-	}
-
-	public function hasChildren() {
+	public function hasChildren() 
+	{
 		return isset($this->node->stmts);
-	}
-
-	public function isUse() {
-		return ($this->node instanceof Stmt\UseUse || $this->node instanceof Stmt\Use_);
-	}
-
-	public function isNamespace() {
-		return ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name);
-	}
-
-	public function isThrow() {
-		return ($this->node instanceof Stmt\Throw_);
-	}
-
-	public function isInclude() {
-		return ($this->node instanceof Expr\Include_);
-	}
-
-	public function isCatch() {
-		return ($this->node instanceof Stmt\Catch_);
-	}
-
-	public function isStaticVariable() {
-		return ($this->node instanceof Stmt\Static_);
 	}
 
     /**
@@ -158,7 +78,16 @@ class NodeWrapper
      * @param NodeWrapper $node
      * @param bool
      */
-    public function isAllowedOnGlobalSpace () {
-        return ($this->isClass() || $this->isTrait() || $this->isFunction() || $this->isUse() || $this->isNamespace() || $this->isInterface());
+    public function isAllowedOnGlobalSpace () 
+    {
+    	// TODO use specification pattern
+        return (
+	        	$this->node instanceof Stmt\Class_
+	        	|| $this->node instanceof Stmt\Trait_ 
+	        	|| $this->node instanceof Stmt\Function_
+	        	|| ($this->node instanceof Stmt\UseUse || $this->node instanceof Stmt\Use_)
+	        	|| ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name)
+	        	|| $this->node instanceof Stmt\Interface_
+        	);
     }
 }
