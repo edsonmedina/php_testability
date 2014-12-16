@@ -179,13 +179,13 @@ class HTMLReport
 		}
 
 		// render
-		$m = new \Mustache_Engine (array(
+		$view = new \Mustache_Engine (array(
 			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
 		$relPath = $this->convertPathToRelative ($path);
 
-		$output = $m->render ('dir', array (
+		$output = $view->render ('dir', array (
 			'currentPath' => $relPath,
 			'files'       => $files,
 			'dirs'        => $dirs,
