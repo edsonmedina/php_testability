@@ -76,7 +76,7 @@ class NodeWrapper
     /**
      * Is node allowed on global space?
      * @param NodeWrapper $node
-     * @param bool
+     * @return bool
      */
     public function isAllowedOnGlobalSpace () 
     {
