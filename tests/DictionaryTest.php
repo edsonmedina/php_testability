@@ -6,6 +6,7 @@ use edsonmedina\php_testability\Dictionary;
 class DictionaryTest extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * @covers edsonmedina\php_testability\Dictionary::__construct
 	 * @covers edsonmedina\php_testability\Dictionary::isInternalFunction
 	 */
 	public function testIsInternalFunction ()
