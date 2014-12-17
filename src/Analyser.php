@@ -11,6 +11,7 @@ use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserInterface;
 use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\NodeVisitors;
+use edsonmedina\php_testability\TraverserFactory;
 
 use PhpParser;
 
@@ -27,7 +28,9 @@ class Analyser implements AnalyserInterface
 		$this->data      = $data;
 		$this->parser    = new PhpParser\Parser (new PhpParser\Lexer);
 		$this->scope     = new AnalyserScope;
-		$this->traverser = (new TraverserFactory())->getInstance ($this->data, $this->scope);
+
+		$factory = new TraverserFactory();
+		$this->traverser = $factory->getInstance ($this->data, $this->scope);
 	}
 
 	/**
