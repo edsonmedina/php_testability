@@ -68,7 +68,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentMethod)) 
     	{
-    		throw new \Exception ("Method not started `{$name}`");
+    		throw new \Exception ("Method not started");
     	}
 
     	$this->currentMethod = null;

@@ -133,6 +133,29 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 */
+	public function testGetScopeNameInClass()
+	{
+		$s = new AnalyserScope;
+		$s->startClass('class1');
+		$this->assertEquals ('class1', $s->getScopeName());
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 * @covers edsonmedina\php_testability\AnalyserScope::startClass
+	 * @covers edsonmedina\php_testability\AnalyserScope::startMethod
+	 */
+	public function testGetScopeNameInClassMethod()
+	{
+		$s = new AnalyserScope;
+		$s->startClass('class1');
+		$s->startMethod('foo');
+		$this->assertEquals ('class1::foo', $s->getScopeName());
+	}
+
+	/**
 	 * @covers edsonmedina\php_testability\AnalyserScope::startFunction
 	 */
 	public function testStartFunctionInsideClass ()
@@ -178,5 +201,41 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('\Exception');
 		$s->endFunction ('foo');
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::startMethod
+	 */
+	public function testStartMethodWithoutClass ()
+	{
+		$s = new AnalyserScope;
+
+		$this->setExpectedException('\Exception');
+		$s->startMethod ('foo');
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endMethod
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 */
+	public function testEndMethod ()
+	{
+		$s = new AnalyserScope;
+		$s->startClass('class1');
+		$s->startMethod('foo');
+		$s->endMethod('foo');
+		
+		$this->assertEquals ('class1', $s->getScopeName ());
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endMethod
+	 */
+	public function testEndMethodWithoutMethod ()
+	{
+		$s = new AnalyserScope;
+
+		$this->setExpectedException('\Exception');
+		$s->endMethod ();
 	}
 }
