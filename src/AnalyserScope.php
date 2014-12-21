@@ -88,7 +88,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentFunction)) 
     	{
-    		throw new \Exception ("Function not started `{$name}`");
+    		throw new \Exception ("Function not started");
     	}
 
     	$this->currentFunction = null;
