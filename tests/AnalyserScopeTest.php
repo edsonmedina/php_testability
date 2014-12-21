@@ -131,4 +131,52 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s->startFunction('test1');
 		$this->assertEquals ('test1', $s->getScopeName());
 	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::startFunction
+	 */
+	public function testStartFunctionInsideClass ()
+	{
+		$s = new AnalyserScope;
+		$s->startClass ('whatever');
+
+		$this->setExpectedException('\Exception');
+		$s->startFunction ('foo');
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::startFunction
+	 * @covers edsonmedina\php_testability\AnalyserScope::getScopeName
+	 */
+	public function testStartFunction ()
+	{
+		$s = new AnalyserScope;
+		$s->startFunction ('foo');
+
+		$this->assertEquals ('foo', $s->getScopeName ());
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endFunction
+	 */
+	public function testEndFunctionWithoutStart ()
+	{
+		$s = new AnalyserScope;
+
+		$this->setExpectedException('\Exception');
+		$s->endFunction ('foo');
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\AnalyserScope::endFunction
+	 */
+	public function testEndFunction ()
+	{
+		$s = new AnalyserScope;
+		$s->startFunction ('foo');
+		$s->endFunction ('foo');
+
+		$this->setExpectedException('\Exception');
+		$s->endFunction ('foo');
+	}
 }
