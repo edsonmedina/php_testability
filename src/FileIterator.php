@@ -88,7 +88,7 @@ class FileIterator
 	/**
 	 * Check for .php
 	 */
-	private function hasPhpExtension ($path)
+	protected function hasPhpExtension ($path)
 	{
 		return (substr($path, -4, 4) != '.php');
 	}
