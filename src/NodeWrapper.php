@@ -12,20 +12,21 @@ class NodeWrapper
 	public  $line;
 	public  $endLine;
 
-	public function __construct ($node) 
+	public function __construct (PhpParser\Node $node) 
 	{
 		$this->node    = $node;
 		$this->line    = $node->getLine();
 		$this->endLine = $node->getAttribute('endLine');
 	}
 
-	public function getVarList() {
+	public function getVarList() 
+	{
 		return $this->node->vars;
 	}
 
 	public function getName() 
 	{	
-		$name = '';
+		$name      = '';
 		$separator = '';
 
 		if (!empty($this->node->class->parts)) 
