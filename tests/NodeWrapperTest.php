@@ -10,10 +10,10 @@ class NodeWrapperTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetNameWithSimpleVariable ()
 	{
-		$node = new PhpParser\Node\Expr\Variable('test');
+		$node = new PhpParser\Node\Expr\Variable ('test');
 
 		$obj = new NodeWrapper ($node);
 
 		$this->assertEquals ('test', $obj->getName());
-	}	
+	}
 }
