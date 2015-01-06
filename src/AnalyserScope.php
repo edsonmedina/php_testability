@@ -23,7 +23,7 @@ class AnalyserScope
     {
     	if ($this->insideClass()) 
     	{
-    		throw new \Exception ("Can't define class `{$name}` inside class ".$this->currentClass);
+    		throw new \LogicException ("Can't define class `{$name}` inside class ".$this->currentClass);
     	}
 
     	$this->currentClass = $name;
@@ -33,7 +33,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentClass)) 
     	{
-    		throw new \Exception ("Class not started");
+    		throw new \LogicException ("Class not started");
     	}
 
     	$this->currentClass = null;
@@ -48,7 +48,7 @@ class AnalyserScope
     {
     	if (!$this->insideClass())
     	{
-    		throw new \Exception ("No class started");
+    		throw new \LogicException ("No class started");
     	}
 
     	return $this->currentClass;
@@ -58,7 +58,7 @@ class AnalyserScope
     {
     	if (!$this->insideClass())
     	{
-    		throw new \Exception ("Declaring method `{$name}` outside of class");
+    		throw new \LogicException ("Declaring method `{$name}` outside of class");
     	}
 
     	$this->currentMethod = $name;
@@ -68,7 +68,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentMethod)) 
     	{
-    		throw new \Exception ("Method not started");
+    		throw new \LogicException ("Method not started");
     	}
 
     	$this->currentMethod = null;
@@ -78,7 +78,7 @@ class AnalyserScope
     {
     	if ($this->insideClass())
     	{
-    		throw new \Exception ("Declaring global function `{$name}` inside of ".$this->currentClass."::".$this->currentMethod);
+    		throw new \LogicException ("Declaring global function `{$name}` inside of ".$this->currentClass."::".$this->currentMethod);
     	}
 
     	$this->currentFunction = $name;
@@ -88,7 +88,7 @@ class AnalyserScope
     {
     	if (is_null($this->currentFunction)) 
     	{
-    		throw new \Exception ("Function not started");
+    		throw new \LogicException ("Function not started");
     	}
 
     	$this->currentFunction = null;

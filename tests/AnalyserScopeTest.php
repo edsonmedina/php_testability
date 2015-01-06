@@ -25,7 +25,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s = new AnalyserScope;
 		$s->startClass ('whatever');
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->startClass ('whatever2');
 	}
 
@@ -48,7 +48,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	{
 		$s = new AnalyserScope;
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->endClass();
 	}
 
@@ -108,7 +108,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	public function testGetClassNameWithoutClass ()
 	{
 		$s = new AnalyserScope;
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->getClassName();
 	}
 
@@ -163,7 +163,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s = new AnalyserScope;
 		$s->startClass ('whatever');
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->startFunction ('foo');
 	}
 
@@ -186,7 +186,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	{
 		$s = new AnalyserScope;
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->endFunction ('foo');
 	}
 
@@ -199,7 +199,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 		$s->startFunction ('foo');
 		$s->endFunction ('foo');
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->endFunction ('foo');
 	}
 
@@ -210,7 +210,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	{
 		$s = new AnalyserScope;
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->startMethod ('foo');
 	}
 
@@ -235,7 +235,7 @@ class AnalyserScopeTest extends PHPUnit_Framework_TestCase
 	{
 		$s = new AnalyserScope;
 
-		$this->setExpectedException('\Exception');
+		$this->setExpectedException('\LogicException');
 		$s->endMethod ();
 	}
 }
