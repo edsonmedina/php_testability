@@ -125,3 +125,11 @@ function __autoload ($xxx)
     // require should not be reported on __autoload
     require_once 'src/'.$xxx;
 }
+
+class ThingFactory
+{
+    public function getThingX()
+    {
+        return new ThingX();
+    }
+}

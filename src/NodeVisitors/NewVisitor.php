@@ -23,6 +23,7 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
 
     public function enterNode (PhpParser\Node $node) 
     {
+        // mute inside throw statements
         if ($node instanceof Stmt\Throw_) 
         {
             $this->insideThrow = true;
@@ -35,9 +36,15 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Expr\New_ && !$this->scope->inGlobalSpace() && !$this->insideThrow) 
         {
             $obj = new NodeWrapper ($node);
-            $this->data->addIssue ($obj->line, 'new', $this->scope->getScopeName(), $obj->getName());
+            $scopeName = $this->scope->getScopeName();
+
+            if (stripos($scopeName, 'Factory') === FALSE) // do not report for factories
+            {
+                $this->data->addIssue ($obj->line, 'new', $scopeName, $obj->getName());
+            }
         }
 
+        // unmute
         elseif ($node instanceof Stmt\Throw_) 
         {
             $this->insideThrow = false;
