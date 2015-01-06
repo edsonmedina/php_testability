@@ -124,6 +124,4 @@ function __autoload ($xxx)
 {
     // require should not be reported on __autoload
     require_once 'src/'.$xxx;
-
-    // no return, should not be reported on __autoload
 }
