@@ -35,6 +35,11 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
             {
                 $this->data->addIssue ($obj->line, 'protected_method', $this->scope->getScopeName(), $obj->getName());
             }
+
+            if ($node->isFinal()) 
+            {
+                $this->data->addIssue ($obj->line, 'final_method', $this->scope->getScopeName(), $obj->getName());
+            }
         }
     }
 

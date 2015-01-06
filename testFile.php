@@ -70,6 +70,11 @@ class Whatever
     {
         // this one too
     } 
+
+    final public function finalSucks ()
+    {
+        // this function is not mockable
+    }
 }
 
 // this contains several of the same issues
