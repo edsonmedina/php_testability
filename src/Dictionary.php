@@ -1,7 +1,7 @@
 <?php
 namespace edsonmedina\php_testability;
 
-class Dictionary implements DictionaryInterface
+class Dictionary
 {
 	private $phpInternalFunctions = array ();
 

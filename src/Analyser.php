@@ -30,7 +30,7 @@ class Analyser implements AnalyserInterface
 		$this->scope     = new AnalyserScope;
 
 		$factory = new TraverserFactory();
-		$this->traverser = $factory->getInstance ($this->data, $this->scope);
+		$this->traverser = $factory->getTraverser ($this->data, $this->scope);
 	}
 
 	/**

@@ -6,6 +6,7 @@ use PhpParser;
 use edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
+use edsonmedina\php_testability\NodeWrapper;
 
 /**
  * TraverserFactory
@@ -15,27 +16,37 @@ use edsonmedina\php_testability\AnalyserScope;
  */
 class TraverserFactory
 {
-	public function getInstance (ReportDataInterface $data, AnalyserScope $scope)
+	public function getTraverser (ReportDataInterface $data, AnalyserScope $scope)
 	{
 		$traverser = new PhpParser\NodeTraverser;
-		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($data, new Dictionary(), $scope));
-		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\ClassVisitor      ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\TraitVisitor      ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\NewVisitor        ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\ExitVisitor       ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\MethodVisitor     ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($data, $scope));
-		$traverser->addVisitor (new NodeVisitors\CatchVisitor      ($data, $scope));
+		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\ClassVisitor      ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\TraitVisitor      ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\NewVisitor        ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\ExitVisitor       ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\MethodVisitor     ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\CatchVisitor      ($data, $scope, $this));
 
 		return $traverser;
+	}
+
+	public function getDictionary ()
+	{
+		return new Dictionary();
+	}
+
+	public function getNodeWrapper ($node)
+	{
+		return new NodeWrapper ($node);
 	}
 }

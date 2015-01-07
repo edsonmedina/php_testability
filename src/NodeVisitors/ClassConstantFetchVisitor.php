@@ -1,8 +1,8 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
-use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\AnalyserScope;
+use edsonmedina\php_testability\TraverserFactory;
 
 use PhpParser;
 use PhpParser\Node\Expr;
@@ -12,17 +12,18 @@ class ClassConstantFetchVisitor extends PhpParser\NodeVisitorAbstract
     private $data;
     private $scope;
 
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope)
+    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data  = $data;
-        $this->scope = $scope;
+        $this->data       = $data;
+        $this->scope      = $scope;
+        $this->factory    = $factory;
     }
 
     public function leaveNode (PhpParser\Node $node) 
     {
         if ($node instanceof Expr\ClassConstFetch && !$this->scope->inGlobalSpace())
         {
-            $obj = new NodeWrapper ($node);
+            $obj = $this->factory->getNodeWrapper ($node);
             
             // check for class constant fetch from different class ($x = OtherClass::thing)
             if ($this->scope->insideClass())
