@@ -1,10 +1,5 @@
 {{> partials/header }}
 
-<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="index.html">Browse</a></li>
-  <!-- <li><a href="dashboard.html">Dashboard</a></li> -->
-</ul>
-
 <h4>{{currentPath}} {{#untestable}}<span class="label label-danger">Untestable</span>{{/untestable}}</h4>
 
 <table class="table table-striped table-hover table-condensed">
@@ -20,11 +15,13 @@
 			<td><a href="#{{position}}">{{name}}</a></td>
 			<td>
 				{{#issues}}
-				<span class="label label-danger">{{issues}} Issues</span>
+				<a href="#{{position}}" class="btn btn-danger btn-xs" role="button">
+				  Issues <span class="badge">{{issues}}</span>
+				</a>
 				{{/issues}}
 
 				{{^issues}}
-				<span class="label label-success">Testable</span>
+				<a href="#{{position}}" class="btn btn-success btn-xs" role="button">Testable</a>
 				{{/issues}}
 			</td>
 		</tr>
