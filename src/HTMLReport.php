@@ -62,28 +62,29 @@ class HTMLReport
 
 		// Load code and line numbers into array 
 		$content = file ($filename);
-		$code    = array (array ());
+		$counter = 1;
 
-		for ($i = 1, $len = count ($content); $i <= $len; $i++) 
-		{
-			@$code[$i]['line'] = $i;
-			@$code[$i]['code'] = rtrim($content[$i-1]);
-		}
-		unset ($content);
+		$code = array_map (
+			function ($line) use (&$counter) {
+				return array ('line' => $counter++, 'code' => rtrim($line));
+			}
+		, $content);
+
+		unset($content);
 
 
 		// get scopes
 		$fileScopes = $this->data->getScopesForFile ($filename);
-		$scopes     = array ();
 
-		foreach ($fileScopes as $scope) 
-		{
-			$scopes[] = array (
-				'name'     => $scope . '()',
-				'position' => $this->data->getScopePosition ($filename, $scope),
-				'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
-			);
-		}
+		$scopes = array_map (
+			function ($scope) use ($filename) {
+				return array (
+					'name'     => $scope . '()',
+					'position' => $this->data->getScopePosition ($filename, $scope),
+					'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
+				);
+			}
+		, $fileScopes);
 
 
 		// get issues per scope / line
@@ -100,7 +101,7 @@ class HTMLReport
 					foreach ($list as $issue) 
 					{
 						list ($name, $lineNum) = $issue;
-						@$code[$lineNum]['issues'][] = array ('type' => $type, 'name' => $name);
+						@$code[$lineNum-1]['issues'][] = array ('type' => $type, 'name' => $name);
 					}
 				}
 			}
@@ -113,7 +114,7 @@ class HTMLReport
 			{
 				foreach (array_keys($list) as $lineNum) 
 				{
-					@$code[$lineNum]['issues'][] = array ('type' => $type);
+					@$code[$lineNum-1]['issues'][] = array ('type' => $type);
 				}
 			}
 
