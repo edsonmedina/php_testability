@@ -63,11 +63,13 @@ class Testability
 
 
 		// code coverage 
+		/*
 		if ($this->cloverXML) {
 			echo "\n\nImporting clover report...\n";
 			$clover = file_get_contents ($this->cloverXML);
 			echo "NOT IMPLEMENTED YET. SORRY.\n";
 		}
+		*/
 
 
 		// generate HTML report

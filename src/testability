@@ -37,7 +37,7 @@ $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report (default: report)')->default('./report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude (comma-separated) directories (default: tests,.git,.svn,vendor,tmp,temp)')->default('tests,.git,vendor,tmp,temp');
 $cmd->option('debug')->alias('g')->describeAs('Output debugging information (and debug.log)')->boolean();
-$cmd->option('clover')->describeAs('Import clover xml report')->file();
+//$cmd->option('clover')->describeAs('Import clover xml report')->file();
 $cmd->option('csvtotals')->describeAs('Output CSV files for total issue counts. This can be used with Jenkin\'s Plot plugin. Takes filename as argument. These files are generated under each directory of the HTML report.')->boolean();
 
 // run
@@ -53,6 +53,6 @@ define ('DEBUG', $cmd['debug']);
 
 $testability = new Testability ($path, $cmd['output']);
 $testability->setExcludeDirs   ($excludeDirs);
-$testability->setCloverReport  ($cmd['clover']);
+//$testability->setCloverReport  ($cmd['clover']);
 $testability->setCSV ($cmd['csvtotals']);
 $testability->runReport();
