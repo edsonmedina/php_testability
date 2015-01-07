@@ -4,7 +4,6 @@ use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\TraverserFactory;
 use PhpParser;
-use PhpParser\Node\Expr;
 
 class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
 {
