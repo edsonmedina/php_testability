@@ -2,7 +2,6 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\TraitVisitor;
-use edsonmedina\php_testability\TraverserFactory;
 
 class TraitVisitorTest extends PHPUnit_Framework_TestCase
 {
@@ -95,7 +94,7 @@ class TraitVisitorTest extends PHPUnit_Framework_TestCase
 
 		$scope->expects($this->once())->method('startClass')->with('foo');
 
-        // node
+        // node wrapper
 		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
 		             ->disableOriginalConstructor()
 		             ->getMock();
