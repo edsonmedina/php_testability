@@ -8,8 +8,13 @@ php:
   - hhvm
 
 before_script:
-  - composer self-update
   - composer update
 
 script: bin/phpunit tests/AllTests.php
 
+install:
+  - composer self-update
+  - wget https://scrutinizer-ci.com/ocular.phar
+
+after_script:
+  - php ocular.phar code-coverage:upload --format=php-clover clover.xml
