@@ -3,7 +3,6 @@ namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\TraverserFactory;
-
 use PhpParser;
 use PhpParser\Node\Stmt;
 

@@ -38,7 +38,7 @@ class FileIterator
 
 	/** 
 	 * Scans (recursively) the path and runs the analyser for each file
-	 * @param  string $path File or directory
+	 * @param string $path File or directory
 	 */
 	public function iterate ($path)
 	{
@@ -64,7 +64,9 @@ class FileIterator
 	}
 
 	/**
-	 * Exclude filter for directories
+	 * Is this path excluded from the scan?
+	 * @param string $path
+	 * @return bool
 	 */
 	public function isDirExcluded ($path)
 	{
@@ -86,11 +88,13 @@ class FileIterator
 	}
 
 	/**
-	 * Check for .php
+	 * Check for .php extension in filename
+	 * @param string $filename
+	 * @return bool
 	 */
-	protected function hasPhpExtension ($path)
+	protected function hasPhpExtension ($filename)
 	{
-		return (substr($path, -4, 4) != '.php');
+		return (substr($filename, -4, 4) != '.php');
 	}
 
 	/**

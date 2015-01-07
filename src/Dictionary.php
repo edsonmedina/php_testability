@@ -11,6 +11,11 @@ class Dictionary
 		$this->phpInternalFunctions = array_fill_keys($list['internal'], true);
 	}
 
+	/**
+	 * Is this a php internal function?
+	 * @param string $functionName
+	 * @return bool
+	 */
 	public function isInternalFunction ($functionName)
 	{
 		return isset ($this->phpInternalFunctions[$functionName]);
