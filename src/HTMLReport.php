@@ -69,7 +69,7 @@ class HTMLReport
 			@$code[$i]['line'] = $i;
 			@$code[$i]['code'] = rtrim($content[$i-1]);
 		}
-		$content = null;
+		unset ($content);
 
 
 		// get scopes
@@ -124,7 +124,7 @@ class HTMLReport
 			);
 		}
 
-		$issues = null;
+		unset ($issues);
 
 		// render
 		$view = new \Mustache_Engine (array(
