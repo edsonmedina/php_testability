@@ -11,6 +11,7 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
+    private $factory;
     private $_list = array ('GLOBALS','_SERVER','_GET','_POST','_FILES','_COOKIE','_SESSION','_REQUEST','_ENV');
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)

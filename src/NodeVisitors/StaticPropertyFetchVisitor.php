@@ -11,6 +11,7 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
     private $scope;
+    private $factory;
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {

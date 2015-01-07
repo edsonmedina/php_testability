@@ -12,6 +12,7 @@ class StaticVariableVisitor extends PhpParser\NodeVisitorAbstract
     private $data;
     private $insideThrow = false;
     private $scope;
+    private $factory;
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
