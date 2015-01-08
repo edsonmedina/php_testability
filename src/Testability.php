@@ -47,15 +47,15 @@ class Testability
 		// run
 		$data     = new ReportData ();
 		$analyser = (new AnalyserFactory)->create ($data);
-		$iterator = new FileIterator ($this->path, $analyser);
+		$files = new FileIterator ($analyser);
 
 		if (!empty($this->excludeDirs)) {
-			$iterator->setExcludedDirs (explode(',', $this->excludeDirs));
+			$files->setExcludedDirs (explode(',', $this->excludeDirs));
 		}
 
 		echo "\nPHP_Testability by Edson Medina\n";
 		echo "Analysing code on \"".$this->path."\"...\n";
-		$iterator->run ();
+		$files->iterate ($this->path);
 
 		$scan_ts   = microtime (TRUE);
 		$scan_time = number_format ($scan_ts - $start_ts, 2);
@@ -84,7 +84,7 @@ class Testability
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
 
 		echo "Done (Total: {$total_time}s).\n\n";
-		echo $iterator->getProcessedFilesCount()." processed files.\n";
+		echo $files->getProcessedFilesCount()." processed files.\n";
 		echo number_format (memory_get_peak_usage()/1024/1024, 2)." Mbytes of memory used\n\n";
 	}
 }

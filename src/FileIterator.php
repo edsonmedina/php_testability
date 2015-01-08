@@ -9,31 +9,18 @@ namespace edsonmedina\php_testability;
 
 class FileIterator 
 {
-	private $baseDir;
 	private $analyser;
-
 	private $excludedDirs = array ();
-
 	private $processedFilesCount;
 
 	/**
 	 * Runs the static analyser
-	 * @param  string $baseDir Codebase directory
 	 * @param  Analyser $analyser Static code analysis class
 	 */
-	public function __construct ($baseDir, AnalyserInterface $analyser)
+	public function __construct (AnalyserInterface $analyser)
 	{
-		$this->baseDir  = $baseDir;
 		$this->analyser = $analyser;
-	}
-
-	/**
-	 * Iterate files
-	 */
-	public function run ()
-	{
 		$this->processedFilesCount = 0;
-		$this->iterate ($this->baseDir);
 	}
 
 	/** 

@@ -13,7 +13,7 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 	{
 		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
 
-		$fileIterator = new FileIterator ('', $analyser);
+		$fileIterator = new FileIterator ($analyser);
 		$fileIterator->setExcludedDirs (array('whatever/thirdparty', '', 'other'));
 
 		$this->assertTrue ($fileIterator->isDirExcluded('bla/whatever/thirdparty'));
@@ -33,7 +33,7 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 	{
 		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
 
-		$fileIterator = new FileIterator ('', $analyser);
+		$fileIterator = new FileIterator ($analyser);
 
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/somedir'));
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/tests'));
@@ -42,4 +42,17 @@ class FileIteratorTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/tmp'));
 		$this->assertFalse ($fileIterator->isDirExcluded('bla/whatever/temp'));
 	}
+
+	/**
+	 * @covers edsonmedina\php_testability\FileIterator::__construct
+	 * @covers edsonmedina\php_testability\FileIterator::getProcessedFilesCount 
+	 */
+	public function testGetProcessedFilesCountAtStart ()
+	{
+		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
+
+		$fileIterator = new FileIterator ($analyser);
+
+		$this->assertTrue (0 === $fileIterator->getProcessedFilesCount());
+	}	
 }
