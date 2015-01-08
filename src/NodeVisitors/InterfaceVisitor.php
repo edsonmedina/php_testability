@@ -14,9 +14,9 @@ class InterfaceVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function enterNode (PhpParser\Node $node) 
