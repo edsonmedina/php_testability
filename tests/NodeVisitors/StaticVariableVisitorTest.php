@@ -1,13 +1,13 @@
 <?php
 
 require_once __DIR__.'/../../vendor/autoload.php';
-use edsonmedina\php_testability\NodeVisitors\StaticCallVisitor;
+use edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor;
 
-class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
+class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
@@ -25,39 +25,13 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new StaticCallVisitor ($data, $scope, $factory);
+		$visitor = new StaticVariableVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
-	 */
-	public function testLeaveNodeInGlobalSpace ()
-	{
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->getMock();
-
-		$scope->method ('inGlobalSpace')->willReturn (true);
-
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
-
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$visitor = new StaticCallVisitor ($data, $scope, $factory);
-		$visitor->leaveNode ($node);
-	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
@@ -71,7 +45,7 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		     ->method('addIssue')
 		     ->with(
 		           $this->equalTo(7),
-		           $this->equalTo('static_call'),
+		           $this->equalTo('static_var'),
 		           $this->equalTo('someScopeName'),
 		           $this->equalTo('foo')
 		       );
@@ -81,7 +55,6 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
-		$scope->method ('inGlobalSpace')->willReturn (false);
 		$scope->method ('getScopeName')->willReturn ('someScopeName');
 
         // node wrapper
@@ -98,13 +71,13 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
 
 		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
+		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$node->method ('getLine')->willReturn (7);
 
-		$visitor = new StaticCallVisitor ($data, $scope, $factory);
+		$visitor = new StaticVariableVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}	
 }
