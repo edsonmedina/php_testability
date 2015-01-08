@@ -1,13 +1,13 @@
 <?php
 
 require_once __DIR__.'/../../vendor/autoload.php';
-use edsonmedina\php_testability\NodeVisitors\ExitVisitor;
+use edsonmedina\php_testability\NodeVisitors\StaticCallVisitor;
 
-class ExitVisitorTest extends PHPUnit_Framework_TestCase
+class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
@@ -25,13 +25,13 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ExitVisitor ($data, $scope, $factory);
+		$visitor = new StaticCallVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
@@ -47,17 +47,17 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 
 		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
+		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ExitVisitor ($data, $scope, $factory);
+		$visitor = new StaticCallVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
@@ -71,32 +71,41 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		     ->method('addIssue')
 		     ->with(
 		           $this->equalTo(7),
-		           $this->equalTo('exit'),
+		           $this->equalTo('static_call'),
 		           $this->equalTo('someScopeName'),
-		           $this->equalTo('')
+		           $this->equalTo('foo')
 		       );
 
 		// scope
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		              ->disableOriginalConstructor()
-		              ->setMethods(array('inGlobalSpace','getScopeName'))
 		              ->getMock();
 
 		$scope->method ('inGlobalSpace')->willReturn (false);
 		$scope->method ('getScopeName')->willReturn ('someScopeName');
 
+        // node wrapper
+		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+
+		$nodewrapper->method ('getName')->willReturn ('foo');
+
 		// factory
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		                ->getMock();
+
+		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
 
 		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
+		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		             ->disableOriginalConstructor()
 		             ->setMethods(array('getLine'))
 		             ->getMock();
 
 		$node->method ('getLine')->willReturn (7);
 
-		$visitor = new ExitVisitor ($data, $scope, $factory);
+		$visitor = new StaticCallVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}	
 }
