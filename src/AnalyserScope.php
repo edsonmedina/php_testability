@@ -19,6 +19,10 @@ class AnalyserScope
         $this->currentFunction = null;
     }
 
+    /**
+     * Set current class name
+     * @param string $name
+     */
     public function startClass ($name)
     {
     	if ($this->insideClass()) 
@@ -29,6 +33,9 @@ class AnalyserScope
     	$this->currentClass = $name;
     }
 
+    /**
+     * End current class 
+     */
     public function endClass ()
     {
     	if (is_null($this->currentClass)) 
@@ -39,11 +46,19 @@ class AnalyserScope
     	$this->currentClass = null;
     }
 
+    /**
+     * Are we currently inside a class?
+     * @return bool
+     */
     public function insideClass ()
     {
     	return !(is_null($this->currentClass));
     }
 
+    /**
+     * Get current class name
+     * @return string $name
+     */
     public function getClassName ()
     {
     	if (!$this->insideClass())
@@ -54,6 +69,10 @@ class AnalyserScope
     	return $this->currentClass;
     }
 
+    /**
+     * Set current method name
+     * @param string $name
+     */
     public function startMethod ($name)
     {
     	if (!$this->insideClass())
@@ -64,6 +83,9 @@ class AnalyserScope
     	$this->currentMethod = $name;
     }
 
+    /**
+     * End current method name
+     */
     public function endMethod ()
     {
     	if (is_null($this->currentMethod)) 
@@ -74,6 +96,10 @@ class AnalyserScope
     	$this->currentMethod = null;
     }
 
+    /**
+     * Set current function name
+     * @param string $name
+     */
     public function startFunction ($name)
     {
     	if ($this->insideClass())
@@ -84,6 +110,9 @@ class AnalyserScope
     	$this->currentFunction = $name;
     }
 
+    /**
+     * End current function name
+     */
     public function endFunction ()
     {
     	if (is_null($this->currentFunction)) 

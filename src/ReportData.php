@@ -60,7 +60,7 @@ class ReportData implements ReportDataInterface
 
 	/**
 	 * Returns the recursive sum of issues for path
-	 * @param  string $path 
+	 * @param  string $filename 
 	 * @return integer 
 	 */
 	public function getIssuesCountForFile ($filename)
@@ -253,7 +253,7 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Get global isses for file
+	 * Get global issues for file
 	 * @param string $filename
 	 * @return array
 	 */
@@ -269,8 +269,9 @@ class ReportData implements ReportDataInterface
 	}
 
 	/**
-	 * Get scoped isses for file
+	 * Get scoped issues for file
 	 * @param string $filename
+	 * @param string $scope
 	 * @return array
 	 */
 	public function getIssuesForScope ($filename, $scope)
