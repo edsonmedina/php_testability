@@ -7,7 +7,7 @@
 namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\FileIterator;
-use edsonmedina\php_testability\Analyser;
+use edsonmedina\php_testability\AnalyserFactory;
 use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\HTMLReport;
 
@@ -46,7 +46,7 @@ class Testability
 
 		// run
 		$data     = new ReportData ();
-		$analyser = new Analyser ($data);
+		$analyser = (new AnalyserFactory)->create ($data);
 		$iterator = new FileIterator ($this->path, $analyser);
 
 		if (!empty($this->excludeDirs)) {

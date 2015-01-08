@@ -21,14 +21,12 @@ class Analyser implements AnalyserInterface
 	private $traverser;
 	private $scope;
 
-	public function __construct (ReportDataInterface $data) 
+	public function __construct (ReportDataInterface $data, PhpParser\Parser $parser, AnalyserScope $scope, TraverserFactory $factory) 
 	{
 		$this->data      = $data;
-		$this->parser    = new PhpParser\Parser (new PhpParser\Lexer);
-		$this->scope     = new AnalyserScope;
-
-		$factory = new TraverserFactory();
-		$this->traverser = $factory->getTraverser ($this->data, $this->scope);
+		$this->parser    = $parser;
+		$this->scope     = $scope;
+		$this->traverser = $factory->createTraverser ($this->data, $this->scope);
 	}
 
 	/**

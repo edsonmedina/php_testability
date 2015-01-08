@@ -15,16 +15,16 @@ class TraverserFactoryTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\TraverserFactory::getTraverser
+	 * @covers edsonmedina\php_testability\TraverserFactory::createTraverser
 	 */
-	public function testGetTraverser ()
+	public function testCreateTraverser ()
 	{
 		$factory = new TraverserFactory();
 
 		$data_stub  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
 		$scope_stub = $this->getMock('edsonmedina\php_testability\AnalyserScope');
 
-		$traverser = $factory->getTraverser ($data_stub, $scope_stub);
+		$traverser = $factory->createTraverser ($data_stub, $scope_stub);
 
 		$this->assertInstanceOf ('PhpParser\NodeTraverser', $traverser);
 	}	

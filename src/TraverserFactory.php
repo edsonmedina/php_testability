@@ -23,7 +23,7 @@ class TraverserFactory
 	 * @param AnalyserScope $scope
 	 * @return PhpParser\NodeTraverser
 	 */
-	public function getTraverser (ReportDataInterface $data, AnalyserScope $scope)
+	public function createTraverser (ReportDataInterface $data, AnalyserScope $scope)
 	{
 		$traverser = new PhpParser\NodeTraverser;
 		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($data, $scope, $this));
