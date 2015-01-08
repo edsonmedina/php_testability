@@ -4,9 +4,10 @@ namespace edsonmedina\php_testability;
 
 use PhpParser;
 use edsonmedina\php_testability\NodeVisitors;
+use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\Dictionary;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\NodeWrapper;
 
 /**
  * TraverserFactory
@@ -16,6 +17,12 @@ use edsonmedina\php_testability\NodeWrapper;
  */
 class TraverserFactory
 {
+	/**
+	 * Create a node traverser object 
+	 * @param ReportDataInterface $data
+	 * @param AnalyserScope $scope
+	 * @return PhpParser\NodeTraverser
+	 */
 	public function getTraverser (ReportDataInterface $data, AnalyserScope $scope)
 	{
 		$traverser = new PhpParser\NodeTraverser;
@@ -40,12 +47,21 @@ class TraverserFactory
 		return $traverser;
 	}
 
+	/**
+	 * Create a dictionary object 
+	 * @return Dictionary
+	 */
 	public function getDictionary ()
 	{
 		return new Dictionary();
 	}
 
-	public function getNodeWrapper ($node)
+	/**
+	 * Create a node wrapper object
+	 * @param PhpParser\Node $node
+	 * @return NodeWrapper
+	 */
+	public function getNodeWrapper (PhpParser\Node $node)
 	{
 		return new NodeWrapper ($node);
 	}
