@@ -24,8 +24,7 @@ class CatchVisitor extends PhpParser\NodeVisitorAbstract
         // check for empty catch() statements
         if ($node instanceof Stmt\Catch_ && !$this->scope->inGlobalSpace() && empty($node->stmts)) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-            $this->data->addIssue ($obj->line, 'empty_catch', $this->scope->getScopeName(), '');
+            $this->data->addIssue ($node->getLine(), 'empty_catch', $this->scope->getScopeName(), '');
         }
     }
 }

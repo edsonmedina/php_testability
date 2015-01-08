@@ -34,7 +34,7 @@ class GlobalFunctionCallVisitor extends PhpParser\NodeVisitorAbstract
                 return;
             }
 
-            $this->data->addIssue ($obj->line, 'global_function_call', $this->scope->getScopeName(), $functionName);
+            $this->data->addIssue ($node->getLine(), 'global_function_call', $this->scope->getScopeName(), $functionName);
         }
     }
 }

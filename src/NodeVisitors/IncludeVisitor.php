@@ -14,9 +14,9 @@ class IncludeVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -25,8 +25,7 @@ class IncludeVisitor extends PhpParser\NodeVisitorAbstract
         {
             if ($this->scope->getScopeName() !== '__autoload') 
             {
-                $obj = $this->factory->getNodeWrapper ($node);
-                $this->data->addIssue ($obj->line, 'include', $this->scope->getScopeName(), $node->expr->value);
+                $this->data->addIssue ($node->getLine(), 'include', $this->scope->getScopeName(), $node->expr->value);
             }
         }
     }

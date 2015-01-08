@@ -14,9 +14,9 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function enterNode (PhpParser\Node $node) 
@@ -25,22 +25,22 @@ class MethodVisitor extends PhpParser\NodeVisitorAbstract
         {
             $obj = $this->factory->getNodeWrapper ($node);
             $this->scope->startMethod ($obj->getName());
-            $this->data->saveScopePosition ($this->scope->getScopeName(), $obj->line);
+            $this->data->saveScopePosition ($this->scope->getScopeName(), $node->getLine());
 
             // report non public methods
             if ($node->isPrivate()) 
             {
-                $this->data->addIssue ($obj->line, 'private_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'private_method', $this->scope->getScopeName(), $obj->getName());
             }
             elseif ($node->isProtected()) 
             {
-                $this->data->addIssue ($obj->line, 'protected_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'protected_method', $this->scope->getScopeName(), $obj->getName());
             }
 
             // report final methods
             if ($node->isFinal()) 
             {
-                $this->data->addIssue ($obj->line, 'final_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'final_method', $this->scope->getScopeName(), $obj->getName());
             }
         }
     }

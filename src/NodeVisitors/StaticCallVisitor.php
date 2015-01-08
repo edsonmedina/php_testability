@@ -14,9 +14,9 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -25,7 +25,7 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Expr\StaticCall && !$this->scope->inGlobalSpace()) 
         {
             $obj = $this->factory->getNodeWrapper ($node);
-            $this->data->addIssue ($obj->line, 'static_call', $this->scope->getScopeName(), $obj->getName());
+            $this->data->addIssue ($node->getLine(), 'static_call', $this->scope->getScopeName(), $obj->getName());
         }
     }
 }

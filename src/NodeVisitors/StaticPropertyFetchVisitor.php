@@ -14,9 +14,9 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -28,7 +28,7 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
 
             if (!($this->scope->insideClass() && $obj->isSameClassAs($this->scope->getClassName()))) 
             {
-                $this->data->addIssue ($obj->line, 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
             } 
         }
     }

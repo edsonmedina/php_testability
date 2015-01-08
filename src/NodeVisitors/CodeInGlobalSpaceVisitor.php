@@ -25,7 +25,7 @@ class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
         // check for code outside of classes/functions
         if ($this->scope->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
         {
-            $this->data->addIssue ($obj->line, 'code_on_global_space');
+            $this->data->addIssue ($node->getLine(), 'code_on_global_space');
         }
     }
 }

@@ -17,9 +17,9 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function enterNode (PhpParser\Node $node) 
@@ -41,7 +41,7 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
 
             if (stripos($scopeName, 'Factory') === FALSE) // do not report for factories
             {
-                $this->data->addIssue ($obj->line, 'new', $scopeName, $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'new', $scopeName, $obj->getName());
             }
         }
 
