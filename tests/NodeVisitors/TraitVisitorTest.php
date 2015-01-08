@@ -6,6 +6,7 @@ use edsonmedina\php_testability\NodeVisitors\TraitVisitor;
 class TraitVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::enterNode
 	 */
 	public function testEnterNodeWithDifferentType ()
@@ -29,6 +30,7 @@ class TraitVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -52,6 +54,7 @@ class TraitVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
@@ -78,6 +81,7 @@ class TraitVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\TraitVisitor::enterNode
 	 */
 	public function testEnterNode ()

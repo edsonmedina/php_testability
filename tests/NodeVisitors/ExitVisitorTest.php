@@ -7,6 +7,7 @@ use edsonmedina\php_testability\TraverserFactory;
 class ExitVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -30,6 +31,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
@@ -55,6 +57,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ExitVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
