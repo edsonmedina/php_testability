@@ -19,7 +19,29 @@ class DictionaryTest extends PHPUnit_Framework_TestCase
 		// user function
 		$this->assertFalse ($d->isInternalFunction ('__autoload'));
 
-		// non-existent function
+		// user function
 		$this->assertFalse ($d->isInternalFunction ('blablabla123'));
 	}
+
+	/**
+	 * @covers edsonmedina\php_testability\Dictionary::__construct
+	 * @covers edsonmedina\php_testability\Dictionary::isClassSafeForInstantiation
+	 */
+	public function testIsClassSafeForInstantiation ()
+	{
+		$d = new Dictionary;
+
+		// safe classes
+		$this->assertTrue ($d->isClassSafeForInstantiation ('DateTime'));
+		$this->assertTrue ($d->isClassSafeForInstantiation ('RecursiveArrayIterator'));
+		$this->assertTrue ($d->isClassSafeForInstantiation ('SplHeap'));		
+
+		// unsafe classes
+		$this->assertFalse ($d->isClassSafeForInstantiation ('PDO'));
+		$this->assertFalse ($d->isClassSafeForInstantiation ('SoapClient'));
+
+		// user class
+		$this->assertFalse ($d->isClassSafeForInstantiation ('edsonmedina\php_testability\Dictionary'));
+		$this->assertFalse ($d->isClassSafeForInstantiation ('SomeClass'));
+	}	
 }

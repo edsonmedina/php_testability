@@ -1,5 +1,7 @@
 <?php
 
+error_reporting (E_ALL);
+
 /**
  * This is a test file, with several issues that 
  * should be reported by testability.
@@ -16,7 +18,9 @@ class Whatever
         static $cache;
 
         // new instances
-       	$x = new StdClass();
+       	$x  = new StdClass(); // should be fine
+        $dt = new DateTime (); // should be fine
+        $db = new PDO(); // should be reported
 
         // Static property of another class
        	$a = OtherClass::thing;
