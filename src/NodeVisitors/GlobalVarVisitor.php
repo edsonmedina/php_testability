@@ -14,9 +14,9 @@ class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -25,10 +25,10 @@ class GlobalVarVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Stmt\Global_ && !$this->scope->inGlobalSpace()) 
         {
             $obj = $this->factory->getNodeWrapper ($node);
-            $scope = $this->scope->getScopeName();
+            $scopeName = $this->scope->getScopeName();
 
             foreach ($obj->getVarList() as $var) {
-                $this->data->addIssue ($var->getLine(), 'global', $scope, '$'.$var->name);
+                $this->data->addIssue ($var->getLine(), 'global', $scopeName, '$'.$var->name);
             }
         }
     }
