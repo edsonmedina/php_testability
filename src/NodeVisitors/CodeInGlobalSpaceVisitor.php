@@ -13,19 +13,22 @@ class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
+        $this->data    = $data;
+        $this->scope   = $scope;
+        $this->factory = $factory;
     }
 
     public function enterNode (PhpParser\Node $node) 
     {
-        $obj = $this->factory->getNodeWrapper ($node);
-
         // check for code outside of classes/functions
-        if ($this->scope->inGlobalSpace() && !$obj->isAllowedOnGlobalSpace())
+        if ($this->scope->inGlobalSpace())
         {
-            $this->data->addIssue ($node->getLine(), 'code_on_global_space');
+            $obj = $this->factory->getNodeWrapper ($node);
+
+            if (!$obj->isAllowedOnGlobalSpace())
+            {
+                $this->data->addIssue ($node->getLine(), 'code_on_global_space');
+            }
         }
     }
 }
