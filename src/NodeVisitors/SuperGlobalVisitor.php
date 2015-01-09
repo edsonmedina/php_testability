@@ -25,14 +25,10 @@ class SuperGlobalVisitor extends PhpParser\NodeVisitorAbstract
         // check for super globals
         if ($node instanceof Expr\ArrayDimFetch && !$this->scope->inGlobalSpace())
         {
-            $scope = $this->scope->getScopeName();
-
-            if ($node->var->name)
+var_dump ($node->name->toString());die();
+            if ($node->var->name && in_array ($node->var->name, $this->_list))
             {
-                if (in_array ($node->var->name, $this->_list))
-                {
-                    $this->data->addIssue ($node->getLine(), 'super_global', $scope, '$'.$node->var->name);
-                }
+                $this->data->addIssue ($node->getLine(), 'super_global', $this->scope->getScopeName(), '$'.$node->var->name);
             }
         }
     }
