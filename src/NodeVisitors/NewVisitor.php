@@ -45,6 +45,8 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
             {
                 $name = $obj->getName();
 
+                // only report internal php classes if not safe for
+                // instantiation (ie: with external resources)
                 if (!$this->dictionary->isClassSafeForInstantiation($name))
                 {
                     $this->data->addIssue ($node->getLine(), 'new', $scopeName, $name);
