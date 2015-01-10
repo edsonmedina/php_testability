@@ -14,6 +14,7 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 
 		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		                    ->disableOriginalConstructor()
+		                    ->setMethods(array('inGlobalSpace'))
 		                    ->getMock();	
 
 		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
@@ -22,10 +23,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 
 		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
 		                      ->getMock();
-
-		$this->nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                          ->disableOriginalConstructor()
-		                          ->getMock();
 	}
 
 	/**
@@ -49,11 +46,13 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
-		$this->nodewrapper->method ('isAllowedOnGlobalSpace')->willReturn (true);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setMethods(array('isAllowedOnGlobalSpace'))
+		                ->getMock();	
 
-		$this->factory->method ('getNodeWrapper')->willReturn ($this->nodewrapper);
+		$visitor->method ('isAllowedOnGlobalSpace')->willReturn (true);
 
-		$visitor = new CodeInGlobalSpaceVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->enterNode ($this->node);
 	}
 
@@ -65,10 +64,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
-		$this->nodewrapper->method ('isAllowedOnGlobalSpace')->willReturn (false);
-
-		$this->factory->method ('getNodeWrapper')->willReturn ($this->nodewrapper);
-
 		$this->node->method ('getLine')->willReturn (7);
 
 		$this->data->expects($this->once())->method('addIssue')
@@ -77,7 +72,31 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		           $this->equalTo('code_on_global_space')
 		       );
 
-		$visitor = new CodeInGlobalSpaceVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setMethods(array('isAllowedOnGlobalSpace'))
+		                ->getMock();	
+
+		$visitor->method ('isAllowedOnGlobalSpace')->willReturn (false);
+
 		$visitor->enterNode ($this->node);
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::__construct
+	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::isAllowedOnGlobalSpace
+	 */
+	public function testIsAllowedOnGlobalSpace ()
+	{
+		$visitor = new CodeInGlobalSpaceVisitor ($this->data, $this->scope, $this->factory);
+
+		// not allowed
+		$this->assertFalse ($visitor->isAllowedOnGlobalSpace ($this->node));
+
+		$functionNode = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
+		                     ->disableOriginalConstructor()
+		                     ->getMock();
+		// allowed
+		$this->assertFalse ($visitor->isAllowedOnGlobalSpace ($functionNode));
 	}
 }

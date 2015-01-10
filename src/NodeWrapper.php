@@ -73,21 +73,4 @@ class NodeWrapper
 	{
 		return isset($this->node->stmts);
 	}
-
-    /**
-     * Is node allowed on global space?
-     * @return bool
-     */
-    public function isAllowedOnGlobalSpace () 
-    {
-    	// TODO use specification pattern
-        return (
-	        	$this->node instanceof Stmt\Class_
-	        	|| $this->node instanceof Stmt\Trait_ 
-	        	|| $this->node instanceof Stmt\Function_
-	        	|| ($this->node instanceof Stmt\UseUse || $this->node instanceof Stmt\Use_)
-	        	|| ($this->node instanceof Stmt\Namespace_ || $this->node instanceof Node\Name)
-	        	|| $this->node instanceof Stmt\Interface_
-        	);
-    }
 }
