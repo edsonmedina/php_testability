@@ -30,12 +30,12 @@ class ClassConstantFetchVisitor extends PhpParser\NodeVisitorAbstract
             {
                 if (!$obj->isSameClassAs($this->scope->getClassName()))
                 {
-                    $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
+                    $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
                 } 
             }
             else
             {
-                $this->data->addIssue ($obj->line, 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
             }
         }
     }
