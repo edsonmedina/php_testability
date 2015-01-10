@@ -97,6 +97,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		                     ->disableOriginalConstructor()
 		                     ->getMock();
 		// allowed
-		$this->assertFalse ($visitor->isAllowedOnGlobalSpace ($functionNode));
+		$this->assertTrue ($visitor->isAllowedOnGlobalSpace ($functionNode));
 	}
 }
