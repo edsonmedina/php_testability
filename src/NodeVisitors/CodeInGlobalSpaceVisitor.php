@@ -4,6 +4,8 @@ use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\TraverserFactory;
 use PhpParser;
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
 
 class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
 {
@@ -35,7 +37,7 @@ class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
      * @param PhpParser\Node $node
      * @return bool
      */
-    public function isAllowedOnGlobalSpace ($node) 
+    public function isAllowedOnGlobalSpace (PhpParser\Node $node) 
     {
         return (
                 $node instanceof Stmt\Class_
