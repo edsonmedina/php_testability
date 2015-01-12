@@ -6,6 +6,7 @@ use edsonmedina\php_testability\NodeWrapper;
 class NodeWrapperTest extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::__construct
 	 * @covers edsonmedina\php_testability\NodeWrapper::getName
 	 */
 	public function testGetNameWithSimpleVariable ()
@@ -18,6 +19,7 @@ class NodeWrapperTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::__construct
 	 * @covers edsonmedina\php_testability\NodeWrapper::getName
 	 */
 	public function testGetNameWithVariableName ()
@@ -32,10 +34,12 @@ class NodeWrapperTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::__construct
 	 * @covers edsonmedina\php_testability\NodeWrapper::getName
 	 */
 	public function testGetNameWithVariableClass ()
 	{
+		// $test::bar()
 		$name = new PhpParser\Node\Expr\Variable ('test');
 
 		$node = new PhpParser\Node\Expr\StaticCall ($name, 'bar');
@@ -45,34 +49,40 @@ class NodeWrapperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals ('<variable>::bar', $obj->getName());
 	}
 
-	// /**
-	//  * @covers edsonmedina\php_testability\NodeWrapper::getName
-	//  */
-	// public function testGetNameNewAnonymousCall ()
-	// {
-	// 	// = new $test();
-	// 	$var  = new PhpParser\Node\Expr\Variable ('test');
-	// 	$node = new PhpParser\Node\Expr\New_ ($var);
+	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::__construct
+	 * @covers edsonmedina\php_testability\NodeWrapper::getName
+	 */
+	public function testGetNameStaticCallVariable ()
+	{
+		// foo::$bar();
+		$class  = new PhpParser\Node\Name ('foo');
+		$method = new PhpParser\Node\Expr\Variable ('bar');
+		$node   = new PhpParser\Node\Expr\StaticCall ($class, $method);
 
-	// 	$obj = new NodeWrapper ($node);
+		$obj = new NodeWrapper ($node);
 
-	// 	$this->assertEquals ('test', $obj->getName());
-	// }
+		$this->assertEquals ('foo::<variable>', $obj->getName());
+	}
 
-	// /**
-	//  * @covers edsonmedina\php_testability\NodeWrapper::getName
-	//  */
-	// public function testGetNameArrayDim ()
-	// {
-	// 	// = new $foo["bar"]();
-	// 	$arr  = new PhpParser\Node\Expr\Variable ('foo');
-	// 	$dim  = new PhpParser\Node\Scalar\String ('bar');
+	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::__construct
+	 * @covers edsonmedina\php_testability\NodeWrapper::getName
+	 */
+	public function testGetNameArrayDim ()
+	{
+		// Test::$foo["bar"]();
+		$arr  = new PhpParser\Node\Expr\Variable ('foo');
+		$dim  = new PhpParser\Node\Scalar\String ('bar');
 
-	// 	$subnode  = new PhpParser\Node\Expr\ArrayDimFetch ($arr, $dim);
-	// 	$node = new PhpParser\Node\Expr\New_ ($subnode);
+		$subnode  = new PhpParser\Node\Expr\ArrayDimFetch ($arr, $dim);
 
-	// 	$obj = new NodeWrapper ($node);
+		$class  = new PhpParser\Node\Name ('Test');
 
-	// 	$this->assertEquals ('$foo["bar"]', $obj->getName());
-	// }
+		$node   = new PhpParser\Node\Expr\StaticCall ($class, $subnode);
+
+		$obj = new NodeWrapper ($node);
+
+		$this->assertEquals ('Test::<variable>', $obj->getName());
+	}
 }
