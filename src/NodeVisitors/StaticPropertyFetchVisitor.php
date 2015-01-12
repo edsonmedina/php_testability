@@ -32,7 +32,7 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
         }
     }
 
-    public function isFetchingFromSelf ($node) 
+    public function isFetchingFromSelf (Expr\StaticPropertyFetch $node) 
     {
         if (!$this->scope->insideClass()) 
         {
