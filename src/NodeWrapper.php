@@ -47,12 +47,7 @@ class NodeWrapper
 		} 
 		elseif ($this->node->name instanceof Expr\ArrayDimFetch) 
 		{
-			$name .= $separator;
-			if (!empty($this->node->name->name)) {
-				$name .= $this->node->name->name;
-			} else {
-				$name .= '<variable>';	
-			}
+			$name .= $separator.'<variable>';	
 		} 
 		else
 		{
