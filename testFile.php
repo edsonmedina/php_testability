@@ -15,7 +15,7 @@ class Whatever
         	   $bass;
 
         // this variable can't be relied
-        static $cache;
+        static $cache, $cache2;
 
         // new instances
        	$x  = new StdClass(); // should be fine
@@ -30,6 +30,11 @@ class Whatever
 
         // Static method call, dynamic class
         $xx::doBadThings();
+        ${$varobj}::method();
+        Test::$foobar();
+        Test::$foo['bar']();
+        $test['thing']::do_it();
+
 
         // Static method call, same class
         self::methodMan();
@@ -55,6 +60,7 @@ class Whatever
 
         // global function call
         dothis();
+        $thingToDo();
 
         // exit
         die('fff');
