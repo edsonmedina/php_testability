@@ -31,6 +31,20 @@ class NodeWrapperTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals ('foo\\bar::dance', $obj->getName());
 	}
 
+	/**
+	 * @covers edsonmedina\php_testability\NodeWrapper::getName
+	 */
+	public function testGetNameWithVariableClass ()
+	{
+		$name = new PhpParser\Node\Expr\Variable ('test');
+
+		$node = new PhpParser\Node\Expr\StaticCall ($name, 'bar');
+
+		$obj = new NodeWrapper ($node);
+
+		$this->assertEquals ('<variable>::bar', $obj->getName());
+	}
+
 	// /**
 	//  * @covers edsonmedina\php_testability\NodeWrapper::getName
 	//  */
