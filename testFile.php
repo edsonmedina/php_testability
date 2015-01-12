@@ -48,6 +48,7 @@ class Whatever
         // includes are dangerous
         include $dir.'dangerousFile.php';
         include_once 'dangerousFile2.php';
+        include_once __DIR__.'/dangerousFile3.php';
 
         // Callables (should be supported in the future)
         array_map ('Blah::something', array(1,2,3));
