@@ -25,7 +25,10 @@ class StaticVariableVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Stmt\Static_) 
         {
             $obj = $this->factory->getNodeWrapper ($node);
-            $this->data->addIssue ($node->getLine(), 'static_var', $this->scope->getScopeName(), $obj->getName());
+
+            foreach ($obj->getVarList() as $var) {
+                $this->data->addIssue ($node->getLine(), 'static_var', $this->scope->getScopeName(), '$'.$var->name);
+            }
         }
     }
 }
