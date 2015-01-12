@@ -16,7 +16,7 @@ class Testability
 	private $path;
 	private $excludeDirs;
 	private $reportDir;
-	private $cloverXML;
+	//private $cloverXML;
 	private $shouldOutputCSV;
 
 	public function __construct ($path, $reportDir)

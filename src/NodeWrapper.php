@@ -4,7 +4,6 @@ namespace edsonmedina\php_testability;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Stmt;
 
 class NodeWrapper
 {

@@ -17,7 +17,6 @@ class Analyser implements AnalyserInterface
 {
 	private $data;
 	private $parser;
-	private $dictionary;
 	private $traverser;
 	private $scope;
 

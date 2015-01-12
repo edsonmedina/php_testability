@@ -7,7 +7,6 @@ class ReportData implements ReportDataInterface
 {
 	private $currentFilename = null;
 	private $issues     = array ();
-	private $fileIssues = array ();
 	private $info       = array ();
 
 	/**

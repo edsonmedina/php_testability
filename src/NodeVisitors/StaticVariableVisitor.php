@@ -9,7 +9,6 @@ use PhpParser\Node\Stmt;
 class StaticVariableVisitor extends PhpParser\NodeVisitorAbstract
 {
     private $data;
-    private $insideThrow = false;
     private $scope;
     private $factory;
 
