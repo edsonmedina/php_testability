@@ -66,48 +66,4 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
 		$this->assertFalse ($visitor->isFetchingFromSelf ($this->node));
 	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::leaveNode
-	 */
-	/*
-	public function testLeaveNodeInsideClass ()
-	{
-		// data
-		$this->data->expects($this->once())
-		     ->method('addIssue')
-		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('static_var'),
-		           $this->equalTo('someScopeName'),
-		           $this->equalTo('$foo')
-		       );
-
-		// scope
-		$this->scope->method ('getScopeName')->willReturn ('someScopeName');
-
-        // node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();
-
-		$nodewrapper->method ('getVarList')->willReturn (array (
-			(object) array ('name' => 'foo')
-		));
-
-		// factory
-		$this->factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
-
-		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$node->method ('getLine')->willReturn (7);
-
-		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($node);
-	}
-	*/
 }

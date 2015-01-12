@@ -57,34 +57,4 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->node);
 	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::__construct
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
-	 */
-	/*
-	public function testLeaveNode ()
-	{
-		$this->scope->method ('inGlobalSpace')->willReturn (false);
-		$this->scope->method ('getScopeName')->willReturn ('foo');
-
-		$this->node->method ('getLine')->willReturn (7);
-		$this->node2->method ('getLine')->willReturn (9);
-
-		$this->nodewrapper->method ('getVarList')->willReturn (array($this->node, $this->node2));
-
-		$this->factory->method ('getNodeWrapper')->willReturn ($this->nodewrapper);
-
-		$this->data->expects($this->once())->method('addIssue')
-		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('global'),
-		           $this->equalTo('foo'),
-		           $this->equalTo('$aaa')
-		       );
-
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($this->node);
-	}
-	*/
 }
