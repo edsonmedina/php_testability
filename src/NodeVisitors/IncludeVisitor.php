@@ -25,7 +25,8 @@ class IncludeVisitor extends PhpParser\NodeVisitorAbstract
         {
             if ($this->scope->getScopeName() !== '__autoload') 
             {
-                $this->data->addIssue ($node->getLine(), 'include', $this->scope->getScopeName(), $node->expr->value);
+                $includeName = empty($node->expr->value) ? '<expression>' : $node->expr->value;
+                $this->data->addIssue ($node->getLine(), 'include', $this->scope->getScopeName(), $includeName);
             }
         }
     }
