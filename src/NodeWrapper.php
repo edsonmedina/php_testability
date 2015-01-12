@@ -29,16 +29,12 @@ class NodeWrapper
 		$name      = '';
 		$separator = '';
 
-		if (!empty($this->node->class->parts)) 
+		if (isset($this->node->class)) 
 		{
-			if (is_array($this->node->class->parts)) 
-			{
-				// fully qualified names
-				$name .= join ('\\', $this->node->class->parts);
-			} 
-			else 
-			{
-				$name .= $this->node->class->parts;
+			if (isset($this->node->class->parts)) {
+				$name .= $this->node->class->toString ('\\');
+			} else {
+				$name .= '<variable>';
 			}
 
 			$separator = '::';
@@ -46,11 +42,17 @@ class NodeWrapper
 
 		if ($this->node->name instanceof Expr\Variable) 
 		{
-			$name .= $separator . $this->node->getAttribute('name');
+			$nodeName = $this->node->getAttribute('name');
+			$name .= $separator. (!empty($nodeName) ? $nodeName : '<variable>');
 		} 
 		elseif ($this->node->name instanceof Expr\ArrayDimFetch) 
 		{
-			$name .= 'variable function';
+			$name .= $separator;
+			if (!empty($this->node->name->name)) {
+				$name .= $this->node->name->name;
+			} else {
+				$name .= '<variable>';	
+			}
 		} 
 		else
 		{
