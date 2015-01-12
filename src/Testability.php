@@ -30,10 +30,12 @@ class Testability
 		$this->excludeDirs = $exclude;
 	}
 
+	/*
 	public function setCloverReport ($file)
 	{
 		$this->cloverXML = $file;
 	}
+	*/
 
 	public function setCSV ($value)
 	{
