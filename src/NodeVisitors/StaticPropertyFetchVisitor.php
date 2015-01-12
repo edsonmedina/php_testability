@@ -24,12 +24,23 @@ class StaticPropertyFetchVisitor extends PhpParser\NodeVisitorAbstract
         // check for static property fetch from different class ($x = OtherClass::$nameOfThing)
         if ($node instanceof Expr\StaticPropertyFetch) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-
-            if (!($this->scope->insideClass() && $obj->isSameClassAs($this->scope->getClassName()))) 
+            if (!$this->isFetchingFromSelf ($node)) 
             {
+                $obj = $this->factory->getNodeWrapper ($node);
                 $this->data->addIssue ($node->getLine(), 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
             } 
         }
+    }
+
+    public function isFetchingFromSelf ($node) 
+    {
+        if (!$this->scope->insideClass()) 
+        {
+            return false;
+        }
+
+        $name = end ($node->class->parts);
+
+        return ($name === $this->scope->getClassName() || $name === 'self');
     }
 }
