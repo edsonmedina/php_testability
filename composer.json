@@ -15,11 +15,10 @@
             "edsonmedina\\php_testability\\NodeVisitors" : "src\\NodeVisitors"
         }
     },
-    "minimum-stability": "dev",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.3.3",
-        "nikic/php-parser": "1.0.*-dev",
+        "nikic/php-parser": "dev-master",
         "nategood/commando": "*",
         "mustache/mustache": "~2.5"
     },
