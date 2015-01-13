@@ -26,6 +26,7 @@ class TraverserFactory
 	public function createTraverser (ReportDataInterface $data, AnalyserScope $scope)
 	{
 		$traverser = new PhpParser\NodeTraverser;
+		$traverser->addVisitor (new NodeVisitors\CodeCoverageIgnoreVisitor  ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($data, $scope, $this));

@@ -86,6 +86,16 @@ class Whatever
     {
         // this function is not mockable
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function immune () 
+    {
+        global $y;
+        $x = new Whatever (Things::thing);
+        doThisGlobalThing();
+    }
 }
 
 // this contains several of the same issues
