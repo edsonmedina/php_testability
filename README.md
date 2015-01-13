@@ -17,7 +17,8 @@ Add `edsonmedina/php_testability` as a dependency to your project's `composer.js
     {
         "require-dev": {
             "edsonmedina/php_testability": "dev-master"
-        }
+        },
+        "minimum-stability": "dev"
     }
 
 And run `composer update`.
