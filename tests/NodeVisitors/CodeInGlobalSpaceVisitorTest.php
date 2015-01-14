@@ -31,10 +31,18 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeNotInGlobalSpace ()
 	{
-		$this->scope->method ('inGlobalSpace')
-		            ->willReturn (false);
+		$this->scope->method ('inGlobalSpace')->willReturn (false);
 
-		$visitor = new CodeInGlobalSpaceVisitor ($this->data, $this->scope, $this->factory);
+		// do not report!
+		$this->data->expects ($this->never())->method('addIssue');
+
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setMethods(array('isAllowedOnGlobalSpace'))
+		                ->getMock();	
+
+		$visitor->expects ($this->never())->method ('isAllowedOnGlobalSpace');
+
 		$visitor->enterNode ($this->node);
 	}
 
@@ -45,6 +53,9 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	public function testEnterNodeWithAllowedObjInGlobalSpace ()
 	{
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
+
+		// do not report!
+		$this->data->expects ($this->never())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
 		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
@@ -89,6 +100,8 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	public function testIsAllowedOnGlobalSpace ()
 	{
 		$visitor = new CodeInGlobalSpaceVisitor ($this->data, $this->scope, $this->factory);
+
+		$this->data->expects ($this->never())->method('addIssue');
 
 		// not allowed
 		$this->assertFalse ($visitor->isAllowedOnGlobalSpace ($this->node));

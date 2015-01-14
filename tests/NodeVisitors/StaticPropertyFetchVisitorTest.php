@@ -50,7 +50,7 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 		                ->setMethods (array('isFetchingFromSelf'))
 		                ->getMock();
 
-		$visitor->method ('isFetchingFromSelf')->willReturn ('true');
+		$visitor->method ('isFetchingFromSelf')->willReturn (true);
 
 		$visitor->leaveNode ($this->node);
 	}
