@@ -16,7 +16,7 @@ Add `edsonmedina/php_testability` as a dependency to your project's `composer.js
 
     {
         "require-dev": {
-            "edsonmedina/php_testability": "@dev"
+            "edsonmedina/php_testability": "*@dev"
         }
     }
 
@@ -24,7 +24,7 @@ And run `composer update`.
 
 Or alternatively, just run:
 
-    composer require edsonmedina/php_testability "@dev"
+    composer require edsonmedina/php_testability "*@dev"
 
 # Usage
 
