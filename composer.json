@@ -16,10 +16,9 @@
         }
     },
     "license": "GPL-2.0+",
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "nikic/php-parser": "*@dev",
+        "nikic/php-parser": "*",
         "nategood/commando": "*",
         "mustache/mustache": "~2.5"
     },
