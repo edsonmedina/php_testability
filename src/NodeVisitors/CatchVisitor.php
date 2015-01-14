@@ -22,9 +22,13 @@ class CatchVisitor extends PhpParser\NodeVisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for empty catch() statements
-        if ($node instanceof Stmt\Catch_ && !$this->scope->inGlobalSpace() && empty($node->stmts)) 
+        if ($node instanceof Stmt\Catch_ && !$this->scope->inGlobalSpace()) 
         {
-            $this->data->addIssue ($node->getLine(), 'empty_catch', $this->scope->getScopeName(), '');
+            $obj = $this->factory->getNodeWrapper ($node);
+            if (!$obj->hasChildren())
+            {
+                $this->data->addIssue ($node->getLine(), 'empty_catch', $this->scope->getScopeName(), '');
+            }
         }
     }
 }

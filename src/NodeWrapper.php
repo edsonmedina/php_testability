@@ -67,6 +67,6 @@ class NodeWrapper
 
 	public function hasChildren() 
 	{
-		return isset($this->node->stmts);
+		return !empty($this->node->stmts);
 	}
 }
