@@ -15,7 +15,6 @@
             "edsonmedina\\php_testability\\NodeVisitors" : "src\\NodeVisitors"
         }
     },
-    "minimum-stability": "dev",
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.3.3",
