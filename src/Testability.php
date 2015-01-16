@@ -49,7 +49,7 @@ class Testability
 		// run
 		$data     = new ReportData ();
 		$analyser = (new AnalyserFactory)->create ($data);
-		$files = new FileIterator ($analyser);
+		$files    = new FileIterator ($analyser);
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
@@ -76,7 +76,8 @@ class Testability
 
 		// generate HTML report
 		echo "Generating report to {$this->reportDir} ... ";
-		$report = new HTMLReport ($this->path, $this->reportDir, $data, $this->shouldOutputCSV); 
+		$baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
+		$report = new HTMLReport ($baseDir, $this->reportDir, $data, $this->shouldOutputCSV); 
 		$report->generate ();
 
 		$report_ts   = microtime (TRUE);

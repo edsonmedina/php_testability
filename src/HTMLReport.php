@@ -191,7 +191,7 @@ class HTMLReport
 			'files'       => $files,
 			'dirs'        => $dirs,
 			'date'        => date('r'),
-			'isBaseDir' => ($this->baseDir === $path)
+			'isBaseDir'   => ($this->baseDir === $path)
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		
@@ -239,6 +239,7 @@ class HTMLReport
 	 */
 	public function convertPathToRelative ($path)
 	{
-		return substr ($path, strlen($this->baseDir)+1);
+		$newPath = substr ($path, strlen($this->baseDir)+1);
+		return $newPath;
 	}
 }
