@@ -41,7 +41,7 @@ class FileIterator
 				$this->iterate ($path.DIRECTORY_SEPARATOR.$fileInfo->getFilename());
 			}
 		}
-		elseif (is_file ($path) && !$this->hasPhpExtension($path))
+		elseif (is_file ($path) && $this->hasPhpExtension($path))
 		{
 			// process file
 			$this->analyser->scan ($path);
@@ -81,7 +81,7 @@ class FileIterator
 	 */
 	protected function hasPhpExtension ($filename)
 	{
-		return (substr($filename, -4, 4) != '.php');
+		return (substr($filename, -4, 4) == '.php');
 	}
 
 	/**
