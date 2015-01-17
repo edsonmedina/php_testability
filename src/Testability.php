@@ -47,9 +47,8 @@ class Testability
 		$start_ts  = microtime (TRUE);
 
 		// run
-		$data     = new ReportData ();
-		$analyser = (new AnalyserFactory)->create ($data);
-		$files    = new FileIterator ($analyser);
+		$data  = new ReportData ();
+		$files = (new FileIteratorFactory)->create($data);
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
