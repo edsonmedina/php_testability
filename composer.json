@@ -23,7 +23,8 @@
         "mustache/mustache": "~2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "phpspec/prophecy": "~1.0"
     },
     "bin": [
         "src/testability"
