@@ -19,7 +19,9 @@ class FileIteratorFactory
 {
 	public function create (ReportDataInterface $data)
 	{
-		$analyser = (new AnalyserFactory)->create ($data);
+		$analyserFactory = new AnalyserFactory;
+		
+		$analyser = $analyserFactory->create ($data);
 		return new FileIterator ($analyser);
 	}
 }
