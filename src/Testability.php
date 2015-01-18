@@ -7,7 +7,6 @@
 namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\FileIterator;
-use edsonmedina\php_testability\AnalyserFactory;
 use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\HTMLReport;
 

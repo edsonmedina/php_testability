@@ -17,7 +17,7 @@ class Analyser implements AnalyserInterface
 {
 	private $data;
 	private $parser;
-	private $traverser;
+	private $factory;
 	private $scope;
 
 	public function __construct (ReportDataInterface $data, PhpParser\Parser $parser, AnalyserScope $scope, TraverserFactory $factory) 
