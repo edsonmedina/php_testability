@@ -1,7 +1,9 @@
 <?php
 
 require_once __DIR__.'/../../vendor/autoload.php';
+
 use edsonmedina\php_testability\NodeVisitors\CatchVisitor;
+use Prophecy\Argument;
 
 class CatchVisitorTest extends PHPUnit_Framework_TestCase
 {
@@ -11,24 +13,23 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
+		$prophet = new Prophecy\Prophet;
+
+		$data    = $prophet->prophesize('edsonmedina\php_testability\ReportData');
+		$scope   = $prophet->prophesize('edsonmedina\php_testability\AnalyserScope');
+		$factory = $prophet->prophesize('edsonmedina\php_testability\TraverserFactory');
+		//$node    = $prophet->prophesize('PhpParser\Node\Stmt\Class_');
+
+		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$data->expects($this->never())->method('addIssue');
+		$data->addIssue(Argument::any())->shouldNotBeCalled();	
 
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->getMock();
-		              
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
-
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$visitor = new CatchVisitor ($data, $scope, $factory);
+		$visitor = new CatchVisitor ($data->reveal(), $scope->reveal(), $factory->reveal());
 		$visitor->leaveNode ($node);
+
+		$prophet->checkPredictions();
 	}
 
 	/**
