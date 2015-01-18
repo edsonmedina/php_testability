@@ -18,7 +18,7 @@
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.3.3",
-        "nikic/php-parser": "1.0.*",
+        "nikic/php-parser": "1.1.0",
         "nategood/commando": "*",
         "mustache/mustache": "~2.5"
     },
