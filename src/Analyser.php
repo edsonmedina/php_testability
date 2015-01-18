@@ -22,10 +22,10 @@ class Analyser implements AnalyserInterface
 
 	public function __construct (ReportDataInterface $data, PhpParser\Parser $parser, AnalyserScope $scope, TraverserFactory $factory) 
 	{
-		$this->data      = $data;
-		$this->parser    = $parser;
-		$this->scope     = $scope;
-		$this->traverser = $factory->createTraverser ($this->data, $this->scope);
+		$this->data    = $data;
+		$this->parser  = $parser;
+		$this->scope   = $scope;
+		$this->factory = $factory;
 	}
 
 	/**
@@ -45,7 +45,8 @@ class Analyser implements AnalyserInterface
 			$this->scope->reset();
 			$this->data->setCurrentFilename ($filename);
 		    
-		    $this->traverser->traverse ($stmts);
+			$traverser = $this->factory->createTraverser ($this->data, $this->scope);
+		    $traverser->traverse ($stmts);
 		} 
 		catch (PhpParser\Error $e)
 		{
