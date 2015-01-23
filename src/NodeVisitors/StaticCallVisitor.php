@@ -28,7 +28,7 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
             $obj = $this->factory->getNodeWrapper ($node);
 
             $name = $obj->getName();
-            $className = explode('::', $name)[0];
+            list ($className) = explode('::', $name);
 
             // only report static method calls for php classes that are 
             // not safe for instantiation (ie: with external resources)
