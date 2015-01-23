@@ -39,11 +39,16 @@ class Whatever
         // Static method call, same class
         self::methodMan();
 
+        // static method call, whitelisted class
+        $x = DateTime::createFromFormat ($x, time());
+
+
         // Parent class method call
         parent::methodMan();
 
         // Static constant from same class
        	$b = Whatever::notThisOne;
+
 
         // includes are dangerous
         include $dir.'dangerousFile.php';

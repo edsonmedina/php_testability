@@ -48,18 +48,15 @@ class Dictionary
 			return false;
 		}
 
-		// check if it's a php native class
-		if (in_array ($className, array_map ('strtolower', get_declared_classes())))
+		// check if it's in the black list
+		if (in_array ($className, $this->classesUnsafeForInstantiation))
 		{
-			// check if it's in the black list
-			if (in_array ($className, $this->classesUnsafeForInstantiation))
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			return false;
+		}
+		// check if it's a php native class
+		elseif (in_array ($className, array_map ('strtolower', get_declared_classes())))
+		{
+			return true;
 		}		
 
 		return false;

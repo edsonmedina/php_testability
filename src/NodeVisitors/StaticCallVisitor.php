@@ -14,9 +14,10 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
 
     public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
     {
-        $this->data    = $data;
-        $this->scope   = $scope;
-        $this->factory = $factory;
+        $this->data       = $data;
+        $this->scope      = $scope;
+        $this->factory    = $factory;
+        $this->dictionary = $factory->getDictionary();
     }
 
     public function leaveNode (PhpParser\Node $node) 
@@ -25,7 +26,16 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
         if ($node instanceof Expr\StaticCall && !$this->scope->inGlobalSpace()) 
         {
             $obj = $this->factory->getNodeWrapper ($node);
-            $this->data->addIssue ($node->getLine(), 'static_call', $this->scope->getScopeName(), $obj->getName());
+
+            $name = $obj->getName();
+            $className = explode('::', $name)[0];
+
+            // only report static method calls for php classes that are 
+            // not safe for instantiation (ie: with external resources)
+            if (!$this->dictionary->isClassSafeForInstantiation($className))
+            {
+                $this->data->addIssue ($node->getLine(), 'static_call', $this->scope->getScopeName(), $obj->getName());
+            }
         }
     }
 }
