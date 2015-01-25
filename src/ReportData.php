@@ -20,11 +20,11 @@ class ReportData implements ReportDataInterface
 	{
 		if (is_null($scope)) 
 		{
-			@$this->issues[$this->currentFilename]['global'][$type][$line] = true;
+			$this->issues[$this->currentFilename]['global'][$type][$line] = true;
 		} 
 		else
 		{
-			@$this->issues[$this->currentFilename]['scoped'][$scope][$type][] = array ($identifier, $line);
+			$this->issues[$this->currentFilename]['scoped'][$scope][$type][] = array ($identifier, $line);
 		}
 	}
 

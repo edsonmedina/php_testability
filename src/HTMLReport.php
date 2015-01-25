@@ -101,7 +101,7 @@ class HTMLReport
 					foreach ($list as $issue) 
 					{
 						list ($name, $lineNum) = $issue;
-						@$code[$lineNum-1]['issues'][] = array ('type' => $type, 'name' => $name);
+						$code[$lineNum-1]['issues'][] = array ('type' => $type, 'name' => $name);
 					}
 				}
 			}
@@ -114,7 +114,7 @@ class HTMLReport
 			{
 				foreach (array_keys($list) as $lineNum) 
 				{
-					@$code[$lineNum-1]['issues'][] = array ('type' => $type);
+					$code[$lineNum-1]['issues'][] = array ('type' => $type);
 				}
 			}
 
