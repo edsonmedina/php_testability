@@ -52,7 +52,7 @@ class ReportData implements ReportDataInterface
 	/**
 	 * For debugging purposes.
 	 */
-	public function _dumpAllIssues ()
+	public function dumpAllIssues ()
 	{
 		return $this->issues;
 	}

@@ -6,7 +6,6 @@ use edsonmedina\php_testability\NodeVisitors\StaticCallVisitor;
 class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -30,7 +29,6 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
@@ -56,7 +54,6 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithSafeClass ()
@@ -110,7 +107,6 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
 	 */
 	public function testLeaveNode ()

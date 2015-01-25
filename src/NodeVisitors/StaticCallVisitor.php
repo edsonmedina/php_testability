@@ -1,25 +1,11 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
-use edsonmedina\php_testability\ReportDataInterface;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\VisitorAbstract;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
+class StaticCallVisitor extends VisitorAbstract
 {
-    private $data;
-    private $scope;
-    private $factory;
-
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
-    {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
-        $this->dictionary = $factory->getDictionary();
-    }
-
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for static method calls (ie: Things::doStuff())
@@ -32,7 +18,9 @@ class StaticCallVisitor extends PhpParser\NodeVisitorAbstract
 
             // only report static method calls for php classes that are 
             // not safe for instantiation (ie: with external resources)
-            if (!$this->dictionary->isClassSafeForInstantiation($className))
+            $dictionary = $this->factory->getDictionary();
+            
+            if (!$dictionary->isClassSafeForInstantiation($className))
             {
                 $this->data->addIssue ($node->getLine(), 'static_call', $this->scope->getScopeName(), $obj->getName());
             }

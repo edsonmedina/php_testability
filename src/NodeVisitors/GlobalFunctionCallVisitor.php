@@ -1,36 +1,23 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
-use edsonmedina\php_testability\ReportDataInterface;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\VisitorAbstract;
 use PhpParser;
 use PhpParser\Node\Expr;
 
-class GlobalFunctionCallVisitor extends PhpParser\NodeVisitorAbstract
+class GlobalFunctionCallVisitor extends VisitorAbstract
 {
-    private $data;
-    private $dictionary;
-    private $scope;
-    private $factory;
-
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
-    {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
-        $this->dictionary = $factory->getDictionary();
-    }
-
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for global function calls
         if ($node instanceof Expr\FuncCall && !$this->scope->inGlobalSpace()) 
         {
+            $dictionary = $this->factory->getDictionary();
+
             $obj = $this->factory->getNodeWrapper ($node);
             $functionName = $obj->getName();
 
             // skip internal php functions
-            if ($this->dictionary->isInternalFunction ($functionName)) {
+            if ($dictionary->isInternalFunction ($functionName)) {
                 return;
             }
 

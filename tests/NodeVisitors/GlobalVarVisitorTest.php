@@ -37,7 +37,6 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -47,7 +46,6 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()

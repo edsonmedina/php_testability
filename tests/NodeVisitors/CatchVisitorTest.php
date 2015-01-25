@@ -8,7 +8,6 @@ use Prophecy\Argument;
 class CatchVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -33,7 +32,6 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
@@ -61,7 +59,6 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithChildren ()
@@ -102,7 +99,6 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::leaveNode
 	 */
 	public function testLeaveNode ()

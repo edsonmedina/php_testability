@@ -1,28 +1,14 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
-use edsonmedina\php_testability\ReportDataInterface;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\VisitorAbstract;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
-class NewVisitor extends PhpParser\NodeVisitorAbstract
+class NewVisitor extends VisitorAbstract
 {
-    private $data;
     private $insideThrow = false;
-    private $scope;
-    private $factory;
-    private $dictionary;
-
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
-    {
-        $this->data       = $data;
-        $this->scope      = $scope;
-        $this->factory    = $factory;
-        $this->dictionary = $factory->getDictionary();
-    }
 
     public function enterNode (PhpParser\Node $node) 
     {
@@ -45,9 +31,11 @@ class NewVisitor extends PhpParser\NodeVisitorAbstract
             {
                 $name = $obj->getName();
 
+                $dictionary = $this->factory->getDictionary();
+
                 // only report internal php classes if not safe for
                 // instantiation (ie: with external resources)
-                if (!$this->dictionary->isClassSafeForInstantiation($name))
+                if (!$dictionary->isClassSafeForInstantiation($name))
                 {
                     $this->data->addIssue ($node->getLine(), 'new', $scopeName, $name);
                 }

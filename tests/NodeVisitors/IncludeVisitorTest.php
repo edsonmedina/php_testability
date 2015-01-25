@@ -9,7 +9,6 @@ use PhpParser\Node\Expr\Variable;
 class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNodeWithDifferentType ()
@@ -33,7 +32,6 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNodeInGlobalSpace ()
@@ -59,7 +57,6 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNodeWithAutoloader ()
@@ -87,7 +84,6 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNode ()

@@ -6,7 +6,6 @@ use edsonmedina\php_testability\NodeVisitors\ClassVisitor;
 class ClassVisitorTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::enterNode
 	 */
 	public function testEnterNodeWithDifferentType ()
@@ -24,7 +23,6 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -42,7 +40,6 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
@@ -66,7 +63,6 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::enterNode
 	 */
 	public function testEnterNode ()

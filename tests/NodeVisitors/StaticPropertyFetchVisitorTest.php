@@ -29,7 +29,6 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -39,7 +38,6 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::leaveNode
 	 */
 	public function testLeaveNodeFetchingFromSelf()
@@ -56,7 +54,6 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::isFetchingFromSelf
 	 */
 	public function testIsFetchingFromSelfOutsideOfClass()

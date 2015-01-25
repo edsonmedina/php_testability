@@ -20,7 +20,6 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -34,7 +33,6 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNode ()

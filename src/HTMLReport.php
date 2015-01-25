@@ -46,7 +46,7 @@ class HTMLReport
 
 		if (DEBUG) {
 			echo "Generating debug.log...\n";
-			file_put_contents ('debug.log', json_encode ($this->data->_dumpAllIssues(), JSON_PRETTY_PRINT));
+			file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
 		}
 	}
 

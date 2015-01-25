@@ -25,7 +25,6 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -35,7 +34,6 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()

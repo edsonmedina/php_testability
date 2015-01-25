@@ -26,7 +26,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
@@ -42,7 +41,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
@@ -64,7 +62,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithInternalFunction ()
@@ -106,7 +103,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNode ()

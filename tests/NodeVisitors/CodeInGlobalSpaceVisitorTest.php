@@ -26,7 +26,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testLeaveNodeNotInGlobalSpace ()
@@ -47,7 +46,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testEnterNodeWithAllowedObjInGlobalSpace ()
@@ -68,7 +66,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testEnterNode ()
@@ -94,7 +91,6 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::__construct
 	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::isAllowedOnGlobalSpace
 	 */
 	public function testIsAllowedOnGlobalSpace ()

@@ -1,25 +1,12 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
-use edsonmedina\php_testability\ReportDataInterface;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\VisitorAbstract;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 
-class CodeInGlobalSpaceVisitor extends PhpParser\NodeVisitorAbstract
+class CodeInGlobalSpaceVisitor extends VisitorAbstract
 {
-    private $data;
-    private $scope;
-    private $factory;
-
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
-    {
-        $this->data    = $data;
-        $this->scope   = $scope;
-        $this->factory = $factory;
-    }
-
     public function enterNode (PhpParser\Node $node) 
     {
         // check for code outside of classes/functions
