@@ -8,7 +8,7 @@ class ClassVisitor extends VisitorAbstract
 {
     public function enterNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Stmt\Class_) 
+        if ($this->isClass($node)) 
         {
             $obj = $this->factory->getNodeWrapper ($node);
             $this->scope->startClass ($obj->getName());
@@ -21,5 +21,14 @@ class ClassVisitor extends VisitorAbstract
         {
             $this->scope->endClass();
         }
+    }
+
+    public function isClass ($node)
+    {
+        return (
+            $node instanceof Stmt\Class_ || 
+            $node instanceof Stmt\Interface_ || 
+            $node instanceof Stmt\Trait_
+        );
     }
 }

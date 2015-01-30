@@ -36,8 +36,6 @@ class TraverserFactory
 		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\ClassVisitor      ($data, $scope, $this));
-		$traverser->addVisitor (new NodeVisitors\TraitVisitor      ($data, $scope, $this));
-		$traverser->addVisitor (new NodeVisitors\InterfaceVisitor  ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\NewVisitor        ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\ExitVisitor       ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($data, $scope, $this));
