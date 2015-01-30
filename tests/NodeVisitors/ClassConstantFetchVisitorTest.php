@@ -31,7 +31,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$this->data->addIssue(Argument::any())->shouldNotBeCalled();	
+		$this->data->addIssue(Argument::any())->shouldNotBeCalled();
 
 		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
 		$visitor->leaveNode ($node);

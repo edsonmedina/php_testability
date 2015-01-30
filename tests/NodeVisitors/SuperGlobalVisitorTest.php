@@ -29,6 +29,8 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		$visitor = new SuperGlobalVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->wrongNode);
 	}
@@ -38,6 +40,8 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ArrayDimFetch')

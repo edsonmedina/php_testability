@@ -33,6 +33,8 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+		
 		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->wrongNode);
 	}
@@ -42,6 +44,8 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeFetchingFromSelf()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		// visitor
 		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor')
 		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))

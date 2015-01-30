@@ -41,6 +41,8 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->node2);
 	}
@@ -50,6 +52,8 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+		
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
 		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);

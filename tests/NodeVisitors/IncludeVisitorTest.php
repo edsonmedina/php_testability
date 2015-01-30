@@ -15,7 +15,10 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
 		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
 		             ->getMock();
+
+		$data->expects($this->never())->method('addIssue');
 
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		              ->disableOriginalConstructor()
@@ -38,7 +41,10 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
 		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
 		             ->getMock();
+
+		$data->expects($this->never())->method('addIssue');
 
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		              ->disableOriginalConstructor()
@@ -63,7 +69,10 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
 		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
 		             ->getMock();
+
+		$data->expects($this->never())->method('addIssue');
 
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		              ->disableOriginalConstructor()

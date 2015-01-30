@@ -24,6 +24,8 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		$node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
