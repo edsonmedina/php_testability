@@ -51,11 +51,17 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 
 		$scope->expects($this->never())->method('endClass');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
+		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ClassVisitor ($data, $scope, $factory);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
+                        ->setConstructorArgs(array($data, $scope, $factory))
+                        ->setMethods(array ('isClass'))
+                        ->getMock();
+
+		$visitor->expects($this->once())->method('isClass')->willReturn(false);
+
 		$visitor->leaveNode ($node);
 	}
 
@@ -78,7 +84,13 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ClassVisitor ($data, $scope, $factory);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
+                        ->setConstructorArgs(array($data, $scope, $factory))
+                        ->setMethods(array ('isClass'))
+                        ->getMock();
+
+		$visitor->expects($this->once())->method('isClass')->willReturn(true);
+
 		$visitor->leaveNode ($node);
 	}
 

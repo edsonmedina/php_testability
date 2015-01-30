@@ -17,7 +17,7 @@ class ClassVisitor extends VisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Stmt\Class_) 
+        if ($this->isClass($node)) 
         {
             $this->scope->endClass();
         }
