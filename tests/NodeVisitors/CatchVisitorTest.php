@@ -16,7 +16,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 
 		$data    = $prophet->prophesize('edsonmedina\php_testability\ReportData');
 		$scope   = $prophet->prophesize('edsonmedina\php_testability\AnalyserScope');
-		$factory = $prophet->prophesize('edsonmedina\php_testability\TraverserFactory');
+		$factory = $prophet->prophesize('edsonmedina\php_testability\AnalyserAbstractFactory');
 		//$node    = $prophet->prophesize('PhpParser\Node\Stmt\Class_');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
@@ -48,7 +48,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		              
 		$scope->method('inGlobalSpace')->willReturn(true);
 		              
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Catch_')
 		             ->disableOriginalConstructor()
@@ -84,7 +84,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		$nodewrapper->expects($this->once())->method ('hasChildren')->willReturn (true);
 
 		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                ->getMock();
 
 		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
@@ -132,7 +132,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		$nodewrapper->expects($this->once())->method ('hasChildren')->willReturn (false);
 
 		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                ->getMock();
 
 		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);

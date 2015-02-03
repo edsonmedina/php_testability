@@ -21,7 +21,7 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
-		$factory = $this->getMock('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
 		             ->disableOriginalConstructor()
@@ -49,7 +49,7 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 
 		$scope->method ('inGlobalSpace')->willReturn (true);
 
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		             ->disableOriginalConstructor()
@@ -95,7 +95,7 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$dictionary->method ('isClassSafeForInstantiation')->willReturn (true);
 
 		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                ->getMock();
 
 		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
@@ -155,7 +155,7 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$dictionary->method ('isClassSafeForInstantiation')->willReturn (false);
 
 		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                ->getMock();
 
 		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);

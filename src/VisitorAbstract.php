@@ -2,7 +2,7 @@
 namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\AnalyserAbstractFactory;
 use PhpParser;
 
 abstract class VisitorAbstract extends PhpParser\NodeVisitorAbstract
@@ -11,7 +11,7 @@ abstract class VisitorAbstract extends PhpParser\NodeVisitorAbstract
     protected $scope;
     protected $factory;
 
-    public function __construct (ReportDataInterface $data, AnalyserScope $scope, TraverserFactory $factory)
+    public function __construct (ReportDataInterface $data, AnalyserScope $scope, AnalyserAbstractFactory $factory)
     {
         $this->data    = $data;
         $this->scope   = $scope;

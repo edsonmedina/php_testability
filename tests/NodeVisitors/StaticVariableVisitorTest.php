@@ -16,7 +16,7 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 		                    ->disableOriginalConstructor()
 		                    ->getMock();
 
-		$this->factory = $this->getMock('edsonmedina\php_testability\TraverserFactory');
+		$this->factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
 	}
 
 	/**

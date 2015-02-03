@@ -21,7 +21,7 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		                   ->disableOriginalConstructor()
 		                   ->getMock();
 
-		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                      ->getMock();
 	}
 

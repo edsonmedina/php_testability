@@ -14,13 +14,13 @@ class VisitorAbstractTest extends PHPUnit_Framework_TestCase
 		$args = array (
 			$this->getMock('edsonmedina\php_testability\ReportData'),
 			$this->getMock('edsonmedina\php_testability\AnalyserScope'),
-			$this->getMock('edsonmedina\php_testability\TraverserFactory')
+			$this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory')
 		);
 
 		$stub = $this->getMockForAbstractClass ('edsonmedina\php_testability\VisitorAbstract', $args);
 
 		$this->assertInstanceOf ('edsonmedina\php_testability\ReportData', PHPUnit_Framework_Assert::readAttribute($stub, 'data'));
 		$this->assertInstanceOf ('edsonmedina\php_testability\AnalyserScope', PHPUnit_Framework_Assert::readAttribute($stub, 'scope'));
-		$this->assertInstanceOf ('edsonmedina\php_testability\TraverserFactory', PHPUnit_Framework_Assert::readAttribute($stub, 'factory'));
+		$this->assertInstanceOf ('edsonmedina\php_testability\AnalyserAbstractFactory', PHPUnit_Framework_Assert::readAttribute($stub, 'factory'));
 	}	
 }

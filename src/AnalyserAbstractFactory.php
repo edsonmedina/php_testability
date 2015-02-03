@@ -10,12 +10,12 @@ use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserScope;
 
 /**
- * TraverserFactory
+ * AnalyserAbstractFactory
  * This class creates a node traverser
  * @Factory
  * @author Edson Medina <edsonmedina@gmail.com>
  */
-class TraverserFactory
+class AnalyserAbstractFactory
 {
 	/**
 	 * Create a node traverser object 

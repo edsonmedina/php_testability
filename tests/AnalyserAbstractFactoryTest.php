@@ -1,25 +1,25 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\AnalyserAbstractFactory;
 
-class TraverserFactoryTest extends PHPUnit_Framework_TestCase
+class AnalyserAbstractFactoryTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\TraverserFactory::getDictionary
+	 * @covers edsonmedina\php_testability\AnalyserAbstractFactory::getDictionary
 	 */
 	public function testGetDictionary ()
 	{
-		$factory = new TraverserFactory();
+		$factory = new AnalyserAbstractFactory();
 		$this->assertInstanceOf ('edsonmedina\php_testability\Dictionary', $factory->getDictionary());
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\TraverserFactory::createTraverser
+	 * @covers edsonmedina\php_testability\AnalyserAbstractFactory::createTraverser
 	 */
 	public function testCreateTraverser ()
 	{
-		$factory = new TraverserFactory();
+		$factory = new AnalyserAbstractFactory();
 
 		$data_stub  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
 		$scope_stub = $this->getMock('edsonmedina\php_testability\AnalyserScope');
@@ -30,11 +30,11 @@ class TraverserFactoryTest extends PHPUnit_Framework_TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\TraverserFactory::getNodeWrapper
+	 * @covers edsonmedina\php_testability\AnalyserAbstractFactory::getNodeWrapper
 	 */
 	public function testGetNodeWrapper ()
 	{
-		$factory = new TraverserFactory();
+		$factory = new AnalyserAbstractFactory();
 
 		$node_stub  = $this->getMock('PhpParser\Node');
 

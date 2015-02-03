@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\IncludeVisitor;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\AnalyserAbstractFactory;
 use PhpParser\Node\Expr\Include_;
 use PhpParser\Node\Expr\Variable;
 
@@ -24,7 +24,7 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 		              
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
 		             ->disableOriginalConstructor()
@@ -52,7 +52,7 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 
 		$scope->method ('inGlobalSpace')->willReturn (true);
 
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Include_')
 		             ->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 		$scope->method ('inGlobalSpace')->willReturn (false);
 		$scope->method ('getScopeName')->willReturn ('__autoload');
 
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\TraverserFactory')
+		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                ->getMock();
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Include_')
@@ -124,7 +124,7 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 			array ('startLine' => 7)
 		);
 
-		$visitor = new IncludeVisitor ($data, $scope, new TraverserFactory);
+		$visitor = new IncludeVisitor ($data, $scope, new AnalyserAbstractFactory);
 		$visitor->leaveNode ($node);
 	}	
 }

@@ -18,7 +18,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		$this->prophet     = new Prophecy\Prophet;
 		$this->data        = $this->prophet->prophesize('edsonmedina\php_testability\ReportData');
 		$this->scope       = $this->prophet->prophesize('edsonmedina\php_testability\AnalyserScope');
-		$this->factory     = $this->prophet->prophesize('edsonmedina\php_testability\TraverserFactory');
+		$this->factory     = $this->prophet->prophesize('edsonmedina\php_testability\AnalyserAbstractFactory');
 		$this->nodeWrapper = $this->prophet->prophesize('edsonmedina\php_testability\NodeWrapper');
 	}
 

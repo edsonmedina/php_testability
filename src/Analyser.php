@@ -10,7 +10,7 @@ namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\AnalyserInterface;
 use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\TraverserFactory;
+use edsonmedina\php_testability\AnalyserAbstractFactory;
 use PhpParser;
 
 class Analyser implements AnalyserInterface
@@ -20,7 +20,7 @@ class Analyser implements AnalyserInterface
 	private $factory;
 	private $scope;
 
-	public function __construct (ReportDataInterface $data, PhpParser\Parser $parser, AnalyserScope $scope, TraverserFactory $factory) 
+	public function __construct (ReportDataInterface $data, PhpParser\Parser $parser, AnalyserScope $scope, AnalyserAbstractFactory $factory)
 	{
 		$this->data    = $data;
 		$this->parser  = $parser;

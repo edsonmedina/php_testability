@@ -21,7 +21,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
-		$factory = $this->getMock('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
 		             ->disableOriginalConstructor()
@@ -49,7 +49,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 
 		$scope->method ('inGlobalSpace')->willReturn (true);
 
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
 		             ->disableOriginalConstructor()
@@ -89,7 +89,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		$scope->method ('getScopeName')->willReturn ('someScopeName');
 
 		// factory
-		$factory = $this->getMock ('edsonmedina\php_testability\TraverserFactory');
+		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
 
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
