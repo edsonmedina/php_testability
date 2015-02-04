@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\ExternalClassConstantFetchIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -17,12 +18,12 @@ class ClassConstantFetchVisitor extends VisitorAbstract
             {
                 if (!$obj->isSameClassAs($this->scope->getClassName()))
                 {
-                    $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
+                    $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope->getScopeName());
                 } 
             }
             else
             {
-                $this->data->addIssue ($node->getLine(), 'external_class_constant_fetch', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope->getScopeName());
             }
         }
     }

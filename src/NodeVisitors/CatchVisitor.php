@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\EmptyCatchIssue;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -14,7 +15,7 @@ class CatchVisitor extends VisitorAbstract
             $obj = $this->factory->getNodeWrapper ($node);
             if (!$obj->hasChildren())
             {
-                $this->data->addIssue ($node->getLine(), 'empty_catch', $this->scope->getScopeName(), '');
+                $this->data->addIssue (new EmptyCatchIssue ($node), $this->scope->getScopeName());
             }
         }
     }

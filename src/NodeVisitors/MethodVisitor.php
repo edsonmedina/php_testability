@@ -1,6 +1,9 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\PrivateMethodIssue;
+use edsonmedina\php_testability\Issues\ProtectedMethodIssue;
+use edsonmedina\php_testability\Issues\FinalMethodIssue;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -17,17 +20,17 @@ class MethodVisitor extends VisitorAbstract
             // report non public methods
             if ($node->isPrivate()) 
             {
-                $this->data->addIssue ($node->getLine(), 'private_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new PrivateMethodIssue($node), $this->scope->getScopeName());
             }
             elseif ($node->isProtected()) 
             {
-                $this->data->addIssue ($node->getLine(), 'protected_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new ProtectedMethodIssue($node), $this->scope->getScopeName());
             }
 
             // report final methods
             if ($node->isFinal()) 
             {
-                $this->data->addIssue ($node->getLine(), 'final_method', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new FinalMethodIssue($node), $this->scope->getScopeName());
             }
         }
     }

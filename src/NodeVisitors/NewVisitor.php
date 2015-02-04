@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\NewInstanceIssue;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
@@ -37,7 +38,7 @@ class NewVisitor extends VisitorAbstract
                 // instantiation (ie: with external resources)
                 if (!$dictionary->isClassSafeForInstantiation($name))
                 {
-                    $this->data->addIssue ($node->getLine(), 'new', $scopeName, $name);
+                    $this->data->addIssue (new NewInstanceIssue($node), $scopeName);
                 }
             }
         }

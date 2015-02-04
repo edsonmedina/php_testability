@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\StaticMethodCallIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -22,7 +23,7 @@ class StaticCallVisitor extends VisitorAbstract
             
             if (!$dictionary->isClassSafeForInstantiation($className))
             {
-                $this->data->addIssue ($node->getLine(), 'static_call', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new StaticMethodCallIssue($node), $this->scope->getScopeName());
             }
         }
     }

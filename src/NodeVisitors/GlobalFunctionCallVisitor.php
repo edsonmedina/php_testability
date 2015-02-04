@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\GlobalFunctionCallIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -21,7 +22,7 @@ class GlobalFunctionCallVisitor extends VisitorAbstract
                 return;
             }
 
-            $this->data->addIssue ($node->getLine(), 'global_function_call', $this->scope->getScopeName(), $functionName);
+            $this->data->addIssue (new GlobalFunctionCallIssue($node), $this->scope->getScopeName());
         }
     }
 }

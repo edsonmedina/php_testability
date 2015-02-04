@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\StaticPropertyFetchIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -14,7 +15,7 @@ class StaticPropertyFetchVisitor extends VisitorAbstract
             if (!$this->isFetchingFromSelf ($node)) 
             {
                 $obj = $this->factory->getNodeWrapper ($node);
-                $this->data->addIssue ($node->getLine(), 'static_property_fetch', $this->scope->getScopeName(), $obj->getName());
+                $this->data->addIssue (new StaticPropertyFetchIssue($node), $this->scope->getScopeName());
             } 
         }
     }

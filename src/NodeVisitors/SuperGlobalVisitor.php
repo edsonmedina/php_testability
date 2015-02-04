@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\SuperGlobalAccessIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -15,7 +16,7 @@ class SuperGlobalVisitor extends VisitorAbstract
         {
             if ($node->var->name && in_array ($node->var->name, $this->_list))
             {
-                $this->data->addIssue ($node->getLine(), 'super_global', $this->scope->getScopeName(), '$'.$node->var->name);
+                $this->data->addIssue (new SuperGlobalAccessIssue($node), $this->scope->getScopeName());
             }
         }
     }

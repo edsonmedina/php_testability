@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
@@ -14,7 +15,7 @@ class CodeInGlobalSpaceVisitor extends VisitorAbstract
         {
             if (!$this->isAllowedOnGlobalSpace($node))
             {
-                $this->data->addIssue ($node->getLine(), 'code_on_global_space');
+                $this->data->addIssue (new CodeOnGlobalSpaceIssue($node));
             }
         }
     }

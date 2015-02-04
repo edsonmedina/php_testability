@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\StaticVariableDeclarationIssue;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -10,11 +11,7 @@ class StaticVariableVisitor extends VisitorAbstract
     {
         if ($node instanceof Stmt\Static_) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-
-            foreach ($obj->getVarList() as $var) {
-                $this->data->addIssue ($node->getLine(), 'static_var', $this->scope->getScopeName(), '$'.$var->name);
-            }
+            $this->data->addIssue (new StaticVariableDeclarationIssue($node), $this->scope->getScopeName());
         }
     }
 }

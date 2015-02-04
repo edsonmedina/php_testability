@@ -1,7 +1,9 @@
 <?php
 namespace edsonmedina\php_testability;
 
+use edsonmedina\php_testability\Issues;
 use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\IssueInterface;
 
 class ReportData implements ReportDataInterface
 {
@@ -16,8 +18,12 @@ class ReportData implements ReportDataInterface
 	 * @param string $scope
 	 * @param string $identifier of the current issue
 	 */
-	public function addIssue ($line, $type, $scope = null, $identifier = null)
+	public function addIssue (IssueInterface $issue, $scope = null)
 	{
+		$line = $issue->getLine();
+		$type = $issue->getTitle();
+		$identifier = $issue->getID();
+
 		if (is_null($scope)) 
 		{
 			$this->issues[$this->currentFilename]['global'][$type][$line] = true;
