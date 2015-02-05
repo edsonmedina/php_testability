@@ -6,7 +6,7 @@ error_reporting (E_ALL);
  * This is a test file, with several issues that 
  * should be reported by testability.
  */
-class Whatever
+final class Whatever
 {
     public function methodMan ($x, $y, $z)
     {

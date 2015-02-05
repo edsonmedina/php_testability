@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Issues\FinalClassIssue;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -12,6 +13,12 @@ class ClassVisitor extends VisitorAbstract
         {
             $obj = $this->factory->getNodeWrapper ($node);
             $this->scope->startClass ($obj->getName());
+
+            // report final class
+            if ($node instanceof Stmt\Class_ && $node->isFinal()) 
+            {
+                $this->data->addIssue (new FinalClassIssue($node), $this->scope->getScopeName());
+            }
         }
     }
 
