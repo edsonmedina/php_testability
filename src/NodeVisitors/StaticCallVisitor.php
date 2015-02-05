@@ -23,7 +23,7 @@ class StaticCallVisitor extends VisitorAbstract
             
             if (!$dictionary->isClassSafeForInstantiation($className))
             {
-                $this->data->addIssue (new StaticMethodCallIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new StaticMethodCallIssue($node), $this->scope);
             }
         }
     }

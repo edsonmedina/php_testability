@@ -12,7 +12,7 @@ class ExitVisitor extends VisitorAbstract
         // check for exit/die statements
         if ($node instanceof Expr\Exit_ && !$this->scope->inGlobalSpace()) 
         {
-            $this->data->addIssue (new ExitIssue($node), $this->scope->getScopeName());
+            $this->data->addIssue (new ExitIssue($node), $this->scope);
         }
     }
 }

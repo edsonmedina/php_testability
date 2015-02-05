@@ -20,17 +20,17 @@ class MethodVisitor extends VisitorAbstract
             // report non public methods
             if ($node->isPrivate()) 
             {
-                $this->data->addIssue (new PrivateMethodIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new PrivateMethodIssue($node), $this->scope);
             }
             elseif ($node->isProtected()) 
             {
-                $this->data->addIssue (new ProtectedMethodIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new ProtectedMethodIssue($node), $this->scope);
             }
 
             // report final methods
             if ($node->isFinal()) 
             {
-                $this->data->addIssue (new FinalMethodIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new FinalMethodIssue($node), $this->scope);
             }
         }
     }

@@ -3,6 +3,7 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\IssueInterface;
+use edsonmedina\php_testability\AnalyserScope;
 
 class ReportData implements ReportDataInterface
 {
@@ -13,9 +14,9 @@ class ReportData implements ReportDataInterface
 	/**
 	 * Add a new issue. Requires using setCurrentFilename first.
 	 * @param IssueInterface $issue 
-	 * @param string $scope
+	 * @param AnalyserScope $scope
 	 */
-	public function addIssue (IssueInterface $issue, $scope = null)
+	public function addIssue (IssueInterface $issue, AnalyserScope $scope = null)
 	{
 		$line = $issue->getLine();
 		$type = $issue->getTitle();
@@ -27,7 +28,8 @@ class ReportData implements ReportDataInterface
 		} 
 		else
 		{
-			$this->issues[$this->currentFilename]['scoped'][$scope][$type][] = array ($identifier, $line);
+			$scopeName = $scope->getScopeName();
+			$this->issues[$this->currentFilename]['scoped'][$scopeName][$type][] = array ($identifier, $line);
 		}
 	}
 

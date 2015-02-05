@@ -15,7 +15,7 @@ class CatchVisitor extends VisitorAbstract
             $obj = $this->factory->getNodeWrapper ($node);
             if (!$obj->hasChildren())
             {
-                $this->data->addIssue (new EmptyCatchIssue ($node), $this->scope->getScopeName());
+                $this->data->addIssue (new EmptyCatchIssue ($node), $this->scope);
             }
         }
     }

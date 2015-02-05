@@ -22,7 +22,7 @@ class GlobalFunctionCallVisitor extends VisitorAbstract
                 return;
             }
 
-            $this->data->addIssue (new GlobalFunctionCallIssue($node), $this->scope->getScopeName());
+            $this->data->addIssue (new GlobalFunctionCallIssue($node), $this->scope);
         }
     }
 }

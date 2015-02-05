@@ -18,12 +18,12 @@ class ClassConstantFetchVisitor extends VisitorAbstract
             {
                 if (!$obj->isSameClassAs($this->scope->getClassName()))
                 {
-                    $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope->getScopeName());
+                    $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope);
                 } 
             }
             else
             {
-                $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope);
             }
         }
     }

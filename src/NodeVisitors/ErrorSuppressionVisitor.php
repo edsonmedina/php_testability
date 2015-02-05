@@ -11,8 +11,7 @@ class ErrorSuppressionVisitor extends VisitorAbstract
     {
         if ($node instanceof Expr\ErrorSuppress && !$this->scope->inGlobalSpace()) 
         {
-        	var_dump($node);
-            $this->data->addIssue (new ErrorSuppressionIssue($node), $this->scope->getScopeName());
+            $this->data->addIssue (new ErrorSuppressionIssue($node), $this->scope);
         }
     }
 }

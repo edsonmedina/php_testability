@@ -14,7 +14,7 @@ class StaticPropertyFetchVisitor extends VisitorAbstract
         {
             if (!$this->isFetchingFromSelf ($node)) 
             {
-                $this->data->addIssue (new StaticPropertyFetchIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new StaticPropertyFetchIssue($node), $this->scope);
             } 
         }
     }

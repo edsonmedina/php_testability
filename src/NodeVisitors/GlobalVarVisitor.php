@@ -12,7 +12,7 @@ class GlobalVarVisitor extends VisitorAbstract
         // check for global variables
         if ($node instanceof Stmt\Global_ && !$this->scope->inGlobalSpace()) 
         {
-            $this->data->addIssue (new GlobalVariableIssue($node), $this->scope->getScopeName());
+            $this->data->addIssue (new GlobalVariableIssue($node), $this->scope);
         }
     }
 }

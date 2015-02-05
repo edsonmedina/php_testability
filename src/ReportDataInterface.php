@@ -1,10 +1,11 @@
 <?php
 namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\IssueInterface;
+use edsonmedina\php_testability\AnalyserScope;
 
 interface ReportDataInterface  
 {
-	public function addIssue (IssueInterface $issue, $scope = null);
+	public function addIssue (IssueInterface $issue, AnalyserScope $scope = null);
 	public function setCurrentFilename ($filename);
 	public function getCurrentFilename ();
 	public function getFileList ();

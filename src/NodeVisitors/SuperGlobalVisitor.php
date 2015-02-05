@@ -16,7 +16,7 @@ class SuperGlobalVisitor extends VisitorAbstract
         {
             if ($node->var->name && in_array ($node->var->name, $this->_list))
             {
-                $this->data->addIssue (new SuperGlobalAccessIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new SuperGlobalAccessIssue($node), $this->scope);
             }
         }
     }

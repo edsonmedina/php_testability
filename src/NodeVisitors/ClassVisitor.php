@@ -17,7 +17,7 @@ class ClassVisitor extends VisitorAbstract
             // report final class
             if ($node instanceof Stmt\Class_ && $node->isFinal()) 
             {
-                $this->data->addIssue (new FinalClassIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new FinalClassIssue($node), $this->scope);
             }
         }
     }

@@ -38,7 +38,7 @@ class NewVisitor extends VisitorAbstract
                 // instantiation (ie: with external resources)
                 if (!$dictionary->isClassSafeForInstantiation($name))
                 {
-                    $this->data->addIssue (new NewInstanceIssue($node), $scopeName);
+                    $this->data->addIssue (new NewInstanceIssue($node), $this->scope);
                 }
             }
         }

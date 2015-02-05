@@ -13,7 +13,7 @@ class IncludeVisitor extends VisitorAbstract
         {
             if ($this->scope->getScopeName() !== '__autoload') 
             {
-                $this->data->addIssue (new IncludeIssue($node), $this->scope->getScopeName());
+                $this->data->addIssue (new IncludeIssue($node), $this->scope);
             }
         }
     }
