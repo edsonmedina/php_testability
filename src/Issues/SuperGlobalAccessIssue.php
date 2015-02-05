@@ -12,7 +12,6 @@ class SuperGlobalAccessIssue extends AbstractIssue
 
 	public function getID()
 	{
-        $obj = new NodeWrapper ($this->node);
         return '$'.$this->node->var->name;
 	}
 }
