@@ -14,7 +14,7 @@ class StaticVariableDeclarationIssue extends AbstractIssue
 	{
         $obj = new NodeWrapper ($this->node);
 
-        $name = array ();
+        $names = array ();
         foreach ($obj->getVarList() as $var) {
             $names[] = '$'.$var->name;
         }
