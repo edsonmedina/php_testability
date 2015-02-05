@@ -35,6 +35,7 @@ class AnalyserAbstractFactory
 		$traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($data, $scope, $this));
+		$traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor    ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\ClassVisitor      ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\NewVisitor        ($data, $scope, $this));
 		$traverser->addVisitor (new NodeVisitors\ExitVisitor       ($data, $scope, $this));

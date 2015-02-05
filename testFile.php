@@ -28,6 +28,9 @@ final class Whatever
         // Static method call, another class
         Whatever::methodMan();
 
+        // error suppression
+        @$this->foo();
+
         // Static method call, dynamic class
         $xx::doBadThings();
         ${$varobj}::method();
