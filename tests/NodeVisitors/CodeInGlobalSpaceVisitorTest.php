@@ -72,13 +72,10 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
-		$this->node->method ('getLine')->willReturn (7);
-
 		$this->data->expects($this->once())->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('code_on_global_space')
-		       );
+		         $this->anything()
+		     );
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
 		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))

@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 use edsonmedina\php_testability\ReportData;
+use edsonmedina\php_testability\Issues\ExitIssue;
 
 class ReportDataTest extends PHPUnit_Framework_TestCase
 {
@@ -22,19 +23,27 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForFile
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetIssuesCountForFile ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMockBuilder('PhpParser\Node\Expr\Exit_')
+		             ->disableOriginalConstructor()
+		             ->setMethods(array('getLine'))
+		             ->getMock();
+
+		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4,5));
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (13, 'some issue', 'Whatever::doThings', '$var');
-		$r->addIssue (62, 'some issue');
-		$r->addIssue (86, 'some issue');
+		$r->addIssue (new ExitIssue($stub) , 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ('file2.php');
-		$r->addIssue (4, 'some issue');
-		$r->addIssue (7, 'some issue');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$this->assertEquals (0, $r->getIssuesCountForFile ('invalidfile.php'));
 		$this->assertEquals (3, $r->getIssuesCountForFile ('whatever.php'));
@@ -45,16 +54,19 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getFileList
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetFileList ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (13, 'some issue', 'Whatever::doThings', '$var');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
 
 		$r->setCurrentFilename ('file2.php');
-		$r->addIssue (7, 'some issue');
+		$r->addIssue (new ExitIssue($stub));
 
 		$expected = array ('whatever.php','file2.php');
 
@@ -91,20 +103,23 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForScope
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetIssuesCountForScope ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (13, 'some issue', 'Whatever::doThings', '$var');
-		$r->addIssue (62, 'some issue', 'Whatever::doThings', '$bla');
-		$r->addIssue (86, 'some issue', 'Whatever::foo', '$var');
-		$r->addIssue (40, 'some issue');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
+		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ('file2.php');
-		$r->addIssue (4, 'some issue');
-		$r->addIssue (7, 'some issue');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$this->assertEquals (2, $r->getIssuesCountForScope ('whatever.php', 'Whatever::doThings'));
 		$this->assertEquals (1, $r->getIssuesCountForScope ('whatever.php', 'Whatever::foo'));
@@ -116,20 +131,28 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetGlobalIssuesCount ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMockBuilder('PhpParser\Node\Expr\Exit_')
+		             ->disableOriginalConstructor()
+		             ->setMethods(array('getLine'))
+		             ->getMock();
+
+		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4,5,6));
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (13, 'some issue', 'Whatever::doThings', '$var');
-		$r->addIssue (62, 'some issue', 'Whatever::doThings', '$bla');
-		$r->addIssue (86, 'some issue', 'Whatever::foo', '$var');
-		$r->addIssue (40, 'some issue');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
+		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ('file2.php');
-		$r->addIssue (4, 'some issue');
-		$r->addIssue (7, 'some issue');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$this->assertEquals (1, $r->getGlobalIssuesCount ('whatever.php'));
 		$this->assertEquals (2, $r->getGlobalIssuesCount ('file2.php'));
@@ -141,40 +164,43 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getIssuesCountForDirectory
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetIssuesCountForDirectory ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
+
 		$r->setCurrentFilename ($this->fixPath('whatever.php'));
-		$r->addIssue (8, 'some issue', 'Whatever::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
 
 		$r->setCurrentFilename ($this->fixPath('dir/file1.php'));
-		$r->addIssue (66, 'some issue', 'Whatever2::foo');
-		$r->addIssue (93, 'some issue', 'Whatever2::foo2');
+		$r->addIssue (new ExitIssue($stub), 'Whatever2::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever2::foo2');
 
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/file1.php'));
-		$r->addIssue (40, 'some issue', 'Whatever3::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever3::foo');
 
 		// some code on global space
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/file2.php'));
-		$r->addIssue (13, 'some issue', 'Whatever4::foo');
-		$r->addIssue (54, 'some issue', 'Whatever5::foo');
-		$r->addIssue (78, 'code_on_global_space');
+		$r->addIssue (new ExitIssue($stub), 'Whatever4::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever5::foo');
+		$r->addIssue (new ExitIssue($stub));
 
 		// similar dir name
 		$r->setCurrentFilename ($this->fixPath('dir/subdir_z/file9.php'));
-		$r->addIssue (8, 'some issue', 'Whatever101::foo');
-		$r->addIssue (9, 'code_on_global_space');
+		$r->addIssue (new ExitIssue($stub), 'Whatever101::foo');
+		$r->addIssue (new ExitIssue($stub));
 
 		// no scopes - no count
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/file3.php'));
-		$r->addIssue (8, 'code_on_global_space');
-		$r->addIssue (9, 'code_on_global_space');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/subsubdir/file1.php'));
-		$r->addIssue (48, 'some issue', 'Whatever6::foo');
-		$r->addIssue (97, 'some issue', 'Whatever6::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever6::foo');
+		$r->addIssue (new ExitIssue($stub), 'Whatever6::foo');
 
 		$this->assertEquals (2,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/subsubdir/')));
 		$this->assertEquals (6,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/')));
@@ -185,17 +211,20 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndNoScope ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
+
 		// file with no scopes, so code_on_global_space are
 		// irrelevant, file is untestable anyway
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (8,  'code_on_global_space');
-		$r->addIssue (16, 'code_on_global_space');
-		$r->addIssue (65, 'other');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$this->assertEquals (1, $r->getGlobalIssuesCount ('whatever.php'));
 	}
@@ -204,16 +233,24 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::getGlobalIssuesCount
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testGetGlobalIssuesCountWithCodeOnGlobalSpaceAndScopes ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMockBuilder('PhpParser\Node\Expr\Exit_')
+		             ->disableOriginalConstructor()
+		             ->setMethods(array('getLine'))
+		             ->getMock();
+
+		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4));
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (8,  'code_on_global_space');
-		$r->addIssue (16, 'code_on_global_space');
-		$r->addIssue (65, 'other');
-		$r->addIssue (30, 'some issue', 'Whatever::doThings', '$var');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
 
 		$this->assertEquals (3, $r->getGlobalIssuesCount ('whatever.php'));
 	}
@@ -246,19 +283,22 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 	 * @covers edsonmedina\php_testability\ReportData::setCurrentFilename
 	 * @covers edsonmedina\php_testability\ReportData::addIssue
 	 * @covers edsonmedina\php_testability\ReportData::isFileUntestable
+	 * @uses edsonmedina\php_testability\Issues\ExitIssue
 	 */
 	public function testIsFileUntestable ()
 	{
 		$r = new ReportData;
 
+		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (8,  'code_on_global_space');
-		$r->addIssue (16, 'code_on_global_space');
-		$r->addIssue (65, 'other');
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
+		$r->addIssue (new ExitIssue($stub));
 
 		$this->assertTrue ($r->isFileUntestable ('whatever.php'));
 
-		$r->addIssue (8, 'some_scoped_issue', 'Class1::method2');
+		$r->addIssue (new ExitIssue($stub), 'Class1::method2');
 		$r->saveScopePosition ('Whatever::doThings', 150);
 
 		$this->assertFalse ($r->isFileUntestable ('whatever.php'));

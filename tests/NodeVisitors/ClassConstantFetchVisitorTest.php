@@ -63,14 +63,10 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeOutsideClass ()
 	{
-		$this->data->addIssue(123, 'external_class_constant_fetch', 'foo::bar', 'foo')->shouldBeCalled();	
-
 		$this->scope->inGlobalSpace()->willReturn (false);
 		$this->scope->insideClass()->willReturn (false);
 		$this->scope->getScopeName()->willReturn ('foo::bar');
 		              
-		$this->nodeWrapper->getName()->willReturn ('foo');
-
 		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
 
 		// node
@@ -78,7 +74,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$node->method ('getLine')->willReturn (123);
+		$this->data->addIssue(Argument::any(), 'foo::bar')->shouldBeCalled();	
 
 		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
 		$visitor->leaveNode ($node);
@@ -121,8 +117,6 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 		             
-		$node->method ('getLine')->willReturn (123);
-
 		$this->scope->inGlobalSpace()->willReturn (false);
 		$this->scope->getScopeName()->willReturn ('foo::bar');
 
@@ -131,7 +125,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 
 		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
 
-		$this->data->addIssue(123, 'external_class_constant_fetch', 'foo::bar', 'foo')->shouldBeCalled();	
+		$this->data->addIssue(Argument::any(), 'foo::bar')->shouldBeCalled();	
 
 		$this->scope->insideClass()->willReturn (true);
 		$this->scope->getClassName()->willReturn ('whatever');

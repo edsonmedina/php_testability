@@ -43,10 +43,8 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 		$this->data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('static_var'),
-		           $this->equalTo('someScopeName'),
-		           $this->equalTo('$foo')
+		           $this->anything(),
+		           $this->equalTo('someScopeName')
 		       );
 
 		// scope
@@ -57,19 +55,10 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 		                    ->disableOriginalConstructor()
 		                    ->getMock();
 
-		$nodewrapper->method ('getVarList')->willReturn (array (
-			(object) array ('name' => 'foo')
-		));
-
-		// factory
-		$this->factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
-
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
-
-		$node->method ('getLine')->willReturn (7);
 
 		$visitor = new StaticVariableVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($node);

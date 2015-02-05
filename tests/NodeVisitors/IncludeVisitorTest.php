@@ -105,10 +105,8 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 		$data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('include'),
-		           $this->equalTo('someScopeName'),
-		           $this->anything()
+		           $this->anything(),
+		           $this->equalTo('someScopeName')
 		       );
 
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')

@@ -126,8 +126,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$node->method ('getLine')->willReturn (7);
-
         // node wrapper
 		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
 		                    ->disableOriginalConstructor()
@@ -142,10 +140,8 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 		$this->data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('global_function_call'),
-		           $this->equalTo('someScopeName'),
-		           $this->equalTo('Test::foo')
+		           $this->anything(),
+		           $this->equalTo('someScopeName')
 		       );
 
 		$visitor = new GlobalFunctionCallVisitor ($this->data, $this->scope, $this->factory);

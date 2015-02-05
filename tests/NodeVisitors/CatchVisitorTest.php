@@ -110,10 +110,8 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		$data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(23),
-		           $this->equalTo('empty_catch'),
-		           $this->equalTo('scopeName'),
-		           $this->equalTo('')
+		           $this->anything(),
+		           $this->equalTo('scopeName')
 		       );
 
 		// scope
@@ -141,8 +139,6 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Catch_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
-
-		$node->method ('getLine')->willReturn (23);
 
 		$visitor = new CatchVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);

@@ -73,10 +73,8 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		$data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('exit'),
-		           $this->equalTo('someScopeName'),
-		           $this->equalTo('')
+		           $this->anything(),
+		           $this->equalTo('someScopeName')
 		       );
 
 		// scope
@@ -94,10 +92,7 @@ class ExitVisitorTest extends PHPUnit_Framework_TestCase
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('getLine'))
 		             ->getMock();
-
-		$node->method ('getLine')->willReturn (7);
 
 		$visitor = new ExitVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);

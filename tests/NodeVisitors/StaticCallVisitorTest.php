@@ -126,10 +126,8 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$data->expects($this->once())
 		     ->method('addIssue')
 		     ->with(
-		           $this->equalTo(7),
-		           $this->equalTo('static_call'),
-		           $this->equalTo('someScopeName'),
-		           $this->equalTo('foo')
+		           $this->anything(),
+		           $this->equalTo('someScopeName')
 		       );
 
 		// scope
@@ -165,8 +163,6 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		             ->disableOriginalConstructor()
 		             ->getMock();
-
-		$node->method ('getLine')->willReturn (7);
 
 		$visitor = new StaticCallVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
