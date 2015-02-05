@@ -1,7 +1,6 @@
 <?php
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\Issues;
 use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\IssueInterface;
 
@@ -13,10 +12,8 @@ class ReportData implements ReportDataInterface
 
 	/**
 	 * Add a new issue. Requires using setCurrentFilename first.
-	 * @param int $line line number for the issue
-	 * @param string $type 
+	 * @param IssueInterface $issue 
 	 * @param string $scope
-	 * @param string $identifier of the current issue
 	 */
 	public function addIssue (IssueInterface $issue, $scope = null)
 	{
