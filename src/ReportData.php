@@ -245,7 +245,7 @@ class ReportData implements ReportDataInterface
 		{
 			// If code_on_global_space on a file without scopes, don't count
 			// (all the file will have the same issue)
-			if (!($noScopes && $type == 'code_on_global_space'))
+			if (!($noScopes && $type === 'Code on global space'))
 			{
 				$count += count($list);
 			}
