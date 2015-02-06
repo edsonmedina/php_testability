@@ -31,13 +31,15 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub = $this->getMockBuilder('PhpParser\Node\Expr\Exit_')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('getLine'))
 		             ->getMock();
 
 		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4,5));
 
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (new ExitIssue($stub) , 'Whatever::doThings');
+		$scope->method ('getScopeName')->willReturn ('Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub) , $scope);
 		$r->addIssue (new ExitIssue($stub));
 		$r->addIssue (new ExitIssue($stub));
 
@@ -62,8 +64,11 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
 
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$scope->method ('getScopeName')->willReturn ('Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		$r->setCurrentFilename ('file2.php');
 		$r->addIssue (new ExitIssue($stub));
@@ -112,9 +117,15 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
 
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
+
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), $scope);
+		$r->addIssue (new ExitIssue($stub), $scope);
+		
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Whatever::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
 		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ('file2.php');
@@ -139,15 +150,20 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub = $this->getMockBuilder('PhpParser\Node\Expr\Exit_')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('getLine'))
 		             ->getMock();
 
 		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4,5,6));
 
 		$r->setCurrentFilename ('whatever.php');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
-		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
+
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), $scope);
+		$r->addIssue (new ExitIssue($stub), $scope);
+
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Whatever::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
 		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ('file2.php');
@@ -172,25 +188,28 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
 
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Whatever::foo');
+
 		$r->setCurrentFilename ($this->fixPath('whatever.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		$r->setCurrentFilename ($this->fixPath('dir/file1.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever2::foo');
-		$r->addIssue (new ExitIssue($stub), 'Whatever2::foo2');
+		$r->addIssue (new ExitIssue($stub), $scope);
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/file1.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever3::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		// some code on global space
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/file2.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever4::foo');
-		$r->addIssue (new ExitIssue($stub), 'Whatever5::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
+		$r->addIssue (new ExitIssue($stub), $scope);
 		$r->addIssue (new ExitIssue($stub));
 
 		// similar dir name
 		$r->setCurrentFilename ($this->fixPath('dir/subdir_z/file9.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever101::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
 		$r->addIssue (new ExitIssue($stub));
 
 		// no scopes - no count
@@ -199,8 +218,8 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 		$r->addIssue (new ExitIssue($stub));
 
 		$r->setCurrentFilename ($this->fixPath('dir/subdir/subsubdir/file1.php'));
-		$r->addIssue (new ExitIssue($stub), 'Whatever6::foo');
-		$r->addIssue (new ExitIssue($stub), 'Whatever6::foo');
+		$r->addIssue (new ExitIssue($stub), $scope);
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		$this->assertEquals (2,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/subsubdir/')));
 		$this->assertEquals (6,  $r->getIssuesCountForDirectory($this->fixPath('dir/subdir/')));
@@ -246,11 +265,14 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub->method('getLine')->will($this->onConsecutiveCalls(1,2,3,4));
 
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Class1::method2');
+
 		$r->setCurrentFilename ('whatever.php');
 		$r->addIssue (new ExitIssue($stub));
 		$r->addIssue (new ExitIssue($stub));
 		$r->addIssue (new ExitIssue($stub));
-		$r->addIssue (new ExitIssue($stub), 'Whatever::doThings');
+		$r->addIssue (new ExitIssue($stub), $scope);
 
 		$this->assertEquals (3, $r->getGlobalIssuesCount ('whatever.php'));
 	}
@@ -291,6 +313,9 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$stub = $this->getMock('PhpParser\Node\Expr\Exit_');
 
+		$scope = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$scope->method ('getScopeName')->willReturn ('Class1::method2');
+
 		$r->setCurrentFilename ('whatever.php');
 		$r->addIssue (new ExitIssue($stub));
 		$r->addIssue (new ExitIssue($stub));
@@ -298,7 +323,7 @@ class ReportDataTest extends PHPUnit_Framework_TestCase
 
 		$this->assertTrue ($r->isFileUntestable ('whatever.php'));
 
-		$r->addIssue (new ExitIssue($stub), 'Class1::method2');
+		$r->addIssue (new ExitIssue($stub), $scope);
 		$r->saveScopePosition ('Whatever::doThings', 150);
 
 		$this->assertFalse ($r->isFileUntestable ('whatever.php'));

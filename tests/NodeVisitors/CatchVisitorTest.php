@@ -107,12 +107,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$data->expects($this->once())
-		     ->method('addIssue')
-		     ->with(
-		           $this->anything(),
-		           $this->equalTo('scopeName')
-		       );
+		$data->expects($this->once())->method('addIssue');
 
 		// scope
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
@@ -120,7 +115,6 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		              ->getMock();
 		              
 		$scope->method('inGlobalSpace')->willReturn(false);
-		$scope->method('getScopeName')->willReturn('scopeName');
 		              
         // node wrapper
 		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')

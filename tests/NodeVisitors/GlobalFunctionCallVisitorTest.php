@@ -119,7 +119,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 
 		// scope
 		$this->scope->method ('inGlobalSpace')->willReturn (false);
-		$this->scope->method ('getScopeName')->willReturn ('someScopeName');
 
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\FuncCall')
@@ -137,12 +136,7 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 		$this->factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
 
 		// data
-		$this->data->expects($this->once())
-		     ->method('addIssue')
-		     ->with(
-		           $this->anything(),
-		           $this->equalTo('someScopeName')
-		       );
+		$this->data->expects($this->once())->method('addIssue');
 
 		$visitor = new GlobalFunctionCallVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($node);

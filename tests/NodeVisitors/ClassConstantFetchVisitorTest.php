@@ -65,7 +65,6 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->scope->inGlobalSpace()->willReturn (false);
 		$this->scope->insideClass()->willReturn (false);
-		$this->scope->getScopeName()->willReturn ('foo::bar');
 		              
 		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
 
@@ -74,7 +73,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$this->data->addIssue(Argument::any(), 'foo::bar')->shouldBeCalled();	
+		$this->data->addIssue(Argument::any(), $this->scope->reveal())->shouldBeCalled();	
 
 		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
 		$visitor->leaveNode ($node);
@@ -118,14 +117,13 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->getMock();
 		             
 		$this->scope->inGlobalSpace()->willReturn (false);
-		$this->scope->getScopeName()->willReturn ('foo::bar');
 
 		$this->nodeWrapper->isSameClassAs('whatever')->willReturn (false);
 		$this->nodeWrapper->getName()->willReturn ('foo');
 
 		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
 
-		$this->data->addIssue(Argument::any(), 'foo::bar')->shouldBeCalled();	
+		$this->data->addIssue(Argument::any(), $this->scope->reveal())->shouldBeCalled();	
 
 		$this->scope->insideClass()->willReturn (true);
 		$this->scope->getClassName()->willReturn ('whatever');

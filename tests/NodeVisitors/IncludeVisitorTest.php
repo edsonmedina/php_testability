@@ -102,19 +102,13 @@ class IncludeVisitorTest extends PHPUnit_Framework_TestCase
 		             ->setMethods(array('addIssue'))
 		             ->getMock();
 
-		$data->expects($this->once())
-		     ->method('addIssue')
-		     ->with(
-		           $this->anything(),
-		           $this->equalTo('someScopeName')
-		       );
+		$data->expects($this->once())->method('addIssue');
 
 		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
 		$scope->method ('inGlobalSpace')->willReturn (false);
-		$scope->method ('getScopeName')->willReturn ('someScopeName');
 
 		$node = new Include_ (
 			new Variable('test'), 

@@ -40,21 +40,12 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	public function testLeaveNode ()
 	{
 		// data
-		$this->data->expects($this->once())
-		     ->method('addIssue')
-		     ->with(
-		           $this->anything(),
-		           $this->equalTo('someScopeName')
-		       );
-
-		// scope
-		$this->scope->method ('getScopeName')->willReturn ('someScopeName');
+		$this->data->expects($this->once())->method('addIssue');
 
         // node wrapper
 		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
 		                    ->disableOriginalConstructor()
 		                    ->getMock();
-
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
 		             ->disableOriginalConstructor()
