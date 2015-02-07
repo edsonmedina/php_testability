@@ -43,11 +43,6 @@ class HTMLReport
 				$this->generateCSV ($path);
 			}
 		}
-
-		if (DEBUG) {
-			echo "Generating debug.log...\n";
-			file_put_contents ('debug.log', json_encode ($this->data->dumpAllIssues(), JSON_PRETTY_PRINT));
-		}
 	}
 
 	/**
@@ -56,10 +51,6 @@ class HTMLReport
 	 */
 	public function generateFile ($filename)
 	{
-		if (DEBUG) {
-			echo "Generating file {$filename}...\n";
-		}
-
 		// Load code and line numbers into array 
 		$content = file ($filename);
 		$counter = 1;
@@ -150,10 +141,6 @@ class HTMLReport
 	 */
 	public function generateIndexFile ($path)
 	{
-		if (DEBUG) {
-			echo "Generating index file for {$path}...\n";
-		}
-
 		// list directory
 		$files = array ();
 		$dirs  = array ();
@@ -204,10 +191,6 @@ class HTMLReport
 	 */
 	public function generateCSV ($path)
 	{
-		if (DEBUG) {
-			echo "Generating index file for {$path}...\n";
-		}
-
 		$total = $this->data->getIssuesCountForDirectory ($path);
 
 		$relPath = $this->convertPathToRelative ($path);
