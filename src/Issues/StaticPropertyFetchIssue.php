@@ -9,10 +9,4 @@ class StaticPropertyFetchIssue extends AbstractIssue
 	{
 		return "Static property fetch";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

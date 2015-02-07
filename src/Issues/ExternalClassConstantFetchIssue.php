@@ -9,10 +9,4 @@ class ExternalClassConstantFetchIssue extends AbstractIssue
 	{
 		return "External class constant fetch";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

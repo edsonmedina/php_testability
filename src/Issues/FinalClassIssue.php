@@ -9,10 +9,4 @@ class FinalClassIssue extends AbstractIssue
 	{
 		return "Final class declaration";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

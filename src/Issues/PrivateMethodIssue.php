@@ -9,10 +9,4 @@ class PrivateMethodIssue extends AbstractIssue
 	{
 		return "Private method declaration";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

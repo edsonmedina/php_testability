@@ -9,10 +9,4 @@ class NewInstanceIssue extends AbstractIssue
 	{
 		return "New instance";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

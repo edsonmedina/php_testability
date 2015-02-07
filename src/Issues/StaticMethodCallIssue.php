@@ -9,10 +9,4 @@ class StaticMethodCallIssue extends AbstractIssue
 	{
 		return "Static method call";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

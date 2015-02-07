@@ -9,10 +9,4 @@ class GlobalFunctionCallIssue extends AbstractIssue
 	{
 		return "Global function call";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
-	}
 }

@@ -12,13 +12,13 @@ class StaticVariableDeclarationIssue extends AbstractIssue
 
 	public function getID()
 	{
-        $obj = new NodeWrapper ($this->node);
+		$obj = new NodeWrapper ($this->node);
 
-        $names = array ();
-        foreach ($obj->getVarList() as $var) {
-            $names[] = '$'.$var->name;
-        }
+		$names = array ();
+		foreach ($obj->getVarList() as $var) {
+			$names[] = '$'.$var->name;
+		}
 
-        return join (',', $names);
+		return join (',', $names);
 	}
 }
