@@ -62,9 +62,29 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsFetchingFromSelfOutsideOfClass()
 	{
+		$this->data->expects($this->never())->method('addIssue');
+
 		$this->scope->method ('insideClass')->willReturn (false);
 
 		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
 		$this->assertFalse ($visitor->isFetchingFromSelf ($this->node));
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::leaveNode
+	 */
+	public function testLeaveNode()
+	{
+		$this->data->expects($this->once())->method('addIssue');
+		
+		// visitor
+		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor')
+		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setMethods (array('isFetchingFromSelf'))
+		                ->getMock();
+
+		$visitor->method ('isFetchingFromSelf')->willReturn (false);
+
+		$visitor->leaveNode ($this->node);
 	}
 }

@@ -1,9 +1,9 @@
 <?php
 
 require_once __DIR__.'/../../vendor/autoload.php';
-use edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor;
+use edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor;
 
-class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
+class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
@@ -16,7 +16,7 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 		                    ->disableOriginalConstructor()
 		                    ->getMock();	
 
-		$this->node = $this->getMockBuilder ('PhpParser\Node\Stmt\Global_')
+		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
 		                   ->disableOriginalConstructor()
 		                   ->getMock();
 
@@ -26,29 +26,21 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 
 		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
 		                      ->getMock();
-
-		$this->nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                          ->disableOriginalConstructor()
-		                          ->getMock();
-
-		$this->nodewrapper2 = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                           ->disableOriginalConstructor()
-		                           ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
 		$this->data->expects($this->never())->method('addIssue');
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->node2);
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
@@ -56,12 +48,12 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 		
 		$this->scope->method ('inGlobalSpace')->willReturn (true);
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->node);
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor::leaveNode
+	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
@@ -69,7 +61,7 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 		
 		$this->scope->method ('inGlobalSpace')->willReturn (false);
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
 		$visitor->leaveNode ($this->node);
 	}
 }
