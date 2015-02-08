@@ -12,11 +12,25 @@ class CodeOnGlobalSpaceIssueTest extends PHPUnit_Framework_TestCase
 	public function testGetTitle ()
 	{
 		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Class_')
-		              ->disableOriginalConstructor()
-		              ->getMock();
+		             ->disableOriginalConstructor()
+		             ->getMock();
 
 		$issue = new CodeOnGlobalSpaceIssue ($node);
 
 		$this->assertEquals('Code on global space', $issue->getTitle());
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue::getID
+	 */
+	public function testGetID ()
+	{
+		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Class_')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+
+		$issue = new CodeOnGlobalSpaceIssue ($node);
+
+		$this->assertEquals('', $issue->getID());
 	}
 }
