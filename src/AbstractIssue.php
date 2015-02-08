@@ -6,6 +6,7 @@
 
 namespace edsonmedina\php_testability;
 
+use edsonmedina\php_testability\NodeWrapper;
 use PhpParser;
 
 abstract class AbstractIssue implements IssueInterface 
