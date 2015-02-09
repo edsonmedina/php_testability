@@ -1,4 +1,4 @@
-<phpunit strict="false" verbose="false">
+<phpunit beStrictAboutTestsThatDoNotTestAnything="true" checkForUnintentionallyCoveredCode="false" forceCoversAnnotation="true" beStrictAboutOutputDuringTests="true" verbose="true">
 	<filter>
 		<whitelist>
 			<directory suffix=".php">.</directory>

@@ -164,14 +164,14 @@ class HTMLReport
 				$totalScopes      = $fileReport->getCountOfScopes($filename);
 				$untestableScopes = $fileReport->getCountOfScopesWithIssues($filename);
 				$testableScopes   = $totalScopes - $untestableScopes;
-    			$percent          = number_format (($testableScopes / $totalScopes) * 100, 2);
+    			$percent          = $totalScopes > 0 ? number_format (($testableScopes / $totalScopes) * 100, 2) : 0;
 
     			$files[] = array (
-    				'file'       => basename($filename),
-    				'total'      => $totalScopes,
-    				'testable'   => $testableScopes,
-    				'percent'    => $percent,
-                    'label'      => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
+    				'file'     => basename($filename),
+    				'total'    => $totalScopes,
+    				'testable' => $testableScopes,
+    				'percent'  => $percent,
+                    'label'    => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
     			);
     		}
 		}
