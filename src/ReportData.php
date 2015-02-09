@@ -256,6 +256,8 @@ class ReportData implements ReportDataInterface
 		return $count;
 	}
 
+
+
 	/**
 	 * Get global issues for file
 	 * @param string $filename

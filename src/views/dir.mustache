@@ -7,14 +7,17 @@
 		{{^isBaseDir}}
 		<tr>
 			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="../index.html">../</a></td>
-			<td>&nbsp;</td>
+			<td colspan="2">&nbsp;</td>
 		</tr>
 		{{/isBaseDir}}
 		
 		{{#dirs}}
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="{{name}}/index.html">{{name}}/</a></td>
 			<td>
+				<span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+				<a href="{{name}}/index.html">{{name}}/</a>
+			</td>
+			<td colspan="2">
 				{{#issues}}
 				<a href="{{name}}/index.html" class="btn btn-danger btn-xs" role="button">
 				  Issues <span class="badge">{{issues}}</span>
@@ -31,21 +34,16 @@
 		{{#files}}
 		<tr>
 			<td><a href="{{file}}.html">{{file}}</a></td>
-			<td>
+			<td class="{{label}} text-center">
 				{{#untestable}}
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Untestable
 				{{/untestable}}
 				{{^untestable}}
-					{{#issues}}
-				<a href="{{file}}.html" class="btn btn-danger btn-xs" role="button">
-				  Issues <span class="badge">{{issues}}</span>
-				</a>
-					{{/issues}}
-
-					{{^issues}}
-				<a href="{{file}}.html" class="btn btn-success btn-xs" role="button">Testable</a>
-					{{/issues}}
+				<a href="{{file}}.html">{{percent}}%</a>
 				{{/untestable}}
+			</td>
+			<td class="{{label}} text-center">
+				<a href="{{file}}.html">{{testable}} / {{total}}</a>
 			</td>
 		</tr>
 		{{/files}}

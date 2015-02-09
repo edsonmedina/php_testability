@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\FileReport;
 
 class HTMLReport 
 {
@@ -144,6 +145,8 @@ class HTMLReport
 		// list directory
 		$files = array ();
 		$dirs  = array ();
+
+		$fileReport = new FileReport ($this->data);
 		
 		foreach ($this->data->listDirectory($path) as $filename) 
 		{
@@ -158,10 +161,17 @@ class HTMLReport
     		// file
     		elseif (substr ($filename, -4, 4) == '.php')
     		{
+				$totalScopes      = $fileReport->getCountOfScopes($filename);
+				$untestableScopes = $fileReport->getCountOfScopesWithIssues($filename);
+				$testableScopes   = $totalScopes - $untestableScopes;
+    			$percent          = number_format (($testableScopes / $totalScopes) * 100, 2);
+
     			$files[] = array (
-    				'file'   => basename($filename),
-    				'issues' => $this->data->getIssuesCountForFile ($filename),
-    				'untestable' => $this->data->isFileUntestable ($filename) 
+    				'file'       => basename($filename),
+    				'total'      => $totalScopes,
+    				'testable'   => $testableScopes,
+    				'percent'    => $percent,
+                    'label'      => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
     			);
     		}
 		}
