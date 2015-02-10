@@ -7,7 +7,7 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\ReportData;
 
 /**
  * FileIteratorFactory
@@ -17,7 +17,7 @@ use edsonmedina\php_testability\ReportDataInterface;
  */
 class FileIteratorFactory 
 {
-	public function create (ReportDataInterface $data)
+	public function create (ReportData $data)
 	{
 		$analyserFactory = new AnalyserFactory;
 		

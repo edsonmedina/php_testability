@@ -1,12 +1,12 @@
 <?php
 namespace edsonmedina\php_testability;
-use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\ReportData;
 
 class FileReport
 {
 	protected $data;
 
-	public function __construct (ReportDataInterface $data)
+	public function __construct (ReportData $data)
 	{
 		$this->data = $data;
 	}

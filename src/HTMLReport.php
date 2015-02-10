@@ -1,7 +1,7 @@
 <?php
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\FileReport;
 
 class HTMLReport 
@@ -14,10 +14,10 @@ class HTMLReport
 	/**
 	 * @param string $baseDir   Where the code resides
 	 * @param string $reportDir Where to generate the report 
-	 * @param ReportDataInterface $data  Report data
+	 * @param ReportData $data  Report data
 	 * @param bool $outputCSV 	Output CSV files per directory
 	 */
-	public function __construct ($baseDir, $reportDir, ReportDataInterface $data, $outputCSV = false)
+	public function __construct ($baseDir, $reportDir, ReportData $data, $outputCSV = false)
 	{
 		$this->baseDir   = rtrim($baseDir, DIRECTORY_SEPARATOR);
 		$this->reportDir = $reportDir;

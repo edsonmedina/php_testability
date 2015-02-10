@@ -1,11 +1,10 @@
 <?php
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\ReportDataInterface;
 use edsonmedina\php_testability\IssueInterface;
 use edsonmedina\php_testability\AnalyserScope;
 
-class ReportData implements ReportDataInterface
+class ReportData
 {
 	private $currentFilename = null;
 	private $issues     = array ();

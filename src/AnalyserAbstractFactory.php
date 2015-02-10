@@ -6,7 +6,7 @@ use PhpParser;
 use edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\Dictionary;
-use edsonmedina\php_testability\ReportDataInterface;
+use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\AnalyserScope;
 
 /**
@@ -19,11 +19,11 @@ class AnalyserAbstractFactory
 {
 	/**
 	 * Create a node traverser object 
-	 * @param ReportDataInterface $data
+	 * @param ReportData $data
 	 * @param AnalyserScope $scope
 	 * @return PhpParser\NodeTraverser
 	 */
-	public function createTraverser (ReportDataInterface $data, AnalyserScope $scope)
+	public function createTraverser (ReportData $data, AnalyserScope $scope)
 	{
 		$traverser = new PhpParser\NodeTraverser;
 		
