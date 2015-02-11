@@ -3,18 +3,18 @@ namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\AnalyserScope;
 use edsonmedina\php_testability\AnalyserAbstractFactory;
+use edsonmedina\php_testability\ContextInterface;
+use edsonmedina\php_testability\ContextStack;
 use PhpParser;
 
 abstract class VisitorAbstract extends PhpParser\NodeVisitorAbstract
 {
-    protected $data;
-    protected $scope;
-    protected $factory;
+    protected $stack;
+    protected $context;
 
-    public function __construct (ReportData $data, AnalyserScope $scope, AnalyserAbstractFactory $factory)
+    public function __construct (ContextStack $stack, ContextInterface $context)
     {
-        $this->data    = $data;
-        $this->scope   = $scope;
-        $this->factory = $factory;
+        $this->stack    = $stack;
+        $this->context  = $context;
     }
 }

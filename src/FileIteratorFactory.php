@@ -7,7 +7,7 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\ReportData;
+use edsonmedina\php_testability\Contexts\RootContext;
 
 /**
  * FileIteratorFactory
@@ -17,11 +17,11 @@ use edsonmedina\php_testability\ReportData;
  */
 class FileIteratorFactory 
 {
-	public function create (ReportData $data)
+	public function create (RootContext $report)
 	{
 		$analyserFactory = new AnalyserFactory;
 		
-		$analyser = $analyserFactory->create ($data);
+		$analyser = $analyserFactory->create ($report);
 		return new FileIterator ($analyser);
 	}
 }

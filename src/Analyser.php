@@ -7,33 +7,30 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\AnalyserInterface;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\AnalyserAbstractFactory;
+use edsonmedina\php_testability\Contexts\FileContext;
 use PhpParser;
 
-class Analyser implements AnalyserInterface
+class Analyser 
 {
-	private $data;
 	private $parser;
 	private $factory;
-	private $scope;
+	private $report;
 
-	public function __construct (ReportData $data, PhpParser\Parser $parser, AnalyserScope $scope, AnalyserAbstractFactory $factory)
+	public function __construct (PhpParser\Parser $parser, AnalyserAbstractFactory $factory)
 	{
-		$this->data    = $data;
 		$this->parser  = $parser;
-		$this->scope   = $scope;
 		$this->factory = $factory;
 	}
 
 	/**
 	 * Scan a php file
-	 * @param string $filename 
+	 * @param FileContext $file 
 	 */
-	public function scan ($filename) 
+	public function scan (FileContext $file) 
 	{
+		$filename = $file->getName();
+
 		$code = file_get_contents ($filename);
 
 		try 
@@ -42,10 +39,7 @@ class Analyser implements AnalyserInterface
 		    $stmts = $this->parser->parse ($code);
 
 		    // traverse
-			$this->scope->reset();
-			$this->data->setCurrentFilename ($filename);
-		    
-			$traverser = $this->factory->createTraverser ($this->data, $this->scope);
+			$traverser = $this->factory->createTraverser ($file);
 		    $traverser->traverse ($stmts);
 		} 
 		catch (PhpParser\Error $e)

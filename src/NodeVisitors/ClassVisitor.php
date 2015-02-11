@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\FinalClassIssue;
+use edsonmedina\php_testability\Contexts\ClassContext;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -11,13 +12,13 @@ class ClassVisitor extends VisitorAbstract
     {
         if ($this->isClass($node)) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-            $this->scope->startClass ($obj->getName());
+            // create new context, keep parent
+            $this->stack->start (new ClassContext ($node->name));
 
             // report final class
             if ($node instanceof Stmt\Class_ && $node->isFinal()) 
             {
-                $this->data->addIssue (new FinalClassIssue($node), $this->scope);
+                $this->context->addIssue (new FinalClassIssue($node));
             }
         }
     }
@@ -26,7 +27,8 @@ class ClassVisitor extends VisitorAbstract
     {
         if ($this->isClass($node)) 
         {
-            $this->scope->endClass();
+            // back to the previous context
+            $this->stack->end();
         }
     }
 

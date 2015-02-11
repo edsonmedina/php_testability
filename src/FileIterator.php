@@ -7,6 +7,11 @@
 
 namespace edsonmedina\php_testability;
 
+use edsonmedina\php_testability\Analyser;
+use edsonmedina\php_testability\ContextInterface;
+use edsonmedina\php_testability\Contexts\DirectoryContext;
+use edsonmedina\php_testability\Contexts\FileContext;
+
 class FileIterator 
 {
 	private $analyser;
@@ -17,7 +22,7 @@ class FileIterator
 	 * Runs the static analyser
 	 * @param  Analyser $analyser Static code analysis class
 	 */
-	public function __construct (AnalyserInterface $analyser)
+	public function __construct (Analyser $analyser)
 	{
 		$this->analyser = $analyser;
 		$this->processedFilesCount = 0;
@@ -25,28 +30,42 @@ class FileIterator
 
 	/** 
 	 * Scans (recursively) the path and runs the analyser for each file
-	 * @param string $path File or directory
+	 * @param ContextInterface $parent 
 	 */
-	public function iterate ($path)
+	public function iterate (ContextInterface $parent)
 	{
-		if (is_dir ($path) && !$this->isDirExcluded($path)) 
-		{
-			// recurse into directory
-			foreach (new \DirectoryIterator ($path) as $fileInfo)
-			{
-				if ($fileInfo->isDot()) {
-					continue;
-				}
+		$path = $parent->getName();
 
-				$this->iterate ($path.DIRECTORY_SEPARATOR.$fileInfo->getFilename());
-			}
-		}
-		elseif (is_file ($path) && $this->hasPhpExtension($path))
+		foreach (new \DirectoryIterator ($path) as $fileInfo)
 		{
-			// process file
-			$this->analyser->scan ($path);
-			$this->processedFilesCount++;
-			echo ".";
+			if ($fileInfo->isDot()) {
+				continue;
+			}
+
+			$fullPath = $path.DIRECTORY_SEPARATOR.$fileInfo->getFilename();
+
+			if ($fileInfo->isDir() && !$this->isDirExcluded($fileInfo->getFilename())) 
+			{
+				$dir = new DirectoryContext ($fullPath);
+				$this->iterate ($dir);
+
+				// no need to keep directories
+				// with no mathing files
+				if ($dir->hasChildren())
+				{
+					$parent->addChild ($dir);
+				}
+			}
+			elseif ($this->hasPhpExtension($fileInfo->getFilename()))
+			{
+				$file = new FileContext ($fullPath);
+
+				$this->analyser->scan ($file);
+
+				$parent->addChild ($file);
+				$this->processedFilesCount++;
+				echo ".";
+			}
 		}
 	}
 

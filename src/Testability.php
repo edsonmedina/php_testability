@@ -6,9 +6,9 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\FileIterator;
-use edsonmedina\php_testability\ReportData;
+use edsonmedina\php_testability\FileIteratorFactory;
 use edsonmedina\php_testability\HTMLReport;
+use edsonmedina\php_testability\Contexts\RootContext;
 
 class Testability
 {
@@ -38,8 +38,8 @@ class Testability
 		$start_ts  = microtime (TRUE);
 
 		// run
-		$data  = new ReportData ();
-		$files = (new FileIteratorFactory)->create($data);
+		$report = new RootContext ($this->path);
+		$files  = (new FileIteratorFactory)->create($report);
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
@@ -47,22 +47,24 @@ class Testability
 
 		echo "\nPHP_Testability by Edson Medina\n";
 		echo "Analysing code on \"".$this->path."\"...\n";
-		$files->iterate ($this->path);
+		$files->iterate ($report);
+echo "\n";
+print_r ($report);
 
 		$scan_ts   = microtime (TRUE);
 		$scan_time = number_format ($scan_ts - $start_ts, 2);
 		echo " OK ({$scan_time}s).\n\n";
 
 
-		// generate HTML report
-		echo "Generating report to {$this->reportDir} ... ";
-		$baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
-		$report = new HTMLReport ($baseDir, $this->reportDir, $data, $this->shouldOutputCSV); 
-		$report->generate ();
+		// // generate HTML report
+		// echo "Generating report to {$this->reportDir} ... ";
+		// $baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
+		// $htmlReport = new HTMLReport ($baseDir, $this->reportDir, $data, $this->shouldOutputCSV); 
+		// $htmlReport->generate ();
 
-		$report_ts   = microtime (TRUE);
-		$report_time = number_format ($report_ts - $scan_ts, 2);
-		echo "OK ({$report_time}s).\n\n";
+		// $report_ts   = microtime (TRUE);
+		// $report_time = number_format ($report_ts - $scan_ts, 2);
+		// echo "OK ({$report_time}s).\n\n";
 
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
 
