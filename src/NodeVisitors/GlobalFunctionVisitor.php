@@ -1,6 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\Contexts\FunctionContext;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
@@ -10,18 +11,17 @@ class GlobalFunctionVisitor extends VisitorAbstract
     {
         if ($node instanceof Stmt\Function_) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-            $this->scope->startFunction ($obj->getName());
-            $this->data->saveScopePosition ($this->scope->getScopeName(), $node->getLine());
+            // create new context, keep parent
+            $this->stack->start (new FunctionContext ($node->name, $node->getLine(), $node->getAttribute('endLine')));
         }
     }
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        // end of method or global function
         if ($node instanceof Stmt\Function_) 
         {
-            $this->scope->endFunction();
+            // back to the previous context
+            $this->stack->end();
         }
     }
 }

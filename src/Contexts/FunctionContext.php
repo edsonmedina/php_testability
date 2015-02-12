@@ -8,7 +8,7 @@ class FunctionContext extends AbstractContext
 	protected $startLine;
 	protected $endLine;
 
-	public function __construct ($name, $starLine, $endLine)
+	public function __construct ($name, $startLine, $endLine)
 	{
 		$this->name      = $name;
 		$this->startLine = $startLine;

@@ -9,7 +9,7 @@ class ClassConstantFetchVisitor extends VisitorAbstract
 {
     public function leaveNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Expr\ClassConstFetch && !$this->scope->inGlobalSpace())
+        if ($node instanceof Expr\ClassConstFetch && !$this->inGlobalScope())
         {
             $obj = $this->factory->getNodeWrapper ($node);
             
@@ -18,12 +18,12 @@ class ClassConstantFetchVisitor extends VisitorAbstract
             {
                 if (!$obj->isSameClassAs($this->scope->getClassName()))
                 {
-                    $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope);
+                    $this->context->addIssue (new ExternalClassConstantFetchIssue($node));
                 } 
             }
             else
             {
-                $this->data->addIssue (new ExternalClassConstantFetchIssue($node), $this->scope);
+                $this->context->addIssue (new ExternalClassConstantFetchIssue($node));
             }
         }
     }

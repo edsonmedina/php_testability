@@ -29,24 +29,27 @@ class AnalyserAbstractFactory
 
 		$stack = new ContextStack ($context);
 		
+		// scope visitors
 		$traverser->addVisitor (new NodeVisitors\ClassVisitor  ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\MethodVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor     ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\CodeCoverageIgnoreVisitor ($stack, $context));
 
-		// $traverser->addVisitor (new NodeVisitors\CodeCoverageIgnoreVisitor  ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor   ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor  ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor      ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor    ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\NewVisitor        ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\ExitVisitor       ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($data, $scope, $this));
-		// $traverser->addVisitor (new NodeVisitors\CatchVisitor      ($data, $scope, $this));
+		// issue visitors
+		$traverser->addVisitor (new NodeVisitors\CatchVisitor ($stack, $context));
+		//$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor ($stack, $context));
+
+		// $traverser->addVisitor (new NodeVisitors\ExitVisitor       ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor    ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\NewVisitor        ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($stack, $context));
+		// $traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($stack, $context));
 
 		return $traverser;
 	}

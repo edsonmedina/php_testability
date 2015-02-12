@@ -48,23 +48,23 @@ class Testability
 		echo "\nPHP_Testability by Edson Medina\n";
 		echo "Analysing code on \"".$this->path."\"...\n";
 		$files->iterate ($report);
-echo "\n";
-print_r ($report);
+//echo "\n";
+//print_r ($report);
 
 		$scan_ts   = microtime (TRUE);
 		$scan_time = number_format ($scan_ts - $start_ts, 2);
 		echo " OK ({$scan_time}s).\n\n";
 
 
-		// // generate HTML report
-		// echo "Generating report to {$this->reportDir} ... ";
-		// $baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
-		// $htmlReport = new HTMLReport ($baseDir, $this->reportDir, $data, $this->shouldOutputCSV); 
-		// $htmlReport->generate ();
+		// generate HTML report
+		echo "Generating report to {$this->reportDir} ... ";
+		$baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
+		$htmlReport = new HTMLReport ($report, $this->reportDir, $this->shouldOutputCSV); 
+		$htmlReport->generate ();
 
-		// $report_ts   = microtime (TRUE);
-		// $report_time = number_format ($report_ts - $scan_ts, 2);
-		// echo "OK ({$report_time}s).\n\n";
+		$report_ts   = microtime (TRUE);
+		$report_time = number_format ($report_ts - $scan_ts, 2);
+		echo "OK ({$report_time}s).\n\n";
 
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
 

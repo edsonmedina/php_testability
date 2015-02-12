@@ -11,11 +11,11 @@ class CodeInGlobalSpaceVisitor extends VisitorAbstract
     public function enterNode (PhpParser\Node $node) 
     {
         // check for code outside of classes/functions
-        if ($this->scope->inGlobalSpace())
+        if ($this->inGlobalScope())
         {
             if (!$this->isAllowedOnGlobalSpace($node))
             {
-                $this->data->addIssue (new CodeOnGlobalSpaceIssue($node));
+                $this->context->addIssue (new CodeOnGlobalSpaceIssue($node));
             }
         }
     }
@@ -29,8 +29,8 @@ class CodeInGlobalSpaceVisitor extends VisitorAbstract
     {
         return (
                 $node instanceof Stmt\Class_
-                || $node instanceof Stmt\Trait_ 
                 || $node instanceof Stmt\Function_
+                || $node instanceof Stmt\Trait_ 
                 || ($node instanceof Stmt\UseUse || $node instanceof Stmt\Use_)
                 || ($node instanceof Stmt\Namespace_ || $node instanceof Node\Name)
                 || $node instanceof Stmt\Interface_

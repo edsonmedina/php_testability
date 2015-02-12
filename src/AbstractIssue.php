@@ -12,22 +12,27 @@ use PhpParser;
 abstract class AbstractIssue implements IssueInterface 
 {
 	protected $node;
+	protected $line;
+	protected $id;
 
 	final public function __construct (PhpParser\Node $node)
 	{
-		$this->node = $node;
+		//$this->node = $node;
+		$this->line = $node->getLine();
+
+        $obj = new NodeWrapper ($node);
+        $this->id = $obj->getName();
 	}
 
 	abstract public function getTitle();
 
 	public function getID()
 	{
-        $obj = new NodeWrapper ($this->node);
-        return $obj->getName();
+		return $this->id;
 	}
 
 	final public function getLine()
 	{
-		return $this->node->getLine();
+		return $this->line;
 	}
 }

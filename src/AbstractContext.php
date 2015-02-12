@@ -42,6 +42,46 @@ abstract class AbstractContext implements ContextInterface
 	}
 
 	/**
+	 * Return all issues, recursively
+	 * @return array
+	 */
+	public function getIssuesRecursively (ContextInterface $root = null)
+	{
+		if (is_null($root)) {
+			$root = $this;
+		}
+
+		$issues = $this->issues;
+
+		$children = $this->getChildren();
+
+		if (count($children))
+		{
+			foreach ($children as $child)
+			{
+				$childIssues = $child->getIssues();
+
+				if (count($childIssues)) 
+				{
+					$issues = $issues + $childIssues;
+				}
+
+				if ($child->hasChildren())
+				{
+					$list = $this->getIssuesRecursively ($child);
+					
+					if (count($list))
+					{
+						$issues = $issues + $this->getIssuesRecursively ($child);
+					}
+				}
+			}
+		}
+
+		return $issues
+	}
+
+	/**
 	 * Returns the name
 	 * @return string
 	 */
@@ -57,5 +97,14 @@ abstract class AbstractContext implements ContextInterface
 	public function hasChildren ()
 	{
 		return (count($this->children) > 0);
+	}
+
+	/**
+	 * Return all children
+	 * @return array
+	 */
+	public function getChildren ()
+	{
+		return $this->children;
 	}
 }

@@ -17,4 +17,9 @@ abstract class VisitorAbstract extends PhpParser\NodeVisitorAbstract
         $this->stack    = $stack;
         $this->context  = $context;
     }
+
+    protected function inGlobalScope ()
+    {
+    	return ($this->context instanceof FileContext);
+    }
 }

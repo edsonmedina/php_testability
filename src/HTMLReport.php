@@ -3,25 +3,27 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\FileReport;
+use edsonmedina\php_testability\ContextInterface;
+use edsonmedina\php_testability\FileContext;
+use edsonmedina\php_testability\DirectoryContext;
 
 class HTMLReport 
 {
 	private $baseDir   = '';
 	private $reportDir = '';
-	private $data;
+	private $report;
 	private $outputCSV;
 
 	/**
-	 * @param string $baseDir   Where the code resides
+	 * @param ContextInterface $report
 	 * @param string $reportDir Where to generate the report 
-	 * @param ReportData $data  Report data
 	 * @param bool $outputCSV 	Output CSV files per directory
 	 */
-	public function __construct ($baseDir, $reportDir, ReportData $data, $outputCSV = false)
+	public function __construct (ContextInterface $report, $reportDir, $outputCSV = false)
 	{
-		$this->baseDir   = rtrim($baseDir, DIRECTORY_SEPARATOR);
+		$this->baseDir   = $report[0]->getName():
 		$this->reportDir = $reportDir;
-		$this->data      = $data;
+		$this->report    = $report;
 		$this->outputCSV = $outputCSV;
 	}
 
@@ -34,14 +36,30 @@ class HTMLReport
 			mkdir ($this->reportDir);	
 		}
 
-		foreach ($this->data->getFileList() as $file) {
-			$this->generateFile ($file);
-		}
+		$this->iterate ($this->report);
+	}
 
-		foreach ($this->data->getFullDirList() as $path) {
-			$this->generateIndexFile ($path);
-			if ($this->outputCSV) {
-				$this->generateCSV ($path);
+	/**
+	 * Iterate the report
+	 * @param ContextInterface $root
+	 * @return void
+	 */
+	protected function iterate (ContextInterface $root) 
+	{
+		foreach ($root->getChildren() as $item) 
+		{
+			if ($item instanceof FileContext)
+			{
+				$this->generateFile ($item);
+			}
+			elseif ($item instanceof DirectoryContext)
+			{
+				$this->iterate ($item);
+				$this->generateIndexFile ($item);
+
+				//if ($this->outputCSV) {
+				//	$this->generateCSV ($item);
+				//}
 			}
 		}
 	}
@@ -56,11 +74,13 @@ class HTMLReport
 		$content = file ($filename);
 		$counter = 1;
 
+		// create array of tuples (line, code)
 		$code = array_map (
 			function ($line) use (&$counter) {
 				return array ('line' => $counter++, 'code' => rtrim($line));
-			}
-		, $content);
+			},
+			$content
+		);
 
 		unset($content);
 
@@ -75,8 +95,9 @@ class HTMLReport
 					'position' => $this->data->getScopePosition ($filename, $scope),
 					'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
 				);
-			}
-		, $fileScopes);
+			},
+			$fileScopes
+		);
 
 
 		// get issues per scope / line
