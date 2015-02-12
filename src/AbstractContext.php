@@ -51,11 +51,25 @@ abstract class AbstractContext implements ContextInterface
 
 	/**
 	 * Return all children
+	 * @param bool $recursive 
 	 * @return array
 	 */
-	public function getChildren ()
+	public function getChildren ($recursive = false)
 	{
-		return $this->children;
+		$list = $this->children;
+
+		if ($recursive === true)
+		{
+			foreach ($list as $child)
+			{
+				if ($child->hasChildren())
+				{
+					$list = array_merge ($list, $child->getChildren (true));
+				}
+			}
+		}
+
+		return $list;
 	}
 
 	/**
@@ -73,22 +87,20 @@ abstract class AbstractContext implements ContextInterface
 	 * @param bool $recursive 
 	 * @return bool
 	 */
-	public function hasIssues ($recursive = false, ContextInterface $node = null)
+	public function hasIssues ($recursive = false)
 	{
-		$node = ($node === null) ? $this : $node;
-
 		if ($recursive === true)
 		{
-			foreach ($node->getChildren() as $child)
+			foreach ($this->getChildren(true) as $child)
 			{
-				if ($this->hasIssues(true, $child))
+				if ($child->hasIssues())
 				{
 					return true;
 				}
 			}
 		}
 
-		return (count($node->issues) > 0);
+		return (count($this->issues) > 0);
 	}
 
 	/**
@@ -96,27 +108,19 @@ abstract class AbstractContext implements ContextInterface
 	 * @param bool $recursive 
 	 * @return array
 	 */
-	public function getIssues ($recursive = false, ContextInterface $node = null)
+	public function getIssues ($recursive = false)
 	{
-		$node = ($node === null) ? $this : $node;
+		$list = $this->issues;
 
-		$list = $node->issues;
-
-		if ($recursive === true && $node->hasChildren())
+		if ($recursive === true)
 		{
-			foreach ($node->getChildren() as $child)
+			foreach ($this->getChildren(true) as $child)
 			{
-				if ($child->hasIssues(false))
+				foreach ($child->getIssues() as $issue)
 				{
-					if (count($list) > 0)
-					{
-						$list = array_merge ($list, $this->getIssues(true, $child));
-					}
-					else
-					{
-						$list = $this->getIssues(true, $child);
-					}
+					$list[] = $issue;
 				}
+
 			}
 		}
 
@@ -128,15 +132,13 @@ abstract class AbstractContext implements ContextInterface
 	 * @param bool $recursive 
 	 * @return array
 	 */
-	public function getIssuesCount (ContextInterface $node = null)
+	public function getIssuesCount ()
 	{
-		$node = ($node === null) ? $this : $node;
+		$count = count($this->issues);
 
-		$count = count($node->issues);
-
-		foreach ($node->getChildren() as $child)
+		foreach ($this->getChildren() as $child)
 		{
-			$count += $this->getIssuesCount($child);
+			$count += $child->getIssuesCount();
 		}
 
 		return $count;

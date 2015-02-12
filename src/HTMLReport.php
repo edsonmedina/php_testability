@@ -80,73 +80,12 @@ class HTMLReport
 		// get list of issues per line
 		$issues = $file->getIssues (true);
 
-if(basename($file->getName()) == 'HTMLReport.php') {
-	print_r ($issues);
-}
-		foreach ($issues as $issue)
-		{
-			$code[$issue->getLine()]['issues'][] = array (
+		foreach ($issues as $issue) {
+			$code[$issue->getLine()-1]['issues'][] = array (
 				'type' => $issue->getTitle(),
 				'name' => $issue->getID()
 			);
 		}
-
-		/*
-		// get scopes
-		$fileScopes = $this->data->getScopesForFile ($filename);
-
-		$scopes = array_map (
-			function ($scope) use ($filename) {
-				return array (
-					'name'     => $scope . '()',
-					'position' => $this->data->getScopePosition ($filename, $scope),
-					'issues'   => $this->data->getIssuesCountForScope ($filename, $scope)
-				);
-			},
-			$fileScopes
-		);
-
-
-		// get issues per scope / line
-		$issues = $this->data->getIssuesForFile ($filename);
-		
-		if (isset($issues['scoped'])) 
-		{
-			// TODO move $issues[scoped] into a getter method
-			foreach ($issues['scoped'] as $scope => $report)
-			{
-				foreach ($report as $type => $list) 
-				{
-					// list issues per line
-					foreach ($list as $issue) 
-					{
-						list ($name, $lineNum) = $issue;
-						$code[$lineNum-1]['issues'][] = array ('type' => $type, 'name' => $name);
-					}
-				}
-			}
-		}
-
-		if (isset($issues['global'])) 
-		{
-			// add global issues
-			foreach ($issues['global'] as $type => $list) 
-			{
-				foreach (array_keys($list) as $lineNum) 
-				{
-					$code[$lineNum-1]['issues'][] = array ('type' => $type);
-				}
-			}
-
-			$scopes[] = array (
-				'name'     => '<global>',
-				'position' => '',
-				'issues'   => $this->data->getGlobalIssuesCount ($filename)
-			);
-		}
-
-		unset ($issues);
-		*/
 
 		// render
 		$view = new \Mustache_Engine (array(
