@@ -28,6 +28,18 @@ class NodeWrapper
 		$name      = '';
 		$separator = '';
 
+		// deal with list of variable names
+		if (isset($this->node->vars))
+		{
+			$names = array ();
+			foreach ($this->node->vars as $var) {
+				$names[] = '$'.$var->name;
+			}
+
+			return join (', ', $names);
+		}
+
+
 		if (isset($this->node->class)) 
 		{
 			if (isset($this->node->class->parts)) {
@@ -38,6 +50,7 @@ class NodeWrapper
 
 			$separator = '::';
 		}
+
 
 		if ($this->node->name instanceof Expr\Variable) 
 		{
@@ -53,6 +66,10 @@ class NodeWrapper
 			if (!empty($this->node->name)) 
 			{
 				$name .= $separator . $this->node->name;
+			} 
+			elseif (!empty($this->node->var->name))
+			{
+				$name .= $separator.'$'.$this->node->var->name;
 			}
 		}
 	

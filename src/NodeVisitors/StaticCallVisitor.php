@@ -1,5 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\Dictionary;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\StaticMethodCallIssue;
 use PhpParser;
@@ -10,20 +12,20 @@ class StaticCallVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for static method calls (ie: Things::doStuff())
-        if ($node instanceof Expr\StaticCall && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\StaticCall && !$this->inGlobalScope()) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
+            $obj = new NodeWrapper ($node);
 
             $name = $obj->getName();
             list ($className) = explode('::', $name);
 
             // only report static method calls for php classes that are 
             // not safe for instantiation (ie: with external resources)
-            $dictionary = $this->factory->getDictionary();
+            $dictionary = new Dictionary ();
             
             if (!$dictionary->isClassSafeForInstantiation($className))
             {
-                $this->data->addIssue (new StaticMethodCallIssue($node), $this->scope);
+                $this->stack->addIssue (new StaticMethodCallIssue($node));
             }
         }
     }

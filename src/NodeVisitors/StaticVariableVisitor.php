@@ -11,7 +11,7 @@ class StaticVariableVisitor extends VisitorAbstract
     {
         if ($node instanceof Stmt\Static_) 
         {
-            $this->data->addIssue (new StaticVariableDeclarationIssue($node), $this->scope);
+            $this->stack->addIssue (new StaticVariableDeclarationIssue($node));
         }
     }
 }

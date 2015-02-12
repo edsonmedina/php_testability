@@ -79,10 +79,9 @@ class HTMLReport
 
 		// get list of issues per line
 		$issues = $file->getIssues (true);
-print_r ($issues);
 		foreach ($issues as $issue)
 		{
-			$code[$issue->getLine()]['issues'][] = array (
+			$code[$issue->getLine()-1]['issues'][] = array (
 				'type' => $issue->getTitle(),
 				'name' => $issue->getID()
 			);

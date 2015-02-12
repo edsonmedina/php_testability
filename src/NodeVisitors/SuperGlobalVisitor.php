@@ -12,11 +12,11 @@ class SuperGlobalVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for super globals
-        if ($node instanceof Expr\ArrayDimFetch && !$this->scope->inGlobalSpace())
+        if ($node instanceof Expr\ArrayDimFetch && !$this->inGlobalScope())
         {
-            if ($node->var->name && in_array ($node->var->name, $this->_list))
+            if (isset($node->var->name) && in_array ($node->var->name, $this->_list))
             {
-                $this->data->addIssue (new SuperGlobalAccessIssue($node), $this->scope);
+                $this->stack->addIssue (new SuperGlobalAccessIssue($node));
             }
         }
     }

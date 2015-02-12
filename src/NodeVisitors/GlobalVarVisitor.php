@@ -10,9 +10,9 @@ class GlobalVarVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for global variables
-        if ($node instanceof Stmt\Global_ && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Stmt\Global_ && !$this->inGlobalScope()) 
         {
-            $this->data->addIssue (new GlobalVariableIssue($node), $this->scope);
+            $this->stack->addIssue (new GlobalVariableIssue($node));
         }
     }
 }

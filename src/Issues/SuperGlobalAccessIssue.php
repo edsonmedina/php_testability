@@ -8,9 +8,4 @@ class SuperGlobalAccessIssue extends AbstractIssue
 	{
 		return "Super global access";
 	}
-
-	public function getID()
-	{
-        return '$'.$this->node->var->name;
-	}
 }

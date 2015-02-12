@@ -30,25 +30,25 @@ class AnalyserAbstractFactory
 		$stack = new ContextStack ($context);
 		
 		// scope visitors
-		$traverser->addVisitor (new NodeVisitors\ClassVisitor  ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\MethodVisitor ($stack, $context));
-		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor     ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\CodeCoverageIgnoreVisitor ($stack, $context));
 
 		// issue visitors
 		$traverser->addVisitor (new NodeVisitors\CatchVisitor ($stack, $context));
-		$traverser->addVisitor (new NodeVisitors\ExitVisitor  ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\ExitVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\GlobalVarVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\StaticVariableVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($stack, $context));
 		//$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor ($stack, $context));
 		//$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor ($stack, $context));
 
 		// $traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($stack, $context));
-		// $traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($stack, $context));
-		// $traverser->addVisitor (new NodeVisitors\StaticVariableVisitor      ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor    ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\NewVisitor        ($stack, $context));
-		// $traverser->addVisitor (new NodeVisitors\GlobalVarVisitor  ($stack, $context));
-		// $traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($stack, $context));
 
 		return $traverser;

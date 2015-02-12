@@ -9,16 +9,4 @@ class StaticVariableDeclarationIssue extends AbstractIssue
 	{
 		return "Static variable declaration";
 	}
-
-	public function getID()
-	{
-		$obj = new NodeWrapper ($this->node);
-
-		$names = array ();
-		foreach ($obj->getVarList() as $var) {
-			$names[] = '$'.$var->name;
-		}
-
-		return join (',', $names);
-	}
 }
