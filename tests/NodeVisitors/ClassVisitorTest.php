@@ -7,27 +7,30 @@ use edsonmedina\php_testability\NodeVisitors\InterfaceVisitor;
 
 class ClassVisitorTest extends PHPUnit_Framework_TestCase
 {
+	public function setup ()
+	{
+		$this->stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		                    ->disableOriginalConstructor()
+		                    ->getMock();
+
+		$this->context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		                      ->disableOriginalConstructor()
+		                      ->getMock();
+	}
+
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::enterNode
 	 */
 	public function testEnterNodeWithDifferentType ()
 	{
-		$data    = $this->getMock('edsonmedina\php_testability\ReportData');
-		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
-
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->setMethods(array ('startClass'))
-		              ->getMock();
-
-		$scope->expects($this->never())->method('endClass');
+		$this->context->expects($this->never())->method('addIssue');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
-		                ->setConstructorArgs(array($data, $scope, $factory))
+		                ->setConstructorArgs(array($this->stack, $this->context))
 		                ->setMethods(array ('isClass'))
 		                ->getMock();
 
@@ -41,23 +44,15 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$data    = $this->getMock('edsonmedina\php_testability\ReportData');
-		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
-
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->setMethods(array ('endClass'))
-		              ->getMock();
-
-		$scope->expects($this->never())->method('endClass');
+		$this->stack->expects($this->never())->method('end');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
-		                ->setConstructorArgs(array($data, $scope, $factory))
-		                ->setMethods(array ('isClass'))
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('isClass'))
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('isClass')->willReturn(false);
@@ -70,23 +65,15 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNode ()
 	{
-		$data    = $this->getMock('edsonmedina\php_testability\ReportData');
-		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
-		
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->setMethods(array ('endClass'))
-		              ->getMock();
-
-		$scope->expects($this->once())->method('endClass');
+		$this->stack->expects($this->once())->method('end');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
-		                ->setConstructorArgs(array($data, $scope, $factory))
-		                ->setMethods(array ('isClass'))
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('isClass'))
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('isClass')->willReturn(true);
@@ -97,49 +84,46 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::enterNode
 	 */
-	public function testEnterNodeWithNonFinalClass ()
+	public function testEnterNodeWithTrait ()
 	{
-		// data
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
+		$this->stack->expects($this->once())->method('start');
+		$this->context->expects($this->never())->method('addIssue');
+
+		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('addIssue'))
-		             ->getMock();
-		
-		$data->expects($this->never())->method('addIssue');
-
-		// scope
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->setMethods(array('startClass'))
-		              ->getMock();
-
-		$scope->expects($this->once())->method('startClass')->with($this->equalTo('foo'));
-
-		// node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		             ->disableOriginalConstructor()
+		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
-		$nodewrapper->method ('getName')->willReturn ('foo');
+		$node->expects($this->never())->method('isFinal');
 
-		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array ('isClass'))
 		                ->getMock();
 
-		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
+		$visitor->expects($this->once())->method('isClass')->willReturn(true);
 
-		// node
+		$visitor->enterNode ($node);
+	}
+
+	/**
+	 * @covers edsonmedina\php_testability\NodeVisitors\ClassVisitor::enterNode
+	 */
+	public function testEnterNodeWithNonFinalClass ()
+	{
+		$this->stack->expects($this->once())->method('start');
+		$this->context->expects($this->never())->method('addIssue');
+
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
 		             ->disableOriginalConstructor()
-                     ->setMethods(array('isFinal'))
+		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
-		$node->expects($this->once())->method('isFinal')->willReturn (false);
+		$node->expects($this->once())->method('isFinal')->willReturn(false);
 
-		// visitor
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
-		                ->setConstructorArgs(array($data, $scope, $factory))
-		                ->setMethods(array('isClass'))
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array ('isClass'))
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('isClass')->willReturn(true);
@@ -152,47 +136,19 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testEnterNode ()
 	{
-		// data
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		             ->disableOriginalConstructor()
-		             ->setMethods(array('addIssue'))
-		             ->getMock();
-		
-		$data->expects($this->once())->method('addIssue');
+		$this->stack->expects($this->once())->method('start');
+		$this->context->expects($this->once())->method('addIssue');
 
-		// scope
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->setMethods(array('startClass'))
-		              ->getMock();
-
-		$scope->expects($this->once())->method('startClass')->with($this->equalTo('foo'));
-
-		// node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$nodewrapper->method ('getName')->willReturn ('foo');
-
-		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
-		                ->getMock();
-
-		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
-
-		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
 		             ->disableOriginalConstructor()
-                     ->setMethods(array('isFinal'))
+		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
-		$node->expects($this->once())->method('isFinal')->willReturn (true);
+		$node->expects($this->once())->method('isFinal')->willReturn(true);
 
-		// visitor
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassVisitor')
-		                ->setConstructorArgs(array($data, $scope, $factory))
-		                ->setMethods(array('isClass'))
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array ('isClass'))
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('isClass')->willReturn(true);
@@ -205,15 +161,11 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsClassWithDifferentTypes ()
 	{
-		$data    = $this->getMock('edsonmedina\php_testability\ReportData');
-		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
-		$scope   = $this->getMock('edsonmedina\php_testability\AnalyserScope');
-
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ClassVisitor ($data, $scope, $factory);
+		$visitor = new ClassVisitor ($this->stack, $this->context);
 		$this->assertFalse ($visitor->isClass ($node));
 	}
 
@@ -222,10 +174,6 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsClass ()
 	{
-		$data    = $this->getMock('edsonmedina\php_testability\ReportData');
-		$factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
-		$scope   = $this->getMock('edsonmedina\php_testability\AnalyserScope');
-
 		$node1 = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
 		              ->disableOriginalConstructor()
 		              ->getMock();
@@ -238,7 +186,7 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
-		$visitor = new ClassVisitor ($data, $scope, $factory);
+		$visitor = new ClassVisitor ($this->stack, $this->context);
 
 		$this->assertTrue ($visitor->isClass ($node1));
 		$this->assertTrue ($visitor->isClass ($node2));
