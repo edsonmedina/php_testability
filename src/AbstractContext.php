@@ -108,7 +108,14 @@ abstract class AbstractContext implements ContextInterface
 			{
 				if ($child->hasIssues(false))
 				{
-					$list = $list + $this->getIssues(true, $child);
+					if (count($list) > 0)
+					{
+						$list = array_merge ($list, $this->getIssues(true, $child));
+					}
+					else
+					{
+						$list = $this->getIssues(true, $child);
+					}
 				}
 			}
 		}

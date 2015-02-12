@@ -15,7 +15,7 @@ class CodeInGlobalSpaceVisitor extends VisitorAbstract
         {
             if (!$this->isAllowedOnGlobalSpace($node))
             {
-                $this->context->addIssue (new CodeOnGlobalSpaceIssue($node));
+                $this->stack->addIssue (new CodeOnGlobalSpaceIssue($node));
             }
         }
     }

@@ -55,7 +55,7 @@ class HTMLReport
 			}
 			elseif ($item instanceof DirectoryContext)
 			{
-				// $this->iterate ($item);
+				$this->iterate ($item);
 				// $this->generateIndexFile ($item);
 
 				//if ($this->outputCSV) {
@@ -79,9 +79,13 @@ class HTMLReport
 
 		// get list of issues per line
 		$issues = $file->getIssues (true);
+if(basename($file->getName()) == 'HTMLReport.php')
+{
+	// print_r ($file);
+}
 		foreach ($issues as $issue)
 		{
-			$code[$issue->getLine()-1]['issues'][] = array (
+			$code[$issue->getLine()]['issues'][] = array (
 				'type' => $issue->getTitle(),
 				'name' => $issue->getID()
 			);
@@ -169,13 +173,13 @@ class HTMLReport
 	public function getContentInTuples ($filename)
 	{
 		$result = array ();
-		$lineNumber   = 1;
+		$lineNumber = 1;
 
 		// create array of tuples (line, code)
 		foreach (file ($filename) as $line)
 		{
 			$result[] = array (
-				'line' => $lineNumber++, 
+				'line' => $lineNumber++,
 				'text' => rtrim($line)
 			);
 		}

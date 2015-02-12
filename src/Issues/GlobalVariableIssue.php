@@ -9,16 +9,4 @@ class GlobalVariableIssue extends AbstractIssue
 	{
 		return "Global variable";
 	}
-
-	public function getID()
-	{
-        $obj = new NodeWrapper ($this->node);
-
-        $names = array ();
-        foreach ($obj->getVarList() as $var) {
-            $names[] = '$'.$var->name;
-        }
-
-        return join (',', $names);
-	}
 }

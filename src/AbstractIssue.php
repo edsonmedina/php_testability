@@ -11,13 +11,11 @@ use PhpParser;
 
 abstract class AbstractIssue implements IssueInterface 
 {
-	protected $node;
 	protected $line;
 	protected $id;
 
 	final public function __construct (PhpParser\Node $node)
 	{
-		//$this->node = $node;
 		$this->line = $node->getLine();
 
         $obj = new NodeWrapper ($node);

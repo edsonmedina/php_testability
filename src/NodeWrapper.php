@@ -18,11 +18,6 @@ class NodeWrapper
 		$this->endLine = $node->getAttribute('endLine');
 	}
 
-	public function getVarList() 
-	{
-		return $this->node->vars;
-	}
-
 	public function getName() 
 	{	
 		$name      = '';
