@@ -10,11 +10,14 @@ class CatchVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for empty catch() statements
-        if ($node instanceof Stmt\Catch_ && !$this->inGlobalScope())
+        if ($node instanceof Stmt\Catch_)
         {
-            if (empty($node->stmts))
+            if (!$this->inGlobalScope())
             {
-                $this->context->addIssue (new EmptyCatchIssue ($node));
+                if (empty($node->stmts))
+                {
+                    $this->stack->addIssue (new EmptyCatchIssue ($node));
+                }
             }
         }
     }

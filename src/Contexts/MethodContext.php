@@ -5,8 +5,8 @@ use edsonmedina\php_testability\AbstractContext;
 
 class MethodContext extends AbstractContext
 {
-	protected $startLine;
-	protected $endLine;
+	public $startLine;
+	public $endLine;
 
 	public function __construct ($name, $startLine, $endLine)
 	{

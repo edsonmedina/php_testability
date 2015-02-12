@@ -10,9 +10,9 @@ class ExitVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for exit/die statements
-        if ($node instanceof Expr\Exit_ && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\Exit_ && !$this->inGlobalScope()) 
         {
-            $this->data->addIssue (new ExitIssue($node), $this->scope);
+            $this->stack->addIssue (new ExitIssue($node));
         }
     }
 }

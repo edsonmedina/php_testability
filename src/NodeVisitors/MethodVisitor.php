@@ -20,17 +20,17 @@ class MethodVisitor extends VisitorAbstract
             // report non public methods
             if ($node->isPrivate()) 
             {
-                $this->context->addIssue (new PrivateMethodIssue($node));
+                $this->stack->addIssue (new PrivateMethodIssue($node));
             }
             elseif ($node->isProtected()) 
             {
-                $this->context->addIssue (new ProtectedMethodIssue($node));
+                $this->stack->addIssue (new ProtectedMethodIssue($node));
             }
 
             // report final methods
             if ($node->isFinal()) 
             {
-                $this->context->addIssue (new FinalMethodIssue($node));
+                $this->stack->addIssue (new FinalMethodIssue($node));
             }
         }
     }

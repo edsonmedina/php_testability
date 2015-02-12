@@ -13,12 +13,12 @@ class ClassVisitor extends VisitorAbstract
         if ($this->isClass($node)) 
         {
             // create new context, keep parent
-            $this->stack->start (new ClassContext ($node->name));
+            $this->stack->start (new ClassContext ($node->name, $node->getLine(), $node->getAttribute('endLine')));
 
             // report final class
             if ($node instanceof Stmt\Class_ && $node->isFinal()) 
             {
-                $this->context->addIssue (new FinalClassIssue($node));
+                $this->stack->addIssue (new FinalClassIssue($node));
             }
         }
     }

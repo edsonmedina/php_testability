@@ -4,8 +4,9 @@ namespace edsonmedina\php_testability;
 use edsonmedina\php_testability\ReportData;
 use edsonmedina\php_testability\FileReport;
 use edsonmedina\php_testability\ContextInterface;
-use edsonmedina\php_testability\FileContext;
-use edsonmedina\php_testability\DirectoryContext;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\Contexts\DirectoryContext;
+use edsonmedina\php_testability\Contexts\FileContext;
 
 class HTMLReport 
 {
@@ -21,7 +22,7 @@ class HTMLReport
 	 */
 	public function __construct (ContextInterface $report, $reportDir, $outputCSV = false)
 	{
-		$this->baseDir   = $report[0]->getName():
+		$this->baseDir   = $report->getName();
 		$this->reportDir = $reportDir;
 		$this->report    = $report;
 		$this->outputCSV = $outputCSV;
@@ -54,8 +55,8 @@ class HTMLReport
 			}
 			elseif ($item instanceof DirectoryContext)
 			{
-				$this->iterate ($item);
-				$this->generateIndexFile ($item);
+				// $this->iterate ($item);
+				// $this->generateIndexFile ($item);
 
 				//if ($this->outputCSV) {
 				//	$this->generateCSV ($item);
@@ -66,25 +67,28 @@ class HTMLReport
 
 	/**
 	 * Generate file
-	 * @param string $filename
+	 * @param FileContext $file
 	 */
-	public function generateFile ($filename)
+	public function generateFile (FileContext $file)
 	{
 		// Load code and line numbers into array 
-		$content = file ($filename);
-		$counter = 1;
+		$code = $this->getContentInTuples ($file->getName());
 
-		// create array of tuples (line, code)
-		$code = array_map (
-			function ($line) use (&$counter) {
-				return array ('line' => $counter++, 'code' => rtrim($line));
-			},
-			$content
-		);
+		// load scopes names, lines and issues
+		$scopes = $file->getContextsNumberOfIssues();
 
-		unset($content);
+		// get list of issues per line
+		$issues = $file->getIssues (true);
+print_r ($issues);
+		foreach ($issues as $issue)
+		{
+			$code[$issue->getLine()]['issues'][] = array (
+				'type' => $issue->getTitle(),
+				'name' => $issue->getID()
+			);
+		}
 
-
+		/*
 		// get scopes
 		$fileScopes = $this->data->getScopesForFile ($filename);
 
@@ -139,13 +143,14 @@ class HTMLReport
 		}
 
 		unset ($issues);
+		*/
 
 		// render
 		$view = new \Mustache_Engine (array(
 			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
-		$relFilename = $this->convertPathToRelative ($filename);
+		$relFilename = $this->convertPathToRelative ($file->getName());
 
 		$output = $view->render ('file', array (
 			'currentPath' => $relFilename,
@@ -156,6 +161,29 @@ class HTMLReport
 
 		$this->saveFile ($relFilename.'.html', $output);
 	}
+
+	/**
+	 * Returns file contents as array of tuples (array('line' => 12, 'text' => '...'))
+	 * @param string $filename
+	 * @return array
+	 */
+	public function getContentInTuples ($filename)
+	{
+		$result = array ();
+		$lineNumber   = 1;
+
+		// create array of tuples (line, code)
+		foreach (file ($filename) as $line)
+		{
+			$result[] = array (
+				'line' => $lineNumber++, 
+				'text' => rtrim($line)
+			);
+		}
+
+		return $result;
+	}
+
 
 	/**
 	 * Generate index file

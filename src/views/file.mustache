@@ -6,16 +6,16 @@
 	<tbody>
 		{{#scopes}}
 		<tr>
-			<td><a href="#{{position}}">{{name}}</a></td>
+			<td><a href="#{{startLine}}">{{name}}</a></td>
 			<td>
 				{{#issues}}
-				<a href="#{{position}}" class="btn btn-danger btn-xs" role="button">
+				<a href="#{{startLine}}" class="btn btn-danger btn-xs" role="button">
 				  Issues <span class="badge">{{issues}}</span>
 				</a>
 				{{/issues}}
 
 				{{^issues}}
-				<a href="#{{position}}" class="btn btn-success btn-xs" role="button">Testable</a>
+				<a href="#{{startLine}}" class="btn btn-success btn-xs" role="button">Testable</a>
 				{{/issues}}
 			</td>
 		</tr>
@@ -36,7 +36,7 @@
 		{{type}} {{#name}}({{.}}){{/name}}
 	</span> &nbsp;
 {{/issues}}
-<div class="codeline{{#issues}} bg-danger{{/issues}}"><a name="{{line}}" href="#{{line}}">{{line}}.</a>	{{code}}</div>
+<div class="codeline{{#issues}} bg-danger{{/issues}}"><a name="{{line}}" href="#{{line}}">{{line}}.</a>	{{text}}</div>
 {{/lines}}
 
 {{> partials/footer }}

@@ -1,9 +1,7 @@
 <?php
 namespace edsonmedina\php_testability;
-use edsonmedina\php_testability\ReportData;
-use edsonmedina\php_testability\AnalyserScope;
-use edsonmedina\php_testability\AnalyserAbstractFactory;
 use edsonmedina\php_testability\ContextInterface;
+use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\ContextStack;
 use PhpParser;
 
@@ -20,6 +18,6 @@ abstract class VisitorAbstract extends PhpParser\NodeVisitorAbstract
 
     protected function inGlobalScope ()
     {
-    	return ($this->context instanceof FileContext);
+    	return ($this->stack->current() instanceof FileContext);
     }
 }

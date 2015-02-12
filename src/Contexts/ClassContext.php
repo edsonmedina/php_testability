@@ -5,8 +5,13 @@ use edsonmedina\php_testability\AbstractContext;
 
 class ClassContext extends AbstractContext
 {
-	public function __construct ($name)
+	public $startLine;
+	public $endLine;
+
+	public function __construct ($name, $startLine, $endLine)
 	{
-		$this->name = $name;
+		$this->name      = $name;
+		$this->startLine = $startLine;
+		$this->endLine   = $endLine;
 	}
 }

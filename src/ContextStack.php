@@ -54,4 +54,15 @@ class ContextStack
 		$length = count($this->stack);
 		$this->stack[$length-1]->addChild ($child);
 	}
+
+	/**
+	 * Add an issue to current context
+	 * @param IssueInterface $issue
+	 * @return void
+	 */
+	public function addIssue (IssueInterface $issue)
+	{
+		$length = count($this->stack);
+		$this->stack[$length-1]->addIssue ($issue);
+	}
 }

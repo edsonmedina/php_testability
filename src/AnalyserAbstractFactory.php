@@ -37,10 +37,10 @@ class AnalyserAbstractFactory
 
 		// issue visitors
 		$traverser->addVisitor (new NodeVisitors\CatchVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\ExitVisitor  ($stack, $context));
 		//$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor ($stack, $context));
-		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor ($stack, $context));
+		//$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor ($stack, $context));
 
-		// $traverser->addVisitor (new NodeVisitors\ExitVisitor       ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor         ($stack, $context));
