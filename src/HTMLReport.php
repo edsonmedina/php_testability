@@ -79,9 +79,9 @@ class HTMLReport
 
 		// get list of issues per line
 		$issues = $file->getIssues (true);
-if(basename($file->getName()) == 'HTMLReport.php')
-{
-	// print_r ($file);
+
+if(basename($file->getName()) == 'HTMLReport.php') {
+	print_r ($issues);
 }
 		foreach ($issues as $issue)
 		{

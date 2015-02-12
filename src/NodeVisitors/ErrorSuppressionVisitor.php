@@ -9,9 +9,9 @@ class ErrorSuppressionVisitor extends VisitorAbstract
 {
     public function leaveNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Expr\ErrorSuppress && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\ErrorSuppress && !$this->inGlobalScope()) 
         {
-            $this->data->addIssue (new ErrorSuppressionIssue($node), $this->scope);
+            $this->stack->addIssue (new ErrorSuppressionIssue($node));
         }
     }
 }

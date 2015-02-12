@@ -43,11 +43,11 @@ class AnalyserAbstractFactory
 		$traverser->addVisitor (new NodeVisitors\SuperGlobalVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\StaticCallVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\CodeInGlobalSpaceVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor ($stack, $context));
 
 		//$traverser->addVisitor (new NodeVisitors\ClassConstantFetchVisitor ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\StaticPropertyFetchVisitor ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\GlobalFunctionCallVisitor  ($stack, $context));
-		// $traverser->addVisitor (new NodeVisitors\ErrorSuppressionVisitor    ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\NewVisitor        ($stack, $context));
 		// $traverser->addVisitor (new NodeVisitors\IncludeVisitor    ($stack, $context));
 
