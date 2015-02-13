@@ -47,6 +47,8 @@ class HTMLReport
 	 */
 	protected function iterate (ContextInterface $root) 
 	{
+		$this->generateIndexFile ($root);
+
 		foreach ($root->getChildren() as $item) 
 		{
 			if ($item instanceof FileContext)
@@ -56,7 +58,6 @@ class HTMLReport
 			elseif ($item instanceof DirectoryContext)
 			{
 				$this->iterate ($item);
-				// $this->generateIndexFile ($item);
 
 				//if ($this->outputCSV) {
 				//	$this->generateCSV ($item);
@@ -126,45 +127,37 @@ class HTMLReport
 		return $result;
 	}
 
-
 	/**
 	 * Generate index file
-	 * @param string $path
+	 * @param ContextInterface $path (DirectoryInterface or RootInterface)
 	 */
-	public function generateIndexFile ($path)
+	public function generateIndexFile (ContextInterface $path)
 	{
 		// list directory
 		$files = array ();
 		$dirs  = array ();
 
-		$fileReport = new FileReport ($this->data);
-		
-		foreach ($this->data->listDirectory($path) as $filename) 
+		foreach ($path->getChildren() as $child)
 		{
-			// directory
-    		if (is_dir($filename)) 
-    		{
+			$filename = $child->getName();
+
+			if ($child instanceof DirectoryContext)
+			{
     			$dirs[] = array (
     				'name'   => basename($filename),
-    				'issues' => $this->data->getIssuesCountForDirectory ($filename),
+    			//	'issues' => $this->data->getIssuesCountForDirectory ($filename),
     			);
-    		} 
-    		// file
-    		elseif (substr ($filename, -4, 4) == '.php')
-    		{
-				$totalScopes      = $fileReport->getCountOfScopes($filename);
-				$untestableScopes = $fileReport->getCountOfScopesWithIssues($filename);
-				$testableScopes   = $totalScopes - $untestableScopes;
-    			$percent          = $totalScopes > 0 ? number_format (($testableScopes / $totalScopes) * 100, 2) : 0;
-
+			}
+			elseif ($child instanceof FileContext)
+			{
     			$files[] = array (
     				'file'     => basename($filename),
-    				'total'    => $totalScopes,
-    				'testable' => $testableScopes,
-    				'percent'  => $percent,
-                    'label'    => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
+    //				'total'    => $totalScopes,
+  //  				'testable' => $testableScopes,
+//    				'percent'  => $percent,
+//                    'label'    => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
     			);
-    		}
+			}
 		}
 
 		// render
@@ -172,14 +165,15 @@ class HTMLReport
 			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
-		$relPath = $this->convertPathToRelative ($path);
+		$relPath = $this->convertPathToRelative ($path->getName());
+
 
 		$output = $view->render ('dir', array (
 			'currentPath' => $relPath,
 			'files'       => $files,
 			'dirs'        => $dirs,
 			'date'        => date('r'),
-			'isBaseDir'   => ($this->baseDir === $path)
+			'isBaseDir'   => ($this->baseDir === $path->getName())
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		
