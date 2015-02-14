@@ -5,6 +5,7 @@ use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\ContextSpecificationInterface;
 use edsonmedina\php_testability\Contexts\MethodContext;
 use edsonmedina\php_testability\Contexts\FunctionContext;
+use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 
 class ProcedureSpecification implements ContextSpecificationInterface
 {
@@ -13,6 +14,7 @@ class ProcedureSpecification implements ContextSpecificationInterface
 		return (
 			$subject instanceof MethodContext 
 			|| $subject instanceof FunctionContext
+			|| $subject instanceof AnonymousFunctionContext
 		);
 	}
 }
