@@ -7,6 +7,7 @@ use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 use edsonmedina\php_testability\Contexts\FileContext;
+use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 
 class HTMLReport 
 {
@@ -141,22 +142,25 @@ class HTMLReport
 		{
 			$filename = $child->getName();
 
+			$numbers = $this->getTotalTestableProcedures($child);
+
+			$percent = $numbers['total'] > 0 ? ($numbers['testable'] / $numbers['total']) : 0;
+
+			$node = array (
+				'name'   => basename($filename),
+				'total'    => $numbers['total'],
+				'testable' => $numbers['testable'],
+				'percent'  => number_format ($percent*100, 2),
+                'label'    => $percent == 1 ? 'success' : ($percent > 0.7 ? 'warning' : 'danger')
+			);
+
 			if ($child instanceof DirectoryContext)
 			{
-    			$dirs[] = array (
-    				'name'   => basename($filename),
-    			//	'issues' => $this->data->getIssuesCountForDirectory ($filename),
-    			);
+    			$dirs[] = $node;
 			}
 			elseif ($child instanceof FileContext)
 			{
-    			$files[] = array (
-    				'file'     => basename($filename),
-    //				'total'    => $totalScopes,
-  //  				'testable' => $testableScopes,
-//    				'percent'  => $percent,
-//                    'label'    => $percent == 100 ? 'success' : ($percent > 70 ? 'warning' : 'danger')
-    			);
+    			$files[] = $node;
 			}
 		}
 
@@ -180,16 +184,39 @@ class HTMLReport
 	}
 
 	/**
+	 * Return a count of total/testable procedures
+	 * @param ContextInterface $root
+	 * @return array ('total' => 12, 'testable' => 4)
+	 */
+	public function getTotalTestableProcedures (ContextInterface $root)
+	{
+		$total      = 0;
+		$testable = 0;
+
+		foreach ($root->getChildrenRecursively(new ProcedureSpecification) as $proc)
+		{
+			$total++;
+
+			if (!$proc->hasIssues())
+			{
+				$testable++;
+			}
+		}
+
+		return array ('total' => $total, 'testable' => $testable);
+	}
+
+	/**
 	 * Generate CSV files
 	 * TODO: this method shouldn't be here, it needs a class of its own
 	 * @param string $path
 	 */
 	public function generateCSV ($path)
 	{
-		$total = $this->data->getIssuesCountForDirectory ($path);
+	//	$total = $this->data->getIssuesCountForDirectory ($path);
 
-		$relPath = $this->convertPathToRelative ($path);
-		$this->saveFile ($relPath.'/total.csv', '"Total Issues"'.PHP_EOL.$total);
+	//	$relPath = $this->convertPathToRelative ($path);
+	//	$this->saveFile ($relPath.'/total.csv', '"Total Issues"'.PHP_EOL.$total);
 	}
 
 	/**

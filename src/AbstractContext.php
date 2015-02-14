@@ -22,6 +22,8 @@ abstract class AbstractContext implements ContextInterface
 	 */
 	protected $issues = array();
 
+
+
 	/**
 	 * Returns the name
 	 * @return string
@@ -77,9 +79,9 @@ abstract class AbstractContext implements ContextInterface
 	{
 		$list = $this->getChildren($filter);
 
-		foreach ($list as $child)
+		foreach ($this->getChildren() as $child)
 		{
-			if ($child->hasChildren($filter))
+			if ($child->hasChildren())
 			{
 				$list = array_merge ($list, $child->getChildrenRecursively($filter));
 			}
