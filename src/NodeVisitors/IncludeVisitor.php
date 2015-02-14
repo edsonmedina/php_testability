@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\IncludeIssue;
+use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 use PhpParser;
 use PhpParser\Node\Expr;
 
@@ -9,11 +10,13 @@ class IncludeVisitor extends VisitorAbstract
 {
     public function leaveNode (PhpParser\Node $node) 
     {
-        if ($node instanceof Expr\Include_ && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\Include_ && !$this->inGlobalScope()) 
         {
-            if ($this->scope->getScopeName() !== '__autoload') 
+            $parentClass = $this->stack->findContextOfType(new ProcedureSpecification);
+
+            if ($parentClass->getName() !== '__autoload') 
             {
-                $this->data->addIssue (new IncludeIssue($node), $this->scope);
+                $this->stack->addIssue (new IncludeIssue($node));
             }
         }
     }

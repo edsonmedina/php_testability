@@ -8,9 +8,4 @@ class IncludeIssue extends AbstractIssue
 	{
 		return "Include";
 	}
-
-	public function getID()
-	{
-        return empty($this->node->expr->value) ? '<expression>' : $this->node->expr->value;
-	}
 }

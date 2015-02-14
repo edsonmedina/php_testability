@@ -34,7 +34,6 @@ class NodeWrapper
 			return join (', ', $names);
 		}
 
-
 		if (isset($this->node->class)) 
 		{
 			if (isset($this->node->class->parts)) {
