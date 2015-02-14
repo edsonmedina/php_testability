@@ -39,7 +39,7 @@ class Testability
 
 		// run
 		$report = new RootContext ($this->path);
-		$files  = (new FileIteratorFactory)->create($report);
+		$files  = (new FileIteratorFactory)->create();
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
@@ -56,7 +56,6 @@ class Testability
 
 		// generate HTML report
 		echo "Generating report to {$this->reportDir} ... ";
-		$baseDir = is_dir($this->path) ? $this->path : dirname ($this->path); 
 		$htmlReport = new HTMLReport ($report, $this->reportDir, $this->shouldOutputCSV); 
 		$htmlReport->generate ();
 

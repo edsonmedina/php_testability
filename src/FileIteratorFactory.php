@@ -17,7 +17,7 @@ use edsonmedina\php_testability\Contexts\RootContext;
  */
 class FileIteratorFactory 
 {
-	public function create (RootContext $report)
+	public function create ()
 	{
 		$analyserFactory = new AnalyserFactory;
 		return new FileIterator ($analyserFactory->create ());
