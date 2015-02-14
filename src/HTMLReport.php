@@ -115,7 +115,7 @@ class HTMLReport
 		$result = array ();
 		$lineNumber = 1;
 
-		// create array of tuples (line, code)
+		// load file and create array of tuples (line, code)
 		foreach (file ($filename) as $line)
 		{
 			$result[] = array (

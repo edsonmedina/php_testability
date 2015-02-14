@@ -48,8 +48,6 @@ class Testability
 		echo "\nPHP_Testability by Edson Medina\n";
 		echo "Analysing code on \"".$this->path."\"...\n";
 		$files->iterate ($report);
-//echo "\n";
-//print_r ($report);
 
 		$scan_ts   = microtime (TRUE);
 		$scan_time = number_format ($scan_ts - $start_ts, 2);

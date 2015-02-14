@@ -3,6 +3,7 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\IssueInterface;
+use edsonmedina\php_testability\ContextSpecificationInterface;
 
 abstract class AbstractContext implements ContextInterface
 {
@@ -41,31 +42,46 @@ abstract class AbstractContext implements ContextInterface
 	}
 
 	/**
-	 * Are there any children?
-	 * @return bool
+	 * Filter and list children
+	 * @param  ContextSpecificationInterface $filter (optional)
+	 * @return array
 	 */
-	public function hasChildren ()
+	public function getChildren (ContextSpecificationInterface $filter = null)
 	{
-		return (count($this->children) > 0);
+		if (is_null($filter))
+		{
+			return $this->children;
+		}
+		else
+		{
+			return array_filter ($this->children, array($filter, 'isSatisfiedBy'));
+		}
 	}
 
 	/**
-	 * Return all children
-	 * @param bool $recursive 
+	 * Are there any children?
+	 * @param  ContextSpecificationInterface $filter
+	 * @return bool
+	 */
+	public function hasChildren (ContextSpecificationInterface $filter = null)
+	{
+		return (count($this->getChildren($filter)) > 0);
+	}
+
+	/**
+	 * Return all children recursively
+	 * @param  ContextSpecificationInterface $filter
 	 * @return array
 	 */
-	public function getChildren ($recursive = false)
+	public function getChildrenRecursively (ContextSpecificationInterface $filter = null)
 	{
-		$list = $this->children;
+		$list = $this->getChildren($filter);
 
-		if ($recursive === true)
+		foreach ($list as $child)
 		{
-			foreach ($list as $child)
+			if ($child->hasChildren($filter))
 			{
-				if ($child->hasChildren())
-				{
-					$list = array_merge ($list, $child->getChildren (true));
-				}
+				$list = array_merge ($list, $child->getChildrenRecursively($filter));
 			}
 		}
 
@@ -91,7 +107,7 @@ abstract class AbstractContext implements ContextInterface
 	{
 		if ($recursive === true)
 		{
-			foreach ($this->getChildren(true) as $child)
+			foreach ($this->getChildrenRecursively() as $child)
 			{
 				if ($child->hasIssues())
 				{
@@ -114,7 +130,7 @@ abstract class AbstractContext implements ContextInterface
 
 		if ($recursive === true)
 		{
-			foreach ($this->getChildren(true) as $child)
+			foreach ($this->getChildrenRecursively() as $child)
 			{
 				foreach ($child->getIssues() as $issue)
 				{
