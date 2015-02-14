@@ -101,15 +101,16 @@ abstract class AbstractContext implements ContextInterface
 	/**
 	 * Are there any issues?
 	 * @param bool $recursive 
+	 * @param ContextSpecificationInterface $filter
 	 * @return bool
 	 */
-	public function hasIssues ($recursive = false)
+	public function hasIssues ($recursive = false, ContextSpecificationInterface $filter = null)
 	{
 		if ($recursive === true)
 		{
-			foreach ($this->getChildrenRecursively() as $child)
+			foreach ($this->getChildrenRecursively($filter) as $child)
 			{
-				if ($child->hasIssues())
+				if ($child->hasIssues(false, $filter))
 				{
 					return true;
 				}
@@ -122,17 +123,18 @@ abstract class AbstractContext implements ContextInterface
 	/**
 	 * Return all issues
 	 * @param bool $recursive 
+	 * @param ContextSpecificationInterface $filter
 	 * @return array
 	 */
-	public function getIssues ($recursive = false)
+	public function getIssues ($recursive = false, ContextSpecificationInterface $filter = null)
 	{
 		$list = $this->issues;
 
 		if ($recursive === true)
 		{
-			foreach ($this->getChildrenRecursively() as $child)
+			foreach ($this->getChildrenRecursively($filter) as $child)
 			{
-				foreach ($child->getIssues() as $issue)
+				foreach ($child->getIssues(false, $filter) as $issue)
 				{
 					$list[] = $issue;
 				}
@@ -146,15 +148,16 @@ abstract class AbstractContext implements ContextInterface
 	/**
 	 * Counts all issues recursively
 	 * @param bool $recursive 
+	 * @param ContextSpecificationInterface $filter
 	 * @return array
 	 */
-	public function getIssuesCount ()
+	public function getIssuesCount (ContextSpecificationInterface $filter = null)
 	{
 		$count = count($this->issues);
 
-		foreach ($this->getChildren() as $child)
+		foreach ($this->getChildren($filter) as $child)
 		{
-			$count += $child->getIssuesCount();
+			$count += $child->getIssuesCount($filter);
 		}
 
 		return $count;
