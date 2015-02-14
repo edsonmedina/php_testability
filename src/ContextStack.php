@@ -2,6 +2,7 @@
 namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\ContextInterface;
+use edsonmedina\php_testability\ContextSpecificationInterface;
 
 class ContextStack
 {
@@ -64,5 +65,23 @@ class ContextStack
 	{
 		$length = count($this->stack);
 		$this->stack[$length-1]->addIssue ($issue);
+	}
+
+	/**
+	 * Find context in stack matching specification
+	 * @param ContextSpecificationInterface $filter
+	 * @return ContextInterface $node
+	 */
+	public function findContextOfType (ContextSpecificationInterface $filter)
+	{
+		foreach ($this->stack as $context)
+		{
+			if ($filter->isSatisfiedBy($context))
+			{
+				return $context;
+			}
+		}
+
+		return false;
 	}
 }

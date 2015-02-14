@@ -2,6 +2,9 @@
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\NewInstanceIssue;
+use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\Dictionary;
+use edsonmedina\php_testability\Contexts\CollectionSpecification;
 use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
@@ -23,22 +26,21 @@ class NewVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for "new" statement (ie: $x = new Thing())
-        if ($node instanceof Expr\New_ && !$this->scope->inGlobalSpace() && !$this->insideThrow) 
+        if ($node instanceof Expr\New_ && !$this->inGlobalScope() && !$this->insideThrow) 
         {
-            $obj = $this->factory->getNodeWrapper ($node);
-            $scopeName = $this->scope->getScopeName();
+            $parentClass = $this->stack->findContextOfType(new CollectionSpecification);
 
-            if (stripos($scopeName, 'Factory') === FALSE) // do not report for factories
+            if ($parentClass === false || stripos($parentClass->getName(), 'Factory') === FALSE) // do not report for factories
             {
-                $name = $obj->getName();
+                $dictionary = new Dictionary;
 
-                $dictionary = $this->factory->getDictionary();
+                $obj = new NodeWrapper ($node);
 
                 // only report internal php classes if not safe for
                 // instantiation (ie: with external resources)
-                if (!$dictionary->isClassSafeForInstantiation($name))
+                if (!$dictionary->isClassSafeForInstantiation($obj->getName()))
                 {
-                    $this->data->addIssue (new NewInstanceIssue($node), $this->scope);
+                    $this->stack->addIssue (new NewInstanceIssue($node));
                 }
             }
         }
