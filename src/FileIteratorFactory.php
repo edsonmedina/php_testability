@@ -20,8 +20,6 @@ class FileIteratorFactory
 	public function create (RootContext $report)
 	{
 		$analyserFactory = new AnalyserFactory;
-		
-		$analyser = $analyserFactory->create ($report);
-		return new FileIterator ($analyser);
+		return new FileIterator ($analyserFactory->create ());
 	}
 }
