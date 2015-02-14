@@ -5,12 +5,12 @@ use edsonmedina\php_testability\AbstractContext;
 
 class AnonymousFunctionContext extends AbstractContext
 {
-	protected $startLine;
-	protected $endLine;
+	public $startLine;
+	public $endLine;
 
 	public function __construct ($starLine, $endLine)
 	{
-		$this->name      = '<anonymous>';
+		$this->name      = '<anonymous function>';
 		$this->startLine = $startLine;
 		$this->endLine   = $endLine;
 	}

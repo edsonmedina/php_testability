@@ -149,7 +149,6 @@ abstract class AbstractContext implements ContextInterface
 
 	/**
 	 * Counts all issues recursively
-	 * @param bool $recursive 
 	 * @param ContextSpecificationInterface $filter
 	 * @return array
 	 */

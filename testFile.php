@@ -38,6 +38,9 @@ final class Whatever
         Test::$foo['bar']();
         $test['thing']::do_it();
 
+        $double = function ($y) {
+            return $y*2;
+        };
 
         // Static method call, same class
         self::methodMan();
