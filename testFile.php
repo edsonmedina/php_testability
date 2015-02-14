@@ -24,6 +24,9 @@ final class Whatever
 
         // Static property of another class
        	$a = OtherClass::thing;
+        
+        // Static property, same class
+        $a = Whatever::thing;
 
         // Static method call, another class
         Whatever::methodMan();

@@ -1,6 +1,8 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
 use edsonmedina\php_testability\VisitorAbstract;
+use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\Contexts\CollectionSpecification;
 use edsonmedina\php_testability\Issues\ExternalClassConstantFetchIssue;
 use PhpParser;
 use PhpParser\Node\Expr;
@@ -11,12 +13,14 @@ class ClassConstantFetchVisitor extends VisitorAbstract
     {
         if ($node instanceof Expr\ClassConstFetch && !$this->inGlobalScope())
         {
-            $obj = $this->factory->getNodeWrapper ($node);
+            $parentClass = $this->stack->findContextOfType(new CollectionSpecification);
+
+            $obj = new NodeWrapper ($node);
             
             // check for class constant fetch from different class ($x = OtherClass::thing)
-            if ($this->scope->insideClass())
+            if ($parentClass !== false)
             {
-                if (!$obj->isSameClassAs($this->scope->getClassName()))
+                if (!$obj->isSameClassAs($parentClass->getName()))
                 {
                     $this->stack->addIssue (new ExternalClassConstantFetchIssue($node));
                 } 
