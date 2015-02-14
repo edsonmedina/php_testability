@@ -6,6 +6,7 @@ use edsonmedina\php_testability\Contexts\ClassContext;
 use edsonmedina\php_testability\Contexts\MethodContext;
 use edsonmedina\php_testability\Contexts\FunctionContext;
 use edsonmedina\php_testability\Contexts\TraitContext;
+use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 
 class FileContext extends AbstractContext
 {
@@ -25,22 +26,27 @@ class FileContext extends AbstractContext
 
 		foreach ($this->getChildren() as $child)
 		{
-			$list[] = array (
-				'name'      => $child->getName(),
-				'startLine' => $child->startLine,
-				'issues'    => $child->getIssuesCount()
-			);
-
-			// this might be a class, look for methods
-			foreach ($child->getChildren() as $method)
+			if ($child instanceof FunctionContext)
 			{
-				if ($method instanceof MethodContext)
+				$list[] = array (
+					'name'      => $child->getName(),
+					'startLine' => $child->startLine,
+					'issues'    => $child->getIssuesCount()
+				);
+			}
+			else
+			{
+				// this might be a class, look for methods
+				foreach ($child->getChildren() as $method)
 				{
-					$list[] = array (
-						'name'      => $child->getName().'::'.$method->getName(),
-						'startLine' => $method->startLine,
-						'issues'    => $method->getIssuesCount()
-					);
+					if ($method instanceof MethodContext)
+					{
+						$list[] = array (
+							'name'      => $child->getName().'::'.$method->getName(),
+							'startLine' => $method->startLine,
+							'issues'    => $method->getIssuesCount()
+						);
+					}
 				}
 			}
 		}
