@@ -1,5 +1,7 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+use edsonmedina\php_testability\NodeWrapper;
+use edsonmedina\php_testability\Dictionary;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\GlobalFunctionCallIssue;
 use PhpParser;
@@ -10,11 +12,11 @@ class GlobalFunctionCallVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for global function calls
-        if ($node instanceof Expr\FuncCall && !$this->scope->inGlobalSpace()) 
+        if ($node instanceof Expr\FuncCall && !$this->inGlobalScope()) 
         {
-            $dictionary = $this->factory->getDictionary();
+            $dictionary = new Dictionary;
 
-            $obj = $this->factory->getNodeWrapper ($node);
+            $obj = new NodeWrapper ($node);
             $functionName = $obj->getName();
 
             // skip internal php functions
@@ -22,7 +24,7 @@ class GlobalFunctionCallVisitor extends VisitorAbstract
                 return;
             }
 
-            $this->data->addIssue (new GlobalFunctionCallIssue($node), $this->scope);
+            $this->stack->addIssue (new GlobalFunctionCallIssue($node));
         }
     }
 }
