@@ -2,19 +2,19 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\ContextStack;
 
 class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
-		$this->data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		                   ->disableOriginalConstructor()
-		                   ->setMethods(array('addIssue'))
-		                   ->getMock();	
+		$this->context = new RootContext ('/');
 
-		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();	
+		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		                    ->setConstructorArgs(array($this->context))
+		                    ->setMethods(array('addIssue'))
+		                    ->getMock();
 
 		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		                        ->disableOriginalConstructor()
@@ -23,9 +23,6 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticPropertyFetch')
 		                   ->disableOriginalConstructor()
 		                   ->getMock();
-
-		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
-		                      ->getMock();
 	}
 
 	/**
@@ -33,9 +30,9 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 		
-		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new StaticPropertyFetchVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($this->wrongNode);
 	}
 
@@ -44,11 +41,11 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeFetchingFromSelf()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
 		// visitor
 		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor')
-		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setConstructorArgs(array($this->stack, $this->context))
 		                ->setMethods (array('isFetchingFromSelf'))
 		                ->getMock();
 
@@ -58,28 +55,15 @@ class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::isFetchingFromSelf
-	 */
-	public function testIsFetchingFromSelfOutsideOfClass()
-	{
-		$this->data->expects($this->never())->method('addIssue');
-
-		$this->scope->method ('insideClass')->willReturn (false);
-
-		$visitor = new StaticPropertyFetchVisitor ($this->data, $this->scope, $this->factory);
-		$this->assertFalse ($visitor->isFetchingFromSelf ($this->node));
-	}
-
-	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor::leaveNode
 	 */
 	public function testLeaveNode()
 	{
-		$this->data->expects($this->once())->method('addIssue');
+		$this->stack->expects($this->once())->method('addIssue');
 		
 		// visitor
 		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor')
-		                ->setConstructorArgs(array($this->data, $this->scope, $this->factory))
+		                ->setConstructorArgs(array($this->stack, $this->context))
 		                ->setMethods (array('isFetchingFromSelf'))
 		                ->getMock();
 

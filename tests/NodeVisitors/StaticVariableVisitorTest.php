@@ -2,21 +2,19 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\ContextStack;
 
 class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
-		$this->data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		                   ->disableOriginalConstructor()
-		                   ->setMethods(array('addIssue'))
-		                   ->getMock();
-		
-		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();
+		$this->context = new RootContext ('/');
 
-		$this->factory = $this->getMock('edsonmedina\php_testability\AnalyserAbstractFactory');
+		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		                    ->setConstructorArgs(array($this->context))
+		                    ->setMethods(array('addIssue'))
+		                    ->getMock();
 	}
 
 	/**
@@ -24,13 +22,13 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
 		$node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new StaticVariableVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new StaticVariableVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($node);
 	}
 
@@ -40,18 +38,14 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 	public function testLeaveNode ()
 	{
 		// data
-		$this->data->expects($this->once())->method('addIssue');
+		$this->stack->expects($this->once())->method('addIssue');
 
-        // node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();
 		// node
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new StaticVariableVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new StaticVariableVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($node);
 	}	
 }
