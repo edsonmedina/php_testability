@@ -15,7 +15,6 @@ class Analyser
 {
 	private $parser;
 	private $factory;
-	private $report;
 
 	public function __construct (PhpParser\Parser $parser, AnalyserAbstractFactory $factory)
 	{
