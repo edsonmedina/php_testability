@@ -51,23 +51,4 @@ class AnalyserAbstractFactory
 
 		return $traverser;
 	}
-
-	/**
-	 * Create a dictionary object 
-	 * @return Dictionary
-	 */
-	public function getDictionary ()
-	{
-		return new Dictionary();
-	}
-
-	/**
-	 * Create a node wrapper object
-	 * @param PhpParser\Node $node
-	 * @return NodeWrapper
-	 */
-	public function getNodeWrapper (PhpParser\Node $node)
-	{
-		return new NodeWrapper ($node);
-	}
 }
