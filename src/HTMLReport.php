@@ -5,6 +5,8 @@ use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\Contexts\ProcedureSpecification;
+use Mustache_Loader_FilesystemLoader;
+use Mustache_Engine;
 
 class HTMLReport 
 {
@@ -31,11 +33,20 @@ class HTMLReport
 	 */
 	public function generate ()
 	{
-		if (!is_dir($this->reportDir)) {
+		$startTime = microtime (true);
+
+		if (!is_dir($this->reportDir)) 
+		{
+			echo "Creating new directory {$this->reportDir}... ";
 			mkdir ($this->reportDir);	
+			echo "OK\n";
 		}
 
+		echo "Generating report to {$this->reportDir} ... ";
 		$this->iterate ($this->report);
+
+		$totalTime = number_format (microtime(true) - $startTime, 2);
+		echo "OK ({$totalTime}s).\n\n";
 	}
 
 	/**
@@ -56,10 +67,6 @@ class HTMLReport
 			elseif ($item instanceof DirectoryContext)
 			{
 				$this->iterate ($item);
-
-				//if ($this->outputCSV) {
-				//	$this->generateCSV ($item);
-				//}
 			}
 		}
 	}
@@ -87,8 +94,8 @@ class HTMLReport
 		}
 
 		// render
-		$view = new \Mustache_Engine (array(
-			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
+		$view = new Mustache_Engine (array(
+			'loader' => new Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
 		$relFilename = $this->convertPathToRelative ($file->getName());
@@ -135,6 +142,11 @@ class HTMLReport
 		$files = array ();
 		$dirs  = array ();
 
+
+		if ($this->outputCSV) {
+			$this->generateCSV ($path);
+		}
+
 		foreach ($path->getChildren() as $child)
 		{
 			$filename = $child->getName();
@@ -162,8 +174,8 @@ class HTMLReport
 		}
 
 		// render
-		$view = new \Mustache_Engine (array(
-			'loader' => new \Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
+		$view = new Mustache_Engine (array(
+			'loader' => new Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
 		));
 
 		$relPath = $this->convertPathToRelative ($path->getName());
@@ -187,7 +199,7 @@ class HTMLReport
 	 */
 	public function getTotalTestableProcedures (ContextInterface $root)
 	{
-		$total      = 0;
+		$total    = 0;
 		$testable = 0;
 
 		foreach ($root->getChildrenRecursively(new ProcedureSpecification) as $proc)

@@ -19,7 +19,7 @@ class Testability
 
 	public function __construct ($path, $reportDir)
 	{
-		$this->path = $path;
+		$this->path      = $path;
 		$this->reportDir = $reportDir;
 	}
 
@@ -35,6 +35,8 @@ class Testability
 
 	public function runReport ()
 	{
+		echo "\nPHP_Testability by Edson Medina\n";
+		
 		$start_ts  = microtime (TRUE);
 
 		// run
@@ -45,27 +47,20 @@ class Testability
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
 		}
 
-		echo "\nPHP_Testability by Edson Medina\n";
 		echo "Analysing code on \"".$this->path."\"...\n";
 		$files->iterate ($report);
 
-		$scan_ts   = microtime (TRUE);
-		$scan_time = number_format ($scan_ts - $start_ts, 2);
+		$scan_time = number_format (microtime(TRUE) - $start_ts, 2);
 		echo " OK ({$scan_time}s).\n\n";
 
-
 		// generate HTML report
-		echo "Generating report to {$this->reportDir} ... ";
 		$htmlReport = new HTMLReport ($report, $this->reportDir, $this->shouldOutputCSV); 
 		$htmlReport->generate ();
 
-		$report_ts   = microtime (TRUE);
-		$report_time = number_format ($report_ts - $scan_ts, 2);
-		echo "OK ({$report_time}s).\n\n";
-
+		// output info
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
-
 		echo "Done (Total: {$total_time}s).\n\n";
+
 		echo $files->getProcessedFilesCount()." processed files.\n";
 		echo number_format (memory_get_peak_usage()/1024/1024, 2)." Mbytes of memory used\n\n";
 	}
