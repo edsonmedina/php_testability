@@ -7,8 +7,6 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\Contexts\RootContext;
-
 /**
  * FileIteratorFactory
  * This class creates a FileIterator

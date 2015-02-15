@@ -1,10 +1,7 @@
 <?php
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\ReportData;
-use edsonmedina\php_testability\FileReport;
 use edsonmedina\php_testability\ContextInterface;
-use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\Contexts\ProcedureSpecification;

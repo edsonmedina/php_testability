@@ -2,11 +2,8 @@
 namespace edsonmedina\php_testability\Contexts;
 
 use edsonmedina\php_testability\AbstractContext;
-use edsonmedina\php_testability\Contexts\ClassContext;
 use edsonmedina\php_testability\Contexts\MethodContext;
 use edsonmedina\php_testability\Contexts\FunctionContext;
-use edsonmedina\php_testability\Contexts\TraitContext;
-use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 
 class FileContext extends AbstractContext
 {

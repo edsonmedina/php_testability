@@ -4,8 +4,6 @@ namespace edsonmedina\php_testability;
 
 use PhpParser;
 use edsonmedina\php_testability\NodeVisitors;
-use edsonmedina\php_testability\NodeWrapper;
-use edsonmedina\php_testability\Dictionary;
 use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\ContextStack;
 
