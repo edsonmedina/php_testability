@@ -10,9 +10,7 @@ class FileIteratorFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetDictionary ()
 	{
-		$data  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
-
 		$factory = new FileIteratorFactory();
-		$this->assertInstanceOf ('edsonmedina\php_testability\FileIterator', $factory->create($data));
+		$this->assertInstanceOf ('edsonmedina\php_testability\FileIterator', $factory->create());
 	}	
 }

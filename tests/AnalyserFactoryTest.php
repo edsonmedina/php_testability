@@ -11,9 +11,6 @@ class AnalyserFactoryTest extends PHPUnit_Framework_TestCase
 	public function testCreate ()
 	{
 		$factory = new AnalyserFactory();
-
-		$data_stub  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
-
-		$this->assertInstanceOf ('edsonmedina\php_testability\Analyser', $factory->create($data_stub));
+		$this->assertInstanceOf ('edsonmedina\php_testability\Analyser', $factory->create());
 	}	
 }

@@ -2,25 +2,27 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\ContextStack;
 
 class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
-		$this->data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		                   ->disableOriginalConstructor()
-		                   ->setMethods(array('addIssue'))
-		                   ->getMock();	
+		$this->context = new RootContext ('/');
 
-		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();	
+		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		                    ->setConstructorArgs(array($this->context))
+		                    ->setMethods(array('addIssue'))
+		                    ->getMock();
 
 		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		                        ->disableOriginalConstructor()
 		                        ->getMock();
 
-		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
+		$this->visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor')
+		                      ->setConstructorArgs(array($this->stack, $this->context))
+		                      ->setMethods(array('inGlobalScope'))
 		                      ->getMock();
 	}
 
@@ -29,9 +31,9 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = new SuperGlobalVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new SuperGlobalVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($this->wrongNode);
 	}
 
@@ -40,15 +42,14 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
-		$this->scope->method ('inGlobalSpace')->willReturn (true);
+		$this->stack->method ('inGlobalScope')->willReturn (true);
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ArrayDimFetch')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new SuperGlobalVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($node);
+		$this->visitor->leaveNode ($node);
 	}
 }

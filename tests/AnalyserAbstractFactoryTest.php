@@ -2,11 +2,13 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 use edsonmedina\php_testability\AnalyserAbstractFactory;
+use edsonmedina\php_testability\Contexts\DirectoryContext;
 
 class AnalyserAbstractFactoryTest extends PHPUnit_Framework_TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\AnalyserAbstractFactory::createTraverser
+	 * @uses edsonmedina\php_testability\Contexts\DirectoryContext::__construct
 	 */
 	public function testCreateTraverser ()
 	{
@@ -15,7 +17,7 @@ class AnalyserAbstractFactoryTest extends PHPUnit_Framework_TestCase
 		$data_stub  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
 		$scope_stub = $this->getMock('edsonmedina\php_testability\AnalyserScope');
 
-		$traverser = $factory->createTraverser ($data_stub, $scope_stub);
+		$traverser = $factory->createTraverser (new DirectoryContext('/'));
 
 		$this->assertInstanceOf ('PhpParser\NodeTraverser', $traverser);
 	}	

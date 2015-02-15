@@ -7,22 +7,6 @@ use PhpParser\Node\Expr\Exit_;
 class AbstractIssueTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\AbstractIssue::__construct
-	 */
-	public function testConstructor ()
-	{
-		$node = $this->getMockBuilder('PhpParser\Node\Expr\StaticCall')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$issue = $this->getMockBuilder('edsonmedina\php_testability\AbstractIssue')
-		              ->setConstructorArgs(array($node))
-		              ->getMockForAbstractClass();
-
-		$this->assertAttributeEquals($node, 'node', $issue);
-	}	
-
-	/**
 	 * @covers edsonmedina\php_testability\AbstractIssue::getLine
 	 */
 	public function testGetLine ()
