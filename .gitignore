@@ -7,3 +7,4 @@ report/*
 coverage/*
 clover.xml
 tmp/*
+/nbproject/private/
