@@ -2,19 +2,19 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\ContextStack;
 
 class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
-		$this->data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		                   ->disableOriginalConstructor()
-		                   ->setMethods(array('addIssue'))
-		                   ->getMock();	
+		$this->context = new RootContext ('/');
 
-		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();	
+		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		                    ->setConstructorArgs(array($this->context))
+		                    ->setMethods(array('addIssue'))
+		                    ->getMock();
 
 		$this->node = $this->getMockBuilder ('PhpParser\Node\Stmt\Global_')
 		                   ->disableOriginalConstructor()
@@ -23,17 +23,6 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 		$this->node2 = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
 		                    ->disableOriginalConstructor()
 		                    ->getMock();
-
-		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
-		                      ->getMock();
-
-		$this->nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                          ->disableOriginalConstructor()
-		                          ->getMock();
-
-		$this->nodewrapper2 = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                           ->disableOriginalConstructor()
-		                           ->getMock();
 	}
 
 	/**
@@ -41,9 +30,9 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor = new GlobalVarVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($this->node2);
 	}
 
@@ -52,11 +41,14 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 		
-		$this->scope->method ('inGlobalSpace')->willReturn (true);
+		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor')
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor->method ('inGlobalScope')->willReturn (true);
 		$visitor->leaveNode ($this->node);
 	}
 
@@ -65,11 +57,14 @@ class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNode ()
 	{
-		$this->data->expects($this->once())->method('addIssue');
+		$this->stack->expects($this->once())->method('addIssue');
 		
-		$this->scope->method ('inGlobalSpace')->willReturn (false);
+		$visitor = $this->getMockBuilder ('edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor')
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
 
-		$visitor = new GlobalVarVisitor ($this->data, $this->scope, $this->factory);
+		$visitor->method ('inGlobalScope')->willReturn (false);
 		$visitor->leaveNode ($this->node);
 	}
 }
