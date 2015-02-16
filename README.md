@@ -55,7 +55,9 @@ vendor/bin/testability --help
 
 Open report/index.html on your browser. You shoule see something like this:
 
-![Screenshot](http://www.cianeto.com/php_testability.png)
+![Screenshot](http://www.cianeto.com/testability_dir.png)
+
+![Screenshot](http://www.cianeto.com/testability_file.png)
 
 
 If you click on a file with issues, it'll show you a code browser and will highlight the lines with issues.
