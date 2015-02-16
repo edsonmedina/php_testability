@@ -57,10 +57,10 @@ Open report/index.html on your browser. You shoule see something like this:
 
 ![Screenshot](http://www.cianeto.com/testability_dir.png)
 
+If you click on a file with issues, it'll show you a code browser and will highlight the lines with issues.
+
 ![Screenshot](http://www.cianeto.com/testability_file.png)
 
-
-If you click on a file with issues, it'll show you a code browser and will highlight the lines with issues.
 
 These are issues that hinder testability, such as:
 * references to global variables, super globals, etc
