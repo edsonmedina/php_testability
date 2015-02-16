@@ -195,7 +195,7 @@ class HTMLReport
 		{
 			return 'success';
 		}
-		elseif ($percentage > 0.5)
+		elseif ($percentage >= 0.5)
 		{
 			return 'warning';
 		} 
