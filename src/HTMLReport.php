@@ -152,7 +152,7 @@ class HTMLReport
 				'total'    => $numbers['total'],
 				'testable' => $numbers['testable'],
 				'percent'  => number_format ($percent*100, 2),
-                'label'    => $percent == 1 ? 'success' : ($percent > 0.7 ? 'warning' : 'danger')
+                'label'    => $this->getCssClass($percent)
 			);
 
 			if ($child instanceof DirectoryContext)
@@ -182,6 +182,27 @@ class HTMLReport
 		));
 
 		$this->saveFile ($relPath.'/index.html', $output);		
+	}
+
+	/**
+	 * Gets a css class name to use, according to the percentage
+	 * @param int $percentage (0 to 1)
+	 * @return string class name
+	 */
+	public function getCssClass ($percentage)
+	{
+		if ($percentage >= 0.8) 
+		{
+			return 'success';
+		}
+		elseif ($percentage > 0.5)
+		{
+			return 'warning';
+		} 
+		else 
+		{
+			return 'danger';
+		}
 	}
 
 	/**
