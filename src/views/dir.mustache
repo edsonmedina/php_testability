@@ -4,12 +4,15 @@
 
 <table class="table table-hover table-condensed">
 	<tbody>
-		{{^isBaseDir}}
 		<tr>
-			<td><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="../index.html">../</a></td>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		{{/isBaseDir}}
+			<th>
+			{{^isBaseDir}}
+			  <span class="glyphicon glyphicon-folder-open"></span>&nbsp; <a href="../index.html">../</a>
+			{{/isBaseDir}}
+			</th>
+			<th class="text-center">Testable procedures</th>
+			<th class="text-center">Testable / Total</th>			
+		</tr>	
 		
 		{{#dirs}}
 		<tr class="active">
