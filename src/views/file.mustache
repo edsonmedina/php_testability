@@ -2,8 +2,15 @@
 
 <h4>{{currentPath}} {{#untestable}}<span class="label label-danger">Untestable</span>{{/untestable}}</h4>
 
+<div>&nbsp;</div>
+
 <table class="table table-bordered table-hover table-condensed">
 	<tbody>
+		<tr>
+			<th>Procedures</th>
+			<th>Status</th>			
+		</tr>	
+
 		{{#scopes}}
 		<tr>
 			<td><a href="#{{startLine}}">{{name}}</a></td>
