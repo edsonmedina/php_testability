@@ -13,19 +13,16 @@ class HTMLReport
 	private $baseDir   = '';
 	private $reportDir = '';
 	private $report;
-	private $outputCSV;
 
 	/**
 	 * @param ContextInterface $report
 	 * @param string $reportDir Where to generate the report 
-	 * @param bool $outputCSV 	Output CSV files per directory
 	 */
-	public function __construct (ContextInterface $report, $reportDir, $outputCSV = false)
+	public function __construct (ContextInterface $report, $reportDir)
 	{
 		$this->baseDir   = $report->getName();
 		$this->reportDir = $reportDir;
 		$this->report    = $report;
-		$this->outputCSV = $outputCSV;
 	}
 
 	/**
@@ -42,11 +39,11 @@ class HTMLReport
 			echo "OK\n";
 		}
 
-		echo "Generating report to {$this->reportDir} ... ";
+		echo "Generating HTML report to {$this->reportDir} ... ";
 		$this->iterate ($this->report);
 
 		$totalTime = number_format (microtime(true) - $startTime, 2);
-		echo "OK ({$totalTime}s).\n\n";
+		echo "OK ({$totalTime}s).\n";
 	}
 
 	/**
@@ -142,11 +139,6 @@ class HTMLReport
 		$files = array ();
 		$dirs  = array ();
 
-
-		if ($this->outputCSV) {
-			$this->generateCSV ($path);
-		}
-
 		foreach ($path->getChildren() as $child)
 		{
 			$filename = $child->getName();
@@ -213,19 +205,6 @@ class HTMLReport
 		}
 
 		return array ('total' => $total, 'testable' => $testable);
-	}
-
-	/**
-	 * Generate CSV files
-	 * TODO: this method shouldn't be here, it needs a class of its own
-	 * @param string $path
-	 */
-	public function generateCSV ($path)
-	{
-	//	$total = $this->data->getIssuesCountForDirectory ($path);
-
-	//	$relPath = $this->convertPathToRelative ($path);
-	//	$this->saveFile ($relPath.'/total.csv', '"Total Issues"'.PHP_EOL.$total);
 	}
 
 	/**

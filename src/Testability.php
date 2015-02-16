@@ -8,6 +8,7 @@ namespace edsonmedina\php_testability;
 
 use edsonmedina\php_testability\FileIteratorFactory;
 use edsonmedina\php_testability\HTMLReport;
+use edsonmedina\php_testability\CSVReport;
 use edsonmedina\php_testability\Contexts\RootContext;
 
 class Testability
@@ -54,9 +55,15 @@ class Testability
 		echo " OK ({$scan_time}s).\n\n";
 
 		// generate HTML report
-		$htmlReport = new HTMLReport ($report, $this->reportDir, $this->shouldOutputCSV); 
+		$htmlReport = new HTMLReport ($report, $this->reportDir); 
 		$htmlReport->generate ();
 
+		// generate CSV report
+		if ($this->shouldOutputCSV) {
+			$csvReport = new CSVReport ($report, $this->reportDir); 
+			$csvReport->generate ();
+		}
+		
 		// output info
 		$total_time = number_format (microtime (TRUE) - $start_ts, 2);
 		echo "Done (Total: {$total_time}s).\n\n";
