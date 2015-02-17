@@ -8,7 +8,7 @@ use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 use Mustache_Loader_FilesystemLoader;
 use Mustache_Engine;
 
-class HTMLReport 
+class HTMLReport
 {
 	private $baseDir   = '';
 	private $reportDir = '';

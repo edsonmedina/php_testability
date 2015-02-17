@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+
 use edsonmedina\php_testability\Contexts\CollectionSpecification;
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\StaticPropertyFetchIssue;
@@ -11,7 +12,7 @@ class StaticPropertyFetchVisitor extends VisitorAbstract
     public function leaveNode (PhpParser\Node $node) 
     {
         // check for static property fetch from different
-        // class ($x = OtherClass::$nameOfThing)
+        // class (ie OtherClass::$propertyName)
         if ($node instanceof Expr\StaticPropertyFetch) 
         {
             if (!$this->isFetchingFromSelf ($node)) 

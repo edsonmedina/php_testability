@@ -11,7 +11,7 @@ use edsonmedina\php_testability\AnalyserAbstractFactory;
 use edsonmedina\php_testability\Contexts\FileContext;
 use PhpParser;
 
-class Analyser 
+class Analyser
 {
 	private $parser;
 	private $factory;

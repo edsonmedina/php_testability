@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+
 use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\Dictionary;
 use edsonmedina\php_testability\VisitorAbstract;

@@ -10,7 +10,7 @@ use edsonmedina\php_testability\Analyser;
 use edsonmedina\php_testability\AnalyserAbstractFactory;
 use PhpParser;
 
-class AnalyserFactory 
+class AnalyserFactory
 {
 	public function create ()
 	{

@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\NewInstanceIssue;
 use edsonmedina\php_testability\NodeWrapper;
@@ -25,7 +26,7 @@ class NewVisitor extends VisitorAbstract
 
     public function leaveNode (PhpParser\Node $node) 
     {
-        // check for "new" statement (ie: $x = new Thing())
+        // check for "new" statements
         if ($node instanceof Expr\New_ && !$this->inGlobalScope() && !$this->insideThrow) 
         {
             $parentClass = $this->stack->findContextOfType(new CollectionSpecification);

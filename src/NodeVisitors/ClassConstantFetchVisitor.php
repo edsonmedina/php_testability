@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\NodeWrapper;
 use edsonmedina\php_testability\Contexts\CollectionSpecification;
@@ -17,7 +18,8 @@ class ClassConstantFetchVisitor extends VisitorAbstract
 
             $obj = new NodeWrapper ($node);
             
-            // check for class constant fetch from different class ($x = OtherClass::thing)
+            // check for class constant fetch from different
+            // class (ie: OtherClass::property)
             if ($parentClass !== false)
             {
                 if (!$obj->isSameClassAs($parentClass->getName()))

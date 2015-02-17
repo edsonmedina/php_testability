@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\NodeVisitors;
+
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\FinalClassIssue;
 use edsonmedina\php_testability\Contexts\ClassContext;
