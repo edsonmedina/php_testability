@@ -39,13 +39,12 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
-	public function testLeaveNodeInGlobalSpace ()
+	public function testLeaveNodeInGlobalScope ()
 	{
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\FuncCall')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		// data
 		$this->stack->expects($this->never())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor')
@@ -55,6 +54,6 @@ class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
 
-		$visitor->leaveNode ($this->wrongNode);
+		$visitor->leaveNode ($node);
 	}
 }

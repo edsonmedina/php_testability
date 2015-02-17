@@ -3,24 +3,12 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor;
-use Prophecy\Argument;
 
 class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 {
 	private $prophet;
-	private $data;
-	private $scope;
-	private $factory;
-	private $nodeWrapper;
-
-	public function setup ()
-	{
-		$this->prophet     = new Prophecy\Prophet;
-		$this->data        = $this->prophet->prophesize('edsonmedina\php_testability\ReportData');
-		$this->scope       = $this->prophet->prophesize('edsonmedina\php_testability\AnalyserScope');
-		$this->factory     = $this->prophet->prophesize('edsonmedina\php_testability\AnalyserAbstractFactory');
-		$this->nodeWrapper = $this->prophet->prophesize('edsonmedina\php_testability\NodeWrapper');
-	}
+	private $stack;
+	private $context;
 
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor::leaveNode
@@ -31,12 +19,20 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$this->data->addIssue(Argument::any())->shouldNotBeCalled();
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		              ->disableOriginalConstructor()
+		              ->setMethods(array('addIssue'))
+		              ->getMock();
 
-		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
+		$stack->expects($this->never())->method('addIssue');
+
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		                ->disableOriginalConstructor()
+		                ->getMock();
+
+		$visitor = new ClassConstantFetchVisitor ($stack, $context);
 		$visitor->leaveNode ($node);
 
-		$this->prophet->checkPredictions();
 	}
 
 	/**
@@ -44,93 +40,28 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
-		$this->data->addIssue(Argument::any())->shouldNotBeCalled();	
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		              ->disableOriginalConstructor()
+		              ->setMethods(array('addIssue'))
+		              ->getMock();
 
-		$this->scope->inGlobalSpace()->willReturn (true);
-		              
+		$stack->expects($this->never())->method('addIssue');
+
 		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ClassConstFetch')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		                ->disableOriginalConstructor()
+		                ->getMock();
+
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor')
+		                ->setConstructorArgs(array($stack, $context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
+
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
+
 		$visitor->leaveNode ($node);
-
-		$this->prophet->checkPredictions();
-	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor::leaveNode
-	 */
-	public function testLeaveNodeOutsideClass ()
-	{
-		$this->scope->inGlobalSpace()->willReturn (false);
-		$this->scope->insideClass()->willReturn (false);
-		              
-		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
-
-		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ClassConstFetch')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$this->data->addIssue(Argument::any(), $this->scope->reveal())->shouldBeCalled();	
-
-		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
-		$visitor->leaveNode ($node);
-
-		$this->prophet->checkPredictions();
-	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor::leaveNode
-	 */
-	public function testLeaveNodeSameClass ()
-	{
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ClassConstFetch')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$this->scope->inGlobalSpace()->willReturn (false);
-
-		$this->nodeWrapper->isSameClassAs('whatever')->willReturn (true);
-
-		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
-
-		$this->data->addIssue(Argument::any())->shouldNotBeCalled();	
-
-		$this->scope->insideClass()->willReturn (true);
-		$this->scope->getClassName()->willReturn ('whatever');
-
-		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
-		$visitor->leaveNode ($node);
-
-		$this->prophet->checkPredictions();
-	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor::leaveNode
-	 */
-	public function testLeaveNodeDifferentClass ()
-	{
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ClassConstFetch')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-		             
-		$this->scope->inGlobalSpace()->willReturn (false);
-
-		$this->nodeWrapper->isSameClassAs('whatever')->willReturn (false);
-		$this->nodeWrapper->getName()->willReturn ('foo');
-
-		$this->factory->getNodeWrapper(Argument::any())->willReturn ($this->nodeWrapper);
-
-		$this->data->addIssue(Argument::any(), $this->scope->reveal())->shouldBeCalled();	
-
-		$this->scope->insideClass()->willReturn (true);
-		$this->scope->getClassName()->willReturn ('whatever');
-
-		$visitor = new ClassConstantFetchVisitor ($this->data->reveal(), $this->scope->reveal(), $this->factory->reveal());
-		$visitor->leaveNode ($node);
-
-		$this->prophet->checkPredictions();
 	}
 }

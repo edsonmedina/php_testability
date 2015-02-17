@@ -3,7 +3,7 @@
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\NodeVisitors\CatchVisitor;
-use Prophecy\Argument;
+use PhpParser\Node\Name;
 
 class CatchVisitorTest extends PHPUnit_Framework_TestCase
 {
@@ -12,23 +12,23 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$prophet = new Prophecy\Prophet;
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
+		             ->getMock();
 
-		$data    = $prophet->prophesize('edsonmedina\php_testability\ReportData');
-		$scope   = $prophet->prophesize('edsonmedina\php_testability\AnalyserScope');
-		$factory = $prophet->prophesize('edsonmedina\php_testability\AnalyserAbstractFactory');
-		//$node    = $prophet->prophesize('PhpParser\Node\Stmt\Class_');
+		$stack->expects($this->never())->method('addIssue');
+		
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		              ->disableOriginalConstructor()
+		              ->getMock();
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$data->addIssue(Argument::any())->shouldNotBeCalled();	
-
-		$visitor = new CatchVisitor ($data->reveal(), $scope->reveal(), $factory->reveal());
+		$visitor = new CatchVisitor ($stack, $context);
 		$visitor->leaveNode ($node);
-
-		$prophet->checkPredictions();
 	}
 
 	/**
@@ -36,25 +36,28 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
 		             ->getMock();
 
-		$data->expects($this->never())->method('addIssue');
+		$stack->expects($this->never())->method('addIssue');
 
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
 		              ->disableOriginalConstructor()
 		              ->getMock();
 		              
-		$scope->method('inGlobalSpace')->willReturn(true);
-		              
-		$factory = $this->getMock ('edsonmedina\php_testability\AnalyserAbstractFactory');
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
+		                ->setConstructorArgs(array($stack, $context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
+
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Catch_')
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = new CatchVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 
@@ -63,38 +66,26 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithChildren ()
 	{
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		             ->disableOriginalConstructor()
-		             ->getMock();
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		              ->disableOriginalConstructor()
+		              ->setMethods(array('addIssue'))
+		              ->getMock();
 
-		$data->expects($this->never())->method('addIssue');
+		$stack->expects($this->never())->method('addIssue');
 
-		// scope
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
 		              ->disableOriginalConstructor()
 		              ->getMock();
 		              
-		$scope->method('inGlobalSpace')->willReturn(false);
-		              
-        // node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();
-
-		$nodewrapper->expects($this->once())->method ('hasChildren')->willReturn (true);
-
-		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
+		                ->setConstructorArgs(array($stack, $context))
+		                ->setMethods(array('inGlobalScope'))
 		                ->getMock();
 
-		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Catch_')
-		             ->disableOriginalConstructor()
-		             ->getMock();
+		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x', array(true));
 
-		$visitor = new CatchVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 
@@ -103,38 +94,26 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNode ()
 	{
-		$data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
+		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		             ->disableOriginalConstructor()
+		             ->setMethods(array('addIssue'))
 		             ->getMock();
 
-		$data->expects($this->once())->method('addIssue');
+		$stack->expects($this->once())->method('addIssue');
 
-		// scope
-		$scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		              ->disableOriginalConstructor()
-		              ->getMock();
+		$context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		                ->disableOriginalConstructor()
+		                ->getMock();
 		              
-		$scope->method('inGlobalSpace')->willReturn(false);
-		              
-        // node wrapper
-		$nodewrapper = $this->getMockBuilder ('edsonmedina\php_testability\NodeWrapper')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();
-
-		$nodewrapper->expects($this->once())->method ('hasChildren')->willReturn (false);
-
-		// factory
-		$factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
+		                ->setConstructorArgs(array($stack, $context))
+		                ->setMethods(array('inGlobalScope'))
 		                ->getMock();
 
-		$factory->method ('getNodeWrapper')->willReturn ($nodewrapper);
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Catch_')
-		             ->disableOriginalConstructor()
-		             ->getMock();
+		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x');
 
-		$visitor = new CatchVisitor ($data, $scope, $factory);
 		$visitor->leaveNode ($node);
 	}
 }
