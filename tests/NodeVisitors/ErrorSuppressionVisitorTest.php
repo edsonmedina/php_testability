@@ -2,30 +2,23 @@
 
 require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+use edsonmedina\php_testability\ContextStack;
 
 class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 {
 	public function setup ()
 	{
-		$this->data = $this->getMockBuilder('edsonmedina\php_testability\ReportData')
-		                   ->disableOriginalConstructor()
-		                   ->setMethods(array('addIssue'))
-		                   ->getMock();	
-
-		$this->scope = $this->getMockBuilder('edsonmedina\php_testability\AnalyserScope')
-		                    ->disableOriginalConstructor()
-		                    ->getMock();	
-
-		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
-		                   ->disableOriginalConstructor()
-		                   ->getMock();
-
-		$this->node2 = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
-		                    ->disableOriginalConstructor()
+		$this->context = new RootContext ('/');
+		
+		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		                    ->setConstructorArgs(array($this->context))
+		                    ->setMethods(array('addIssue'))
 		                    ->getMock();
 
-		$this->factory = $this->getMockBuilder ('edsonmedina\php_testability\AnalyserAbstractFactory')
-		                      ->getMock();
+		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
+		                        ->disableOriginalConstructor()
+		                        ->getMock();
 	}
 
 	/**
@@ -33,10 +26,10 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
-
-		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($this->node2);
+		$this->stack->expects($this->never())->method('addIssue');
+		     
+		$visitor = new ErrorSuppressionVisitor ($this->stack, $this->context);
+		$visitor->leaveNode ($this->wrongNode);
 	}
 
 	/**
@@ -44,12 +37,20 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
-		$this->data->expects($this->never())->method('addIssue');
-		
-		$this->scope->method ('inGlobalSpace')->willReturn (true);
+		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($this->node);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
+
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
+
+		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+
+		$visitor->leaveNode ($node);
 	}
 
 	/**
@@ -57,11 +58,19 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLeaveNode ()
 	{
-		$this->data->expects($this->once())->method('addIssue');
-		
-		$this->scope->method ('inGlobalSpace')->willReturn (false);
+		$this->stack->expects($this->once())->method('addIssue');
 
-		$visitor = new ErrorSuppressionVisitor ($this->data, $this->scope, $this->factory);
-		$visitor->leaveNode ($this->node);
+		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
+		                ->setConstructorArgs(array($this->stack, $this->context))
+		                ->setMethods(array('inGlobalScope'))
+		                ->getMock();
+
+		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
+
+		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+
+		$visitor->leaveNode ($node);
 	}
 }

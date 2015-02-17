@@ -11,6 +11,7 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		                    ->disableOriginalConstructor()
+		                    ->setMethods(array('start','addIssue','end'))
 		                    ->getMock();
 
 		$this->context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
@@ -23,7 +24,7 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testEnterNodeWithDifferentType ()
 	{
-		$this->context->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
 		             ->disableOriginalConstructor()
@@ -87,10 +88,10 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	public function testEnterNodeWithTrait ()
 	{
 		$this->stack->expects($this->once())->method('start');
-		$this->context->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Trait_')
-		             ->disableOriginalConstructor()
+		             ->setConstructorArgs(array('test'))
 		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
@@ -112,10 +113,10 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	public function testEnterNodeWithNonFinalClass ()
 	{
 		$this->stack->expects($this->once())->method('start');
-		$this->context->expects($this->never())->method('addIssue');
+		$this->stack->expects($this->never())->method('addIssue');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
-		             ->disableOriginalConstructor()
+		             ->setConstructorArgs(array('test'))
 		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
@@ -137,10 +138,10 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 	public function testEnterNode ()
 	{
 		$this->stack->expects($this->once())->method('start');
-		$this->context->expects($this->once())->method('addIssue');
+		$this->stack->expects($this->once())->method('addIssue');
 
 		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Class_')
-		             ->disableOriginalConstructor()
+		             ->setConstructorArgs(array('test'))
 		             ->setMethods(array('isFinal'))
 		             ->getMock();
 
