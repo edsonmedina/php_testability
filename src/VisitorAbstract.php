@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability;
+
 use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\ContextStack;

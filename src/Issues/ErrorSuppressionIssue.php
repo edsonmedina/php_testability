@@ -1,5 +1,6 @@
 <?php
 namespace edsonmedina\php_testability\Issues;
+
 use edsonmedina\php_testability\AbstractIssue;
 
 class ErrorSuppressionIssue extends AbstractIssue

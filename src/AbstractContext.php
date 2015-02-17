@@ -50,7 +50,7 @@ abstract class AbstractContext implements ContextInterface
 	 */
 	public function getChildren (ContextSpecificationInterface $filter = null)
 	{
-		if (is_null($filter))
+		if ($filter === null)
 		{
 			return $this->children;
 		}

@@ -5,7 +5,7 @@ use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\Contexts\ProcedureSpecification;
 use edsonmedina\php_testability\Contexts\DirectorySpecification;
 
-class CSVReport 
+class CSVReport
 {
 	private $baseDir   = '';
 	private $reportDir = '';
