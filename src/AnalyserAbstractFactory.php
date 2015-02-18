@@ -28,6 +28,7 @@ class AnalyserAbstractFactory
 		
 		// scope visitors
 		$traverser->addVisitor (new NodeVisitors\ClassVisitor ($stack, $context));
+		$traverser->addVisitor (new NodeVisitors\InterfaceVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\MethodVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\GlobalFunctionVisitor ($stack, $context));
 		$traverser->addVisitor (new NodeVisitors\CodeCoverageIgnoreVisitor ($stack, $context));

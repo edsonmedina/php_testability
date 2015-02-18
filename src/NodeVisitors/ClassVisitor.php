@@ -37,7 +37,6 @@ class ClassVisitor extends VisitorAbstract
     {
         return (
             $node instanceof Stmt\Class_ || 
-            $node instanceof Stmt\Interface_ || 
             $node instanceof Stmt\Trait_
         );
     }
