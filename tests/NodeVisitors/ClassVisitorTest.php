@@ -168,6 +168,12 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 
 		$visitor = new ClassVisitor ($this->stack, $this->context);
 		$this->assertFalse ($visitor->isClass ($node));
+
+		$node2 = $this->getMockBuilder ('PhpParser\Node\Stmt\Interface_')
+		              ->disableOriginalConstructor()
+		              ->getMock();
+
+		$this->assertFalse ($visitor->isClass ($node2));
 	}
 
 	/**
@@ -183,14 +189,9 @@ class ClassVisitorTest extends PHPUnit_Framework_TestCase
 		              ->disableOriginalConstructor()
 		              ->getMock();
 
-		$node3 = $this->getMockBuilder ('PhpParser\Node\Stmt\Interface_')
-		              ->disableOriginalConstructor()
-		              ->getMock();
-
 		$visitor = new ClassVisitor ($this->stack, $this->context);
 
 		$this->assertTrue ($visitor->isClass ($node1));
 		$this->assertTrue ($visitor->isClass ($node2));
-		$this->assertTrue ($visitor->isClass ($node3));
 	}
 }
