@@ -41,8 +41,9 @@ class Testability
 		$start_ts  = microtime (TRUE);
 
 		// run
-		$report = new RootContext ($this->path);
-		$files  = (new FileIteratorFactory)->create();
+		$report  = new RootContext ($this->path);
+		$factory = new FileIteratorFactory();
+		$files   = $factory->create();
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));
