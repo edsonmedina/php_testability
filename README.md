@@ -2,7 +2,7 @@
 [![Code Climate](https://codeclimate.com/github/edsonmedina/php_testability/badges/gpa.svg)](https://codeclimate.com/github/edsonmedina/php_testability)
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/edsonmedina/php_testability/master.svg)](https://scrutinizer-ci.com/g/edsonmedina/php_testability/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/edsonmedina/php_testability/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/edsonmedina/php_testability/?branch=master)
-[![Dependencies](https://www.versioneye.com/user/projects/54edb0b5672cff12e900000f/badge.svg?style=flat)]
+![Dependencies](https://www.versioneye.com/user/projects/54edb0b5672cff12e900000f/badge.svg?style=flat)
 
 # PHP_Testability
 
