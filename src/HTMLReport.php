@@ -152,7 +152,7 @@ class HTMLReport
 				'total'    => $numbers['total'],
 				'testable' => $numbers['testable'],
 				'percent'  => number_format ($percent*100, 2),
-                'label'    => $this->getCssClass($percent)
+                'label'    => $numbers['total'] ? $this->getCssClass($percent) : ''
 			);
 
 			if ($child instanceof DirectoryContext)
