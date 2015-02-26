@@ -9,7 +9,7 @@ class GlobalFunctionVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$this->stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		                    ->disableOriginalConstructor()
-		                    ->setMethods(array('start','addIssue','end'))
+		                    ->setMethods(['start','addIssue','end'])
 		                    ->getMock();
 
 		$this->context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')

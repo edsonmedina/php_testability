@@ -8,7 +8,7 @@ use PhpParser\Node\Expr;
 
 class SuperGlobalVisitor extends VisitorAbstract
 {
-    private $superGlobalNames = array ('GLOBALS','_SERVER','_GET','_POST','_FILES','_COOKIE','_SESSION','_REQUEST','_ENV');
+    private $superGlobalNames = ['GLOBALS','_SERVER','_GET','_POST','_FILES','_COOKIE','_SESSION','_REQUEST','_ENV'];
 
     public function leaveNode (PhpParser\Node $node) 
     {

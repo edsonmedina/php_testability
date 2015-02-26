@@ -18,7 +18,7 @@ class AbstractIssueTest extends PHPUnit_Framework_TestCase
 		$node->method('getLine')->willReturn (123);
 
 		$issue = $this->getMockBuilder('edsonmedina\php_testability\AbstractIssue')
-		              ->setConstructorArgs(array($node))
+		              ->setConstructorArgs([$node])
 		              ->getMockForAbstractClass();
 
 		$this->assertEquals (123, $issue->getLine());

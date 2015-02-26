@@ -15,7 +15,7 @@ use edsonmedina\php_testability\Contexts\FileContext;
 class FileIterator 
 {
 	private $analyser;
-	private $excludedDirs = array ();
+	private $excludedDirs = [];
 	private $processedFilesCount;
 
 	/**

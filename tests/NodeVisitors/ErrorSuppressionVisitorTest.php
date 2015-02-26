@@ -12,8 +12,8 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 		$this->context = new RootContext ('/');
 		
 		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
-		                    ->setConstructorArgs(array($this->context))
-		                    ->setMethods(array('addIssue'))
+		                    ->setConstructorArgs([$this->context])
+		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 
 		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
@@ -40,8 +40,8 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 		$this->stack->expects($this->never())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
-		                ->setConstructorArgs(array($this->stack, $this->context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$this->stack, $this->context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
@@ -61,8 +61,8 @@ class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
 		$this->stack->expects($this->once())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
-		                ->setConstructorArgs(array($this->stack, $this->context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$this->stack, $this->context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);

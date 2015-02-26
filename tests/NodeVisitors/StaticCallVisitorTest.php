@@ -15,8 +15,8 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$context = new RootContext ('/');
 
 		$stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
-		              ->setConstructorArgs(array($context))
-		              ->setMethods(array('addIssue'))
+		              ->setConstructorArgs([$context])
+		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -41,8 +41,8 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		$context = new RootContext ('/');
 
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
-		              ->setConstructorArgs(array($context))
-		              ->setMethods(array('addIssue'))
+		              ->setConstructorArgs([$context])
+		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -52,8 +52,8 @@ class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
 		             ->getMock();
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\StaticCallVisitor')
-		                ->setConstructorArgs(array($stack, $context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$stack, $context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);

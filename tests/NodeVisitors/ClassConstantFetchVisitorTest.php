@@ -21,7 +21,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		              ->disableOriginalConstructor()
-		              ->setMethods(array('addIssue'))
+		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -42,7 +42,7 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		              ->disableOriginalConstructor()
-		              ->setMethods(array('addIssue'))
+		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -56,8 +56,8 @@ class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
 		                ->getMock();
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor')
-		                ->setConstructorArgs(array($stack, $context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$stack, $context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);

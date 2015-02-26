@@ -26,7 +26,7 @@ class NodeWrapper
 		// deal with list of variable names
 		if (isset($this->node->vars))
 		{
-			$names = array ();
+			$names = [];
 			foreach ($this->node->vars as $var) {
 				$names[] = '$'.$var->name;
 			}

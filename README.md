@@ -9,7 +9,7 @@
 Analyses and produces a report with testability issues of a php codebase.
 
 ## Installation
-PHP_Testability requires at least PHP 5.3.3 to run.
+PHP_Testability requires at least PHP 5.4 to run.
 
 ### Composer 
 

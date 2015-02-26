@@ -12,8 +12,8 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		$this->context = new RootContext ('/');
 		
 		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
-		                    ->setConstructorArgs(array($this->context))
-		                    ->setMethods(array('addIssue'))
+		                    ->setConstructorArgs([$this->context])
+		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 
 		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
@@ -29,8 +29,8 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		$this->stack->expects($this->never())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
-		                ->setConstructorArgs(array($this->stack, $this->context))
-		                ->setMethods(array('inGlobalScope','isAllowedOnGlobalSpace'))
+		                ->setConstructorArgs([$this->stack, $this->context])
+		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn(false);
@@ -47,8 +47,8 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		$this->stack->expects($this->never())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
-		                ->setConstructorArgs(array($this->stack, $this->context))
-		                ->setMethods(array('inGlobalScope','isAllowedOnGlobalSpace'))
+		                ->setConstructorArgs([$this->stack, $this->context])
+		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn(true);
@@ -65,8 +65,8 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
 		$this->stack->expects($this->once())->method('addIssue');
 
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
-		                ->setConstructorArgs(array($this->stack, $this->context))
-		                ->setMethods(array('inGlobalScope','isAllowedOnGlobalSpace'))
+		                ->setConstructorArgs([$this->stack, $this->context])
+		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn(true);

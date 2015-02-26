@@ -56,7 +56,7 @@ abstract class AbstractContext implements ContextInterface
 		}
 		else
 		{
-			return array_filter ($this->children, array($filter, 'isSatisfiedBy'));
+			return array_filter ($this->children, [$filter, 'isSatisfiedBy']);
 		}
 	}
 

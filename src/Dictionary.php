@@ -3,8 +3,8 @@ namespace edsonmedina\php_testability;
 
 class Dictionary
 {
-	private $phpInternalFunctions = array ();
-	private $unsafeForInstantiation = array ();
+	private $phpInternalFunctions   = [];
+	private $unsafeForInstantiation = [];
 
 	public function __construct ()
 	{
@@ -12,7 +12,7 @@ class Dictionary
 		$list = get_defined_functions();
 		$this->phpInternalFunctions = array_fill_keys($list['internal'], true);
 
-		$this->unsafeForInstantiation = array_map ('strtolower', array (
+		$this->unsafeForInstantiation = array_map ('strtolower', [
 			'SplFileInfo', 'DirectoryIterator', 'FilesystemIterator',
 			'GlobIterator', 'SplFileObject', 'SplTempFileObject',
 			'Reflection', 'ReflectionFunctionAbstract', 'ReflectionFunction',
@@ -20,7 +20,7 @@ class Dictionary
 			'ReflectionObject', 'ReflectionProperty', 'ReflectionExtension',
 			'ReflectionZendExtension', 'ZipArchive', 'PDO', 'XMLReader', 
 			'finfo', 'Phar', 'SoapClient', 'SoapServer', 'DOMDocument'
-		));
+		]);
 	}
 
 	/**

@@ -12,8 +12,8 @@ class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
 		$this->context = new RootContext ('/');
 
 		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
-		                    ->setConstructorArgs(array($this->context))
-		                    ->setMethods(array('addIssue'))
+		                    ->setConstructorArgs([$this->context])
+		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 	}
 

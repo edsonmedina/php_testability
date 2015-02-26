@@ -14,7 +14,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('addIssue'))
+		             ->setMethods(['addIssue'])
 		             ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -38,7 +38,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('addIssue'))
+		             ->setMethods(['addIssue'])
 		             ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -48,8 +48,8 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		              ->getMock();
 		              
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
-		                ->setConstructorArgs(array($stack, $context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$stack, $context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
@@ -68,7 +68,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		              ->disableOriginalConstructor()
-		              ->setMethods(array('addIssue'))
+		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
@@ -78,13 +78,13 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		              ->getMock();
 		              
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
-		                ->setConstructorArgs(array($stack, $context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$stack, $context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x', array(true));
+		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x', [true]);
 
 		$visitor->leaveNode ($node);
 	}
@@ -96,7 +96,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 	{
 		$stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
 		             ->disableOriginalConstructor()
-		             ->setMethods(array('addIssue'))
+		             ->setMethods(['addIssue'])
 		             ->getMock();
 
 		$stack->expects($this->once())->method('addIssue');
@@ -106,8 +106,8 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 		                ->getMock();
 		              
 		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CatchVisitor')
-		                ->setConstructorArgs(array($stack, $context))
-		                ->setMethods(array('inGlobalScope'))
+		                ->setConstructorArgs([$stack, $context])
+		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);

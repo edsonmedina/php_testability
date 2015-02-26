@@ -13,7 +13,7 @@ class ContextStack
 
 	public function __construct (ContextInterface $context)
 	{
-		$this->stack = array ($context);
+		$this->stack = [$context];
 	}
 
 	/**

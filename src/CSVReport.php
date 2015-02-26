@@ -65,7 +65,7 @@ class CSVReport
 	/**
 	 * Return a count of total/testable procedures
 	 * @param ContextInterface $root
-	 * @return array ('total' => 12, 'testable' => 4)
+	 * @return ['total' => 12, 'testable' => 4]
 	 */
 	public function getTotalTestableProcedures (ContextInterface $root)
 	{
@@ -82,7 +82,7 @@ class CSVReport
 			}
 		}
 
-		return array ('total' => $total, 'testable' => $testable);
+		return ['total' => $total, 'testable' => $testable];
 	}
 
 	/**

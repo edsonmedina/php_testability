@@ -84,46 +84,46 @@ class HTMLReport
 		$issues = $file->getIssues (true);
 
 		foreach ($issues as $issue) {
-			$code[$issue->getLine()-1]['issues'][] = array (
+			$code[$issue->getLine()-1]['issues'][] = [
 				'type' => $issue->getTitle(),
 				'name' => $issue->getID()
-			);
+			];
 		}
 
 		// render
-		$view = new Mustache_Engine (array(
+		$view = new Mustache_Engine ([
 			'loader' => new Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
-		));
+		]);
 
 		$relFilename = $this->convertPathToRelative ($file->getName());
 
-		$output = $view->render ('file', array (
+		$output = $view->render ('file', [
 			'currentPath' => $relFilename,
 			'scopes'      => $scopes,
 			'lines'       => $code,
 			'date'        => date('r'),
-		));
+		]);
 
 		$this->saveFile ($relFilename.'.html', $output);
 	}
 
 	/**
-	 * Returns file contents as array of tuples (array('line' => 12, 'text' => '...'))
+	 * Returns file contents as array of tuples (['line' => 12, 'text' => '...'])
 	 * @param string $filename
 	 * @return array
 	 */
 	public function getContentInTuples ($filename)
 	{
-		$result = array ();
+		$result     = [];
 		$lineNumber = 1;
 
 		// load file and create array of tuples (line, code)
 		foreach (file ($filename) as $line)
 		{
-			$result[] = array (
+			$result[] = [
 				'line' => $lineNumber++,
 				'text' => rtrim($line)
-			);
+			];
 		}
 
 		return $result;
@@ -136,8 +136,8 @@ class HTMLReport
 	public function generateIndexFile (ContextInterface $path)
 	{
 		// list directory
-		$files = array ();
-		$dirs  = array ();
+		$files = [];
+		$dirs  = [];
 
 		foreach ($path->getChildren() as $child)
 		{
@@ -147,13 +147,13 @@ class HTMLReport
 
 			$percent = $numbers['total'] > 0 ? ($numbers['testable'] / $numbers['total']) : 0;
 
-			$node = array (
-				'name'   => basename($filename),
+			$node = [
+				'name'     => basename($filename),
 				'total'    => $numbers['total'],
 				'testable' => $numbers['testable'],
 				'percent'  => number_format ($percent*100, 2),
                 'label'    => $numbers['total'] ? $this->getCssClass($percent) : ''
-			);
+			];
 
 			if ($child instanceof DirectoryContext)
 			{
@@ -166,20 +166,20 @@ class HTMLReport
 		}
 
 		// render
-		$view = new Mustache_Engine (array(
+		$view = new Mustache_Engine ([
 			'loader' => new Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
-		));
+		]);
 
 		$relPath = $this->convertPathToRelative ($path->getName());
 
 
-		$output = $view->render ('dir', array (
+		$output = $view->render ('dir', [
 			'currentPath' => $relPath,
 			'files'       => $files,
 			'dirs'        => $dirs,
 			'date'        => date('r'),
 			'isBaseDir'   => ($this->baseDir === $path->getName())
-		));
+		]);
 
 		$this->saveFile ($relPath.'/index.html', $output);		
 	}
@@ -208,7 +208,7 @@ class HTMLReport
 	/**
 	 * Return a count of total/testable procedures
 	 * @param ContextInterface $root
-	 * @return array ('total' => 12, 'testable' => 4)
+	 * @return ['total' => 12, 'testable' => 4]
 	 */
 	public function getTotalTestableProcedures (ContextInterface $root)
 	{
@@ -225,7 +225,7 @@ class HTMLReport
 			}
 		}
 
-		return array ('total' => $total, 'testable' => $testable);
+		return ['total' => $total, 'testable' => $testable];
 	}
 
 	/**

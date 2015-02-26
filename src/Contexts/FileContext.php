@@ -19,17 +19,17 @@ class FileContext extends AbstractContext
 	 */
 	public function getContextsNumberOfIssues()
 	{
-		$list = array ();
+		$list = [];
 
 		foreach ($this->getChildren() as $child)
 		{
 			if ($child instanceof FunctionContext)
 			{
-				$list[] = array (
+				$list[] = [
 					'name'      => $child->getName(),
 					'startLine' => $child->startLine,
 					'issues'    => $child->getIssuesCount()
-				);
+				];
 			}
 			else
 			{
@@ -38,11 +38,11 @@ class FileContext extends AbstractContext
 				{
 					if ($method instanceof MethodContext)
 					{
-						$list[] = array (
+						$list[] = [
 							'name'      => $child->getName().'::'.$method->getName(),
 							'startLine' => $method->startLine,
 							'issues'    => $method->getIssuesCount()
-						);
+						];
 					}
 				}
 			}
