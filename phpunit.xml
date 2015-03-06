@@ -14,8 +14,8 @@
 		<log type="coverage-clover" target="clover.xml"/>
 	</logging>
 	<testsuites>
-		<testsuite name="My Test Suite">
-			<file phpVersion="5.3.0" phpVersionOperator=">=">tests/AllTests.php</file>
+		<testsuite name="Test Suite">
+			<file phpVersion="5.4" phpVersionOperator=">=">tests/AllTests.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>
