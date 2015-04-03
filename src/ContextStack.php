@@ -70,7 +70,7 @@ class ContextStack
 	/**
 	 * Find context in stack matching specification
 	 * @param ContextSpecificationInterface $filter
-	 * @return ContextInterface $node
+	 * @return ContextInterface|bool $node
 	 */
 	public function findContextOfType (ContextSpecificationInterface $filter)
 	{
