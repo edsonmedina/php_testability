@@ -45,23 +45,25 @@ class NodeWrapper
 			$separator = '::';
 		}
 
-
-		if ($this->node->name instanceof Expr\Variable) 
+		if (isset($this->node->name))
 		{
-			$nodeName = $this->node->getAttribute('name');
-			$name .= $separator. (!empty($nodeName) ? $nodeName : '<variable>');
-		} 
-		elseif ($this->node->name instanceof Expr\ArrayDimFetch) 
-		{
-			$name .= $separator.'<variable>';	
-		} 
-		else
-		{
-			if (!empty($this->node->name)) 
+			if ($this->node->name instanceof Expr\Variable) 
+			{
+				$nodeName = $this->node->getAttribute('name');
+				$name .= $separator. (!empty($nodeName) ? $nodeName : '<variable>');
+			} 
+			elseif ($this->node->name instanceof Expr\ArrayDimFetch) 
+			{
+				$name .= $separator.'<variable>';	
+			} 
+			else
 			{
 				$name .= $separator . $this->node->name;
-			} 
-			elseif (!empty($this->node->var->name))
+			}
+		}
+		else
+		{
+			if (!empty($this->node->var->name))
 			{
 				$name .= $separator.'$'.$this->node->var->name;
 			}

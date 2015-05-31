@@ -145,7 +145,7 @@ class HTMLReport
 
 			$numbers = $this->getTotalTestableProcedures($child);
 
-			$percent = $numbers['total'] > 0 ? ($numbers['testable'] / $numbers['total']) : 0;
+			$percent = $numbers['total'] > 0 ? ($numbers['testable'] / $numbers['total']) : 1;
 
 			$node = [
 				'name'     => basename($filename),
