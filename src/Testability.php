@@ -17,6 +17,7 @@ class Testability
 	private $excludeDirs;
 	private $reportDir;
 	private $shouldOutputCSV;
+	private $verbose;
 
 	public function __construct ($path, $reportDir)
 	{
@@ -34,6 +35,11 @@ class Testability
 		$this->shouldOutputCSV = $value;
 	}
 
+	public function setVerbose ($value)
+	{
+		$this->verbose = $value;
+	}
+
 	public function runReport ()
 	{
 		echo "\nPHP_Testability by Edson Medina\n";
@@ -41,9 +47,8 @@ class Testability
 		$start_ts  = microtime (TRUE);
 
 		// run
-		$report  = new RootContext ($this->path);
-		$factory = new FileIteratorFactory();
-		$files   = $factory->create();
+		$report = new RootContext ($this->path);
+		$files  = (new FileIteratorFactory)->create($this->verbose);
 
 		if (!empty($this->excludeDirs)) {
 			$files->setExcludedDirs (explode(',', $this->excludeDirs));

@@ -15,9 +15,9 @@ namespace edsonmedina\php_testability;
  */
 class FileIteratorFactory 
 {
-	public function create ()
+	public function create ($verbose = false)
 	{
 		$analyserFactory = new AnalyserFactory;
-		return new FileIterator ($analyserFactory->create ());
+		return new FileIterator ($analyserFactory->create (), $verbose);
 	}
 }

@@ -17,14 +17,17 @@ class FileIterator
 	private $analyser;
 	private $excludedDirs = [];
 	private $processedFilesCount;
+	private $verbose;
 
 	/**
 	 * Runs the static analyser
-	 * @param  Analyser $analyser Static code analysis class
+	 * @param Analyser $analyser Static code analysis class
+	 * @param bool $verbose
 	 */
-	public function __construct (Analyser $analyser)
+	public function __construct (Analyser $analyser, $verbose)
 	{
 		$this->analyser = $analyser;
+		$this->verbose  = $verbose;
 		$this->processedFilesCount = 0;
 	}
 
@@ -60,11 +63,20 @@ class FileIterator
 			{
 				$file = new FileContext ($fullPath);
 
+				if ($this->verbose) {
+					echo $path.DIRECTORY_SEPARATOR.$fileInfo->getFilename()."... ";
+				}
+				
 				$this->analyser->scan ($file);
+
+				if ($this->verbose)	{
+					echo "OK\n";
+				} else {
+					echo ".";
+				}		
 
 				$parent->addChild ($file);
 				$this->processedFilesCount++;
-				echo ".";
 			}
 		}
 	}
