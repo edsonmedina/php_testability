@@ -24,7 +24,7 @@ class FileIterator
 	 * @param Analyser $analyser Static code analysis class
 	 * @param bool $verbose
 	 */
-	public function __construct (Analyser $analyser, $verbose)
+	public function __construct (Analyser $analyser, $verbose = false)
 	{
 		$this->analyser = $analyser;
 		$this->verbose  = $verbose;
