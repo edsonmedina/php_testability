@@ -99,8 +99,8 @@ class CSVReport
 			mkdir ($dirname, 0777, true);
 		}
 
-		$content  = '"total","testable"'."\n";
-		$content .= '"'.$result['total'].'","'.$result['testable'].'"'."\n";
+		$content  = '"total","testable","untestable"'."\n";
+		$content .= '"'.$result['total'].'","'.$result['testable'].'","'.($result['total']-$result['testable']).'"'."\n";
 		
 		// save
 		file_put_contents ($dirname.DIRECTORY_SEPARATOR.'totals.csv', $content);
