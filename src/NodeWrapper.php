@@ -27,8 +27,16 @@ class NodeWrapper
 		if (isset($this->node->vars))
 		{
 			$names = [];
-			foreach ($this->node->vars as $var) {
-				$names[] = '$'.$var->name;
+			foreach ($this->node->vars as $var) 
+			{
+				if ($var instanceof Expr\ArrayDimFetch)
+				{
+					$names[] = '$'.$var->var->name;
+				}
+				else
+				{
+					$names[] = '$'.$var->name;
+				}
 			}
 
 			return join (', ', $names);
