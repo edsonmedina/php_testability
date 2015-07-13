@@ -31,7 +31,7 @@ class NodeWrapper
 			{
 				if ($var instanceof Expr\ArrayDimFetch)
 				{
-					$names[] = '$'.$var->var->name;
+					$names[] = '$'.$this->getArrayDimFetchName ($var);
 				}
 				else
 				{
@@ -78,6 +78,14 @@ class NodeWrapper
 		}
 	
 		return $name;
+	}
+
+	public function getArrayDimFetchName ($node)
+	{
+	    if (isset($node->var)) {
+    	    return $this->getArrayDimFetchName($node->var);
+    	}
+    	return $node->name;
 	}
 
 	public function isSameClassAs ($classname) 
