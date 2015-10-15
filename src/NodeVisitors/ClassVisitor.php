@@ -3,6 +3,7 @@ namespace edsonmedina\php_testability\NodeVisitors;
 
 use edsonmedina\php_testability\VisitorAbstract;
 use edsonmedina\php_testability\Issues\FinalClassIssue;
+use edsonmedina\php_testability\Issues\ExtendedClassIssue;
 use edsonmedina\php_testability\Contexts\ClassContext;
 use PhpParser;
 use PhpParser\Node\Stmt;
@@ -20,6 +21,11 @@ class ClassVisitor extends VisitorAbstract
             if ($node instanceof Stmt\Class_ && $node->isFinal()) 
             {
                 $this->stack->addIssue (new FinalClassIssue($node));
+            }
+
+            if (!empty($node->extends))
+            {
+                $this->stack->addIssue (new ExtendedClassIssue($node));
             }
         }
     }
