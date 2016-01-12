@@ -5,7 +5,7 @@ php:
   - hhvm
 
 before_script:
-  - composer update
+  - composer install
 
 script: bin/phpunit tests/AllTests.php
 

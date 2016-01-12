@@ -1,6 +1,5 @@
 vendor/*
 bin/*
-composer.lock
 composer.phar
 debug.log
 report/*
