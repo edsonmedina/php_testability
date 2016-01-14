@@ -139,6 +139,9 @@ class HTMLReport
 		$files = [];
 		$dirs  = [];
 
+		$dir_testable = 0;
+		$dir_total    = 0;
+
 		foreach ($path->getChildren() as $child)
 		{
 			$filename = $child->getName();
@@ -155,6 +158,9 @@ class HTMLReport
                 'label'    => $numbers['total'] ? $this->getCssClass($percent) : ''
 			];
 
+			$dir_testable += $numbers['testable'];
+			$dir_total    += $numbers['total'];
+
 			if ($child instanceof DirectoryContext)
 			{
     			$dirs[] = $node;
@@ -165,6 +171,8 @@ class HTMLReport
 			}
 		}
 
+		$dir_percent = $dir_total > 0 ? ($dir_testable / $dir_total) : 1;
+
 		// render
 		$view = new Mustache_Engine ([
 			'loader' => new Mustache_Loader_FilesystemLoader (__DIR__.'/views'),
@@ -172,13 +180,15 @@ class HTMLReport
 
 		$relPath = $this->convertPathToRelative ($path->getName());
 
-
 		$output = $view->render ('dir', [
-			'currentPath' => $relPath,
-			'files'       => $files,
-			'dirs'        => $dirs,
-			'date'        => date('r'),
-			'isBaseDir'   => ($this->baseDir === $path->getName())
+			'currentPath'    => $relPath,
+			'files'          => $files,
+			'dirs'           => $dirs,
+			'date'           => date('r'),
+			'total_percent'  => number_format ($dir_percent*100, 2),
+			'total_testable' => $dir_testable,
+			'total_total'    => $dir_total,
+			'isBaseDir'      => ($this->baseDir === $path->getName())
 		]);
 
 		$this->saveFile ($relPath.'/index.html', $output);		
