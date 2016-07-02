@@ -14,8 +14,8 @@ class AnalyserAbstractFactoryTest extends PHPUnit_Framework_TestCase
 	{
 		$factory = new AnalyserAbstractFactory();
 
-		$data_stub  = $this->getMock('edsonmedina\php_testability\ReportDataInterface');
-		$scope_stub = $this->getMock('edsonmedina\php_testability\AnalyserScope');
+		$data_stub  = $this->createMock('edsonmedina\php_testability\ReportDataInterface');
+		$scope_stub = $this->createMock('edsonmedina\php_testability\AnalyserScope');
 
 		$traverser = $factory->createTraverser (new DirectoryContext('/'));
 
