@@ -3,7 +3,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor;
 
-class GlobalFunctionVisitorTest extends PHPUnit_Framework_TestCase
+class GlobalFunctionVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

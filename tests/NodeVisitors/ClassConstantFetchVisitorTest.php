@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\NodeVisitors\ClassConstantFetchVisitor;
 
-class ClassConstantFetchVisitorTest extends PHPUnit_Framework_TestCase
+class ClassConstantFetchVisitorTest extends PHPUnit\Framework\TestCase
 {
 	private $prophet;
 	private $stack;

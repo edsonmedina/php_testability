@@ -4,7 +4,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 use edsonmedina\php_testability\HTMLReport;
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 
-class HTMLReportTest extends PHPUnit_Framework_TestCase
+class HTMLReportTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\HTMLReport::convertPathToRelative

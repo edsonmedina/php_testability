@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\ExitVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class ExitVisitorTest extends PHPUnit_Framework_TestCase
+class ExitVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

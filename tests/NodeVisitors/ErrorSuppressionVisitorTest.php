@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class ErrorSuppressionVisitorTest extends PHPUnit_Framework_TestCase
+class ErrorSuppressionVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

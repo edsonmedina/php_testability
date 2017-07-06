@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Contexts\FunctionContext;
 
-class FunctionContextTest extends PHPUnit_Framework_TestCase
+class FunctionContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\FunctionContext::__construct

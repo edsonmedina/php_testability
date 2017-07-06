@@ -5,7 +5,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 use edsonmedina\php_testability\NodeVisitors\CatchVisitor;
 use PhpParser\Node\Name;
 
-class CatchVisitorTest extends PHPUnit_Framework_TestCase
+class CatchVisitorTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\CatchVisitor::leaveNode
@@ -84,7 +84,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x', [true]);
+		$node = new PhpParser\Node\Stmt\Catch_ ([new Name('Whatever')], 'x', [true]);
 
 		$visitor->leaveNode ($node);
 	}
@@ -112,7 +112,7 @@ class CatchVisitorTest extends PHPUnit_Framework_TestCase
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		$node = new PhpParser\Node\Stmt\Catch_ (new Name('Whatever'), 'x');
+		$node = new PhpParser\Node\Stmt\Catch_ ([new Name('Whatever')], 'x');
 
 		$visitor->leaveNode ($node);
 	}

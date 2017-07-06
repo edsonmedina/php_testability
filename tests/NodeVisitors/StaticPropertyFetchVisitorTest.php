@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\StaticPropertyFetchVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class StaticPropertyFetchVisitorTest extends PHPUnit_Framework_TestCase
+class StaticPropertyFetchVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

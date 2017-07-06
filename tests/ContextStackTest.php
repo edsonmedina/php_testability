@@ -8,7 +8,7 @@ use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\Contexts\ClassContext;
 use edsonmedina\php_testability\Contexts\FileSpecification;
 
-class ContextStackTest extends PHPUnit_Framework_TestCase
+class ContextStackTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\ContextStack::__construct

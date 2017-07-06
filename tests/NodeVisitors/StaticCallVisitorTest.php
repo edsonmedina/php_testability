@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\StaticCallVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class StaticCallVisitorTest extends PHPUnit_Framework_TestCase
+class StaticCallVisitorTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode

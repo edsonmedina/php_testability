@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class CodeInGlobalSpaceVisitorTest extends PHPUnit_Framework_TestCase
+class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

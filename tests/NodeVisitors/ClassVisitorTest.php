@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\ClassVisitor;
 use edsonmedina\php_testability\NodeVisitors\TraitVisitor;
 use edsonmedina\php_testability\NodeVisitors\InterfaceVisitor;
 
-class ClassVisitorTest extends PHPUnit_Framework_TestCase
+class ClassVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

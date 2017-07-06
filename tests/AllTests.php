@@ -6,7 +6,7 @@ class AllTests
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHP_Testability unit tests');
+        $suite = new PHPUnit\Framework\TestSuite('PHP_Testability unit tests');
 
         self::addDir(__DIR__, $suite);
 

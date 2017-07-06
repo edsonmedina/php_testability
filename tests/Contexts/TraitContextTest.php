@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Contexts\TraitContext;
 
-class TraitContextTest extends PHPUnit_Framework_TestCase
+class TraitContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\TraitContext::__construct

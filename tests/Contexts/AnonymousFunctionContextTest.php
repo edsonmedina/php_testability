@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 
-class AnonymousFunctionContextTest extends PHPUnit_Framework_TestCase
+class AnonymousFunctionContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\AnonymousFunctionContext::__construct

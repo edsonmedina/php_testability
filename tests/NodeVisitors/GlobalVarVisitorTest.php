@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\GlobalVarVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class GlobalVarVisitorTest extends PHPUnit_Framework_TestCase
+class GlobalVarVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

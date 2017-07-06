@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class StaticVariableVisitorTest extends PHPUnit_Framework_TestCase
+class StaticVariableVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

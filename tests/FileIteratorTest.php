@@ -3,7 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 use edsonmedina\php_testability\FileIterator;
 
-class FileIteratorTest extends PHPUnit_Framework_TestCase
+class FileIteratorTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\FileIterator::setExcludedDirs

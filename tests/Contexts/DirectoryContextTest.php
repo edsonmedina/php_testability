@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 
-class DirectoryContextTest extends PHPUnit_Framework_TestCase
+class DirectoryContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\DirectoryContext::__construct

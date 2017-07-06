@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class GlobalFunctionCallVisitorTest extends PHPUnit_Framework_TestCase
+class GlobalFunctionCallVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{

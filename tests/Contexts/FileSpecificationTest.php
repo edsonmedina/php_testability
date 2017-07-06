@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\DirectoryContext;
 use edsonmedina\php_testability\Contexts\FileContext;
 use edsonmedina\php_testability\Contexts\ClassContext;
 
-class FileSpecificationTest extends PHPUnit_Framework_TestCase
+class FileSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\FileSpecification::isSatisfiedBy

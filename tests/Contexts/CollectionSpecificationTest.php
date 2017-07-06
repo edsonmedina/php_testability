@@ -11,7 +11,7 @@ use edsonmedina\php_testability\Contexts\MethodContext;
 use edsonmedina\php_testability\Contexts\FunctionContext;
 use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 
-class CollectionSpecificationTest extends PHPUnit_Framework_TestCase
+class CollectionSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\CollectionSpecification::isSatisfiedBy

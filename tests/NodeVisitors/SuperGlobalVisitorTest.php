@@ -5,7 +5,7 @@ use edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
-class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
+class SuperGlobalVisitorTest extends PHPUnit\Framework\TestCase
 {
 	public function setup ()
 	{
@@ -35,21 +35,5 @@ class SuperGlobalVisitorTest extends PHPUnit_Framework_TestCase
 
 		$visitor = new SuperGlobalVisitor ($this->stack, $this->context);
 		$visitor->leaveNode ($this->wrongNode);
-	}
-
-	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\SuperGlobalVisitor::leaveNode
-	 */
-	public function testLeaveNodeInGlobalSpace ()
-	{
-		$this->stack->expects($this->never())->method('addIssue');
-
-		$this->stack->method ('inGlobalScope')->willReturn (true);
-
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ArrayDimFetch')
-		             ->disableOriginalConstructor()
-		             ->getMock();
-
-		$this->visitor->leaveNode ($node);
 	}
 }

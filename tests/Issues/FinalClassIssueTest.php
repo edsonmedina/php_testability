@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Issues\FinalClassIssue;
 
-class FinalClassIssueTest extends PHPUnit_Framework_TestCase
+class FinalClassIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Issues\FinalClassIssue::getTitle

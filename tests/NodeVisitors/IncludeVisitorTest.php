@@ -8,7 +8,7 @@ use edsonmedina\php_testability\ContextStack;
 use PhpParser\Node\Expr\Include_;
 use PhpParser\Node\Expr\Variable;
 
-class IncludeVisitorTest extends PHPUnit_Framework_TestCase
+class IncludeVisitorTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode

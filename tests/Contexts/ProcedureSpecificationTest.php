@@ -10,7 +10,7 @@ use edsonmedina\php_testability\Contexts\MethodContext;
 use edsonmedina\php_testability\Contexts\FunctionContext;
 use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 
-class ProcedureSpecificationTest extends PHPUnit_Framework_TestCase
+class ProcedureSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\Contexts\ProcedureSpecification::isSatisfiedBy

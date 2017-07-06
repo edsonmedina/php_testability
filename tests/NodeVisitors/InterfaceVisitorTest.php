@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\NodeVisitors\InterfaceVisitor;
 
-class InterfaceVisitorTest extends PHPUnit_Framework_TestCase
+class InterfaceVisitorTest extends PHPUnit\Framework\TestCase
 {
 	/**
 	 * @covers edsonmedina\php_testability\NodeVisitors\InterfaceVisitor::enterNode
