@@ -7,27 +7,23 @@
             "email": "edsonmedina@gmail.com"
         }
     ],
-    "keywords": ["php", "phpunit", "unit", "testing", "testability"],
+    "keywords": ["php", "phpunit", "unit", "testing", "testability", "tdd"],
     "homepage": "https://github.com/edsonmedina/php_testability/",
     "autoload": {
-        "psr-0": {
-            "edsonmedina\\php_testability" : "src",
-            "edsonmedina\\php_testability\\NodeVisitors" : "src\\NodeVisitors"
-        },
-        "classmap": [
-            "src/"
-        ]
+        "psr-4": {
+            "edsonmedina\\php_testability\\" : "src/"
+        }
     },
     "license": "GPL-2.0+",
     "require": {
         "php": ">=5.4",
-        "nikic/php-parser": "1.4.1",
+        "nikic/php-parser": "*",
         "nategood/commando": "*",
-        "mustache/mustache": "~2.5"
+        "mustache/mustache": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.*",
-        "phpspec/prophecy": "~1.0"
+        "phpunit/phpunit": "*",
+        "phpspec/prophecy": "*"
     },
     "bin": [
         "src/testability"

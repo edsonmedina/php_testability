@@ -6,15 +6,13 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\Analyser;
-use edsonmedina\php_testability\AnalyserAbstractFactory;
-use PhpParser;
+use PhpParser\ParserFactory;
 
 class AnalyserFactory
 {
 	public function create ()
 	{
-		$parser  = new PhpParser\Parser (new PhpParser\Lexer);
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
 		$factory = new AnalyserAbstractFactory;
 
 		return new Analyser ($parser, $factory);
