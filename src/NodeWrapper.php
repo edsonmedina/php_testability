@@ -35,7 +35,12 @@ class NodeWrapper
 				}
 				else
 				{
-					$names[] = '$'.$var->name;
+				    if ($var->name instanceof Expr\Variable)
+                    {
+                        $names[] = '$'.$var->name->name;
+                    } else {
+                        $names[] = '$'.$var->name;
+                    }
 				}
 			}
 
