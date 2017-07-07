@@ -1,6 +1,6 @@
 <?php
 /**
- * FileIterator 
+ * FileIterator
  * This class deals with file iteration
  * @author Edson Medina <edsonmedina@gmail.com>
  */
@@ -12,7 +12,7 @@ use edsonmedina\php_testability\ContextInterface;
 use edsonmedina\php_testability\Contexts\DirectoryContext;
 use edsonmedina\php_testability\Contexts\FileContext;
 
-class FileIterator 
+class FileIterator
 {
 	private $analyser;
 	private $excludedDirs = [];
@@ -31,53 +31,70 @@ class FileIterator
 		$this->processedFilesCount = 0;
 	}
 
-	/** 
+	/**
 	 * Scans (recursively) the path and runs the analyser for each file
-	 * @param ContextInterface $parent 
+	 * @param ContextInterface $parent
 	 */
 	public function iterate (ContextInterface $parent)
 	{
 		$path = $parent->getName();
-
-		foreach (new \DirectoryIterator ($path) as $fileInfo)
-		{
-			if ($fileInfo->isDot()) {
-				continue;
-			}
-
-			$fullPath = $path.DIRECTORY_SEPARATOR.$fileInfo->getFilename();
-
-			if ($fileInfo->isDir() && !$this->isDirExcluded($fileInfo->getFilename())) 
+		if (is_dir($path)) {
+			foreach (new \DirectoryIterator ($path) as $fileInfo)
 			{
-				$dir = new DirectoryContext ($fullPath);
-				$this->iterate ($dir);
+				if ($fileInfo->isDot()) {
+					continue;
+				}
 
-				// no need to keep directories
-				// with no mathing files
-				if ($dir->hasChildren())
-				{
-					$parent->addChild ($dir);
+				$fullPath = $path . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
+
+				if ($fileInfo->isDir() && !$this->isDirExcluded($fileInfo->getFilename())) {
+					$dir = new DirectoryContext ($fullPath);
+					$this->iterate($dir);
+
+					// no need to keep directories
+					// with no mathing files
+					if ($dir->hasChildren()) {
+						$parent->addChild($dir);
+					}
+				} elseif ($this->hasPhpExtension($fileInfo->getFilename())) {
+					$file = new FileContext ($fullPath);
+
+					if ($this->verbose) {
+						echo $path . DIRECTORY_SEPARATOR . $fileInfo->getFilename() . "... ";
+					}
+
+					$this->analyser->scan($file);
+
+					if ($this->verbose) {
+						echo "OK\n";
+					} else {
+						echo ".";
+					}
+
+					$parent->addChild($file);
+					$this->processedFilesCount++;
 				}
 			}
-			elseif ($this->hasPhpExtension($fileInfo->getFilename()))
-			{
-				$file = new FileContext ($fullPath);
+		} else {
+			$fileInfo = new \SplFileInfo ($path);
+			$fullPath = $fileInfo->getPathname();
 
-				if ($this->verbose) {
-					echo $path.DIRECTORY_SEPARATOR.$fileInfo->getFilename()."... ";
-				}
-				
-				$this->analyser->scan ($file);
+			$file = new FileContext ($fullPath);
 
-				if ($this->verbose)	{
-					echo "OK\n";
-				} else {
-					echo ".";
-				}		
-
-				$parent->addChild ($file);
-				$this->processedFilesCount++;
+			if ($this->verbose) {
+				echo $fullPath . "... ";
 			}
+
+			$this->analyser->scan($file);
+
+			if ($this->verbose) {
+				echo "OK\n";
+			} else {
+				echo ".";
+			}
+
+			$parent->addChild($file);
+			$this->processedFilesCount++;
 		}
 	}
 
@@ -88,7 +105,7 @@ class FileIterator
 	 */
 	public function isDirExcluded ($path)
 	{
-		foreach ($this->excludedDirs as $needle) 
+		foreach ($this->excludedDirs as $needle)
 		{
 			if (empty($needle)) {
 				continue;
