@@ -7,4 +7,4 @@ coverage/*
 clover.xml
 tmp/*
 /nbproject/*
-
+.idea
