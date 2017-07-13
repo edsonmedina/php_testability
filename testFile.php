@@ -3,7 +3,7 @@
 error_reporting (E_ALL);
 
 /**
- * This is a test file, with several issues that 
+ * This is a test file, with several issues that
  * should be reported by testability.
  */
 final class Whatever
@@ -11,7 +11,7 @@ final class Whatever
     public function methodMan ($x, $y, $z)
     {
         // globals, over multiple lines
-        global $boom, 
+        global $boom,
         	   $bass;
 
         // this variable can't be relied
@@ -24,7 +24,7 @@ final class Whatever
 
         // Static property of another class
        	$a = OtherClass::thing;
-        
+
         // Static property, same class
         $a = Whatever::thing;
 
@@ -66,7 +66,7 @@ final class Whatever
 
         // Callables (should be supported in the future)
         array_map ('Blah::something', array(1,2,3));
-       	
+
         // Static dynamic method call, another class
         $y = Utils::$name;
 
@@ -94,7 +94,7 @@ final class Whatever
     protected function privateParts2 ()
     {
         // this one too
-    } 
+    }
 
     final public function finalSucks ()
     {
@@ -104,7 +104,7 @@ final class Whatever
     /**
      * @codeCoverageIgnore
      */
-    private function immune () 
+    private function immune ()
     {
         global $y;
         $x = new Whatever (Things::thing);
@@ -117,7 +117,7 @@ final class Whatever
 function dothis()
 {
     global $diddy;
-    
+
     $y = new Whatever ();
     $y->methodMan();
 
@@ -135,7 +135,7 @@ function dothis()
 
     $varClass::method1();
 
-    try 
+    try
     {
         callThisFunc();
     }

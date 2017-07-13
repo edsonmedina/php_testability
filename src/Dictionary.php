@@ -18,7 +18,7 @@ class Dictionary
 			'Reflection', 'ReflectionFunctionAbstract', 'ReflectionFunction',
 			'ReflectionParameter', 'ReflectionMethod', 'ReflectionClass',
 			'ReflectionObject', 'ReflectionProperty', 'ReflectionExtension',
-			'ReflectionZendExtension', 'ZipArchive', 'PDO', 'XMLReader', 
+			'ReflectionZendExtension', 'ZipArchive', 'PDO', 'XMLReader',
 			'finfo', 'Phar', 'SoapClient', 'SoapServer', 'DOMDocument'
 		]);
 	}
@@ -43,11 +43,14 @@ class Dictionary
 		$className = strtolower ($className);
 
 		// does it have namespaces?
-		if (FALSE !== strpos ($className, '\\')) 
+		if (FALSE !== strpos ($className, '\\'))
 		{
 			return false;
 		}
-
+		if ($className === 'parent')
+		{
+			return true;
+		}
 		// check if it's in the black list
 		if (in_array ($className, $this->unsafeForInstantiation))
 		{
@@ -57,7 +60,7 @@ class Dictionary
 		elseif (in_array ($className, array_map ('strtolower', get_declared_classes())))
 		{
 			return true;
-		}		
+		}
 
 		return false;
 	}
