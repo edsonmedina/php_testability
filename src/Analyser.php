@@ -7,7 +7,6 @@
 
 namespace edsonmedina\php_testability;
 
-use edsonmedina\php_testability\AnalyserAbstractFactory;
 use edsonmedina\php_testability\Contexts\FileContext;
 use PhpParser;
 
@@ -34,10 +33,7 @@ class Analyser
 
 		try 
 		{
-			// parse
 		    $stmts = $this->parser->parse ($code);
-
-		    // traverse
 			$traverser = $this->factory->createTraverser ($file);
 		    $traverser->traverse ($stmts);
 		} 
