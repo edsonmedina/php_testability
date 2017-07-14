@@ -25,7 +25,7 @@
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Untestable
 				{{/untestable}}
 				{{^untestable}}
-				<a href="{{name}}/index.html">{{percent}}%</a>
+				<a href="{{name}}/index.html">{{percent}}</a>
 				{{/untestable}}
 			</th>
 			<th class="{{label}} text-center">
@@ -42,7 +42,7 @@
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Untestable
 				{{/untestable}}
 				{{^untestable}}
-				<a href="{{name}}.html">{{percent}}%</a>
+				<a href="{{name}}.html">{{percent}}</a>
 				{{/untestable}}
 			</td>
 			<td class="{{label}} text-center">
@@ -53,7 +53,7 @@
 
 		<tr>
 			<td>Total</td>
-			<td class="text-center">{{total_percent}}%</td>
+			<td class="text-center">{{total_percent}}</td>
 			<td class="text-center">{{total_testable}} / {{total_total}}</td>
 		</tr>
 

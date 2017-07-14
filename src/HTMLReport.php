@@ -35,7 +35,7 @@ class HTMLReport
 		if (!is_dir($this->reportDir)) 
 		{
 			echo "Creating new directory {$this->reportDir}... ";
-			mkdir ($this->reportDir);	
+			mkdir ($this->reportDir);
 			echo "OK\n";
 		}
 
@@ -154,7 +154,7 @@ class HTMLReport
 				'name'     => basename($filename),
 				'total'    => $numbers['total'],
 				'testable' => $numbers['testable'],
-				'percent'  => number_format ($percent*100, 2),
+				'percent'  => $numbers['total'] !== 0 ? number_format ($percent*100, 2).'%' : 'N/A',
                 'label'    => $numbers['total'] ? $this->getCssClass($percent) : ''
 			];
 
@@ -185,7 +185,7 @@ class HTMLReport
 			'files'          => $files,
 			'dirs'           => $dirs,
 			'date'           => date('r'),
-			'total_percent'  => number_format ($dir_percent*100, 2),
+			'total_percent'  => $dir_total > 0 ? number_format ($dir_percent*100, 2).'%' : 'N/A',
 			'total_testable' => $dir_testable,
 			'total_total'    => $dir_total,
 			'isBaseDir'      => ($this->baseDir === $path->getName())
