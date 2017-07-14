@@ -11,6 +11,10 @@ class CodeInGlobalSpaceVisitor extends VisitorAbstract
 {
     public function enterNode (PhpParser\Node $node) 
     {
+        if ($node instanceof Stmt\Declare_) {
+            return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
+        }
+
         // check for code outside of classes/functions
         if ($this->inGlobalScope())
         {
