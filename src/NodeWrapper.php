@@ -74,7 +74,7 @@ class NodeWrapper
 				$name .= $separator . $this->node->name;
 			}
 		}
-		elseif (isset($this->node->var))
+		elseif (isset($this->node->var->name))
 		{
 			if ($this->node->var->name instanceof Expr\Variable)
 			{
