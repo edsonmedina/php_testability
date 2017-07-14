@@ -79,7 +79,11 @@ class NodeWrapper
 			if ($this->node->var->name instanceof Expr\Variable)
 			{
 				$name .= $separator.'$'.$this->node->var->name->name;
-			}
+            }
+            elseif ($this->node->var->name instanceof Expr\ArrayDimFetch)
+            {
+                $name .= $separator.'$'.$this->getArrayDimFetchName($this->node->var->name);
+            }
 			else
 			{
 				$name .= $separator.'$'.$this->node->var->name;
@@ -91,9 +95,14 @@ class NodeWrapper
 
 	public function getArrayDimFetchName ($node)
 	{
-	    if (isset($node->var)) {
+	    if (isset($node->var) && $node->var instanceof Expr\Variable) {
     	    return $this->getArrayDimFetchName($node->var);
     	}
+
+    	if ($node->name instanceof Expr\ArrayDimFetch) {
+	        return $this->getArrayDimFetchName($node->name);
+        }
+
     	return $node->name;
 	}
 
