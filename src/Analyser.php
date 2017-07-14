@@ -45,5 +45,9 @@ class Analyser
 		{
 		    echo "\n\n" . $e->getMessage() . " (in {$filename})\n";
 		}
+		catch (\Throwable $e)
+		{
+		    echo "\n\n" . $e->getMessage() . " (while analysing {$filename})\n";
+		}
 	}
 }
