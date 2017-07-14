@@ -95,11 +95,11 @@ class NodeWrapper
 
 	public function getArrayDimFetchName ($node)
 	{
-	    if (isset($node->var) && $node->var instanceof Expr\Variable) {
+	    if (isset($node->var)) {
     	    return $this->getArrayDimFetchName($node->var);
     	}
 
-    	if ($node->name instanceof Expr\ArrayDimFetch) {
+    	if (isset($node->name) && $node->name instanceof Expr\ArrayDimFetch) {
 	        return $this->getArrayDimFetchName($node->name);
         }
 
