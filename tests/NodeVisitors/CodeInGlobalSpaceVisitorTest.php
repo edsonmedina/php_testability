@@ -1,34 +1,41 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Expr\StaticCall;
+use edsonmedina\php_testability\ContextStack;
 use edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
-use edsonmedina\php_testability\ContextStack;
+
+require_once __DIR__.'/../../vendor/autoload.php';
 
 class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 {
-	public function setup ()
+    private $context;
+    private $stack;
+    private $node;
+
+    public function setup ()
 	{
 		$this->context = new RootContext ('/');
 		
-		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$this->stack = $this->getMockBuilder (ContextStack::class)
 		                    ->setConstructorArgs([$this->context])
 		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 
-		$this->node = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
+		$this->node = $this->getMockBuilder (StaticCall::class)
 		                   ->disableOriginalConstructor()
 		                   ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testLeaveNodeNotInGlobalSpace ()
 	{
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		$visitor = $this->getMockBuilder(CodeInGlobalSpaceVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
@@ -40,13 +47,13 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testEnterNodeWithAllowedObjInGlobalSpace ()
 	{
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		$visitor = $this->getMockBuilder(CodeInGlobalSpaceVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
@@ -58,13 +65,13 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::enterNode
 	 */
 	public function testEnterNode ()
 	{
 		$this->stack->expects($this->once())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor')
+		$visitor = $this->getMockBuilder(CodeInGlobalSpaceVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope','isAllowedOnGlobalSpace'])
 		                ->getMock();
@@ -76,7 +83,7 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::isAllowedOnGlobalSpace
+	 * @covers \edsonmedina\php_testability\NodeVisitors\CodeInGlobalSpaceVisitor::isAllowedOnGlobalSpace
 	 */
 	public function testIsAllowedOnGlobalSpace ()
 	{
@@ -85,7 +92,7 @@ class CodeInGlobalSpaceVisitorTest extends PHPUnit\Framework\TestCase
 		// not allowed
 		$this->assertFalse ($visitor->isAllowedOnGlobalSpace ($this->node));
 
-		$functionNode = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
+		$functionNode = $this->getMockBuilder (Function_::class)
 		                     ->disableOriginalConstructor()
 		                     ->getMock();
 		// allowed

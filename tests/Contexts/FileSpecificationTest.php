@@ -10,7 +10,7 @@ use edsonmedina\php_testability\Contexts\ClassContext;
 class FileSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\FileSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\FileSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedByInvalid ()
 	{
@@ -21,7 +21,7 @@ class FileSpecificationTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\FileSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\FileSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedBy ()
 	{

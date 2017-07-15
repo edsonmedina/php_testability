@@ -1,9 +1,13 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Stmt\Global_;
+use edsonmedina\php_testability\ContextStack;
 use edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
-use edsonmedina\php_testability\ContextStack;
+
+require_once __DIR__.'/../../vendor/autoload.php';
 
 class GlobalFunctionCallVisitorTest extends PHPUnit\Framework\TestCase
 {
@@ -11,22 +15,22 @@ class GlobalFunctionCallVisitorTest extends PHPUnit\Framework\TestCase
 	{
 		$this->context = new RootContext ('/');
 		
-		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$this->stack = $this->getMockBuilder (ContextStack::class)
 		                    ->setConstructorArgs([$this->context])
 		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 
-		$this->node = $this->getMockBuilder ('PhpParser\Node\Stmt\Global_')
+		$this->node = $this->getMockBuilder (Global_::class)
 		                   ->disableOriginalConstructor()
 		                   ->getMock();
 
-		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
+		$this->wrongNode = $this->getMockBuilder (StaticCall::class)
 		                        ->disableOriginalConstructor()
 		                        ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
@@ -37,17 +41,17 @@ class GlobalFunctionCallVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalScope ()
 	{
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\FuncCall')
+		$node = $this->getMockBuilder (FuncCall::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\GlobalFunctionCallVisitor')
+		$visitor = $this->getMockBuilder(GlobalFunctionCallVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope'])
 		                ->getMock();

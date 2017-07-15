@@ -1,31 +1,32 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+use PhpParser\Node\Name;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\Eval_;
+use edsonmedina\php_testability\ContextStack;
 use edsonmedina\php_testability\NodeVisitors\StaticCallVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
-use edsonmedina\php_testability\ContextStack;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 class StaticCallVisitorTest extends PHPUnit\Framework\TestCase
 {
     /**
-     * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
+     * @covers \edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
      */
     public function testLeaveNodeWithDifferentType()
     {
         $context = new RootContext ('/');
 
-        $stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+        /** @var ContextStack|PHPUnit_Framework_MockObject $stack */
+        $stack = $this->getMockBuilder(ContextStack::class)
             ->setConstructorArgs([$context])
             ->setMethods(['addIssue'])
             ->getMock();
 
         $stack->expects($this->never())->method('addIssue');
 
-        $wrongNode = $this->getMockBuilder('PhpParser\Node\Expr\StaticCall')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
+        $node = $this->getMockBuilder(Eval_::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -34,24 +35,24 @@ class StaticCallVisitorTest extends PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
+     * @covers \edsonmedina\php_testability\NodeVisitors\StaticCallVisitor::leaveNode
      */
     public function testLeaveNodeInGlobalSpace()
     {
         $context = new RootContext ('/');
 
-        $stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+        $stack = $this->getMockBuilder(ContextStack::class)
             ->setConstructorArgs([$context])
             ->setMethods(['addIssue'])
             ->getMock();
 
         $stack->expects($this->never())->method('addIssue');
 
-        $node = $this->getMockBuilder('PhpParser\Node\Expr\StaticCall')
+        $node = $this->getMockBuilder(StaticCall::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\StaticCallVisitor')
+        $visitor = $this->getMockBuilder(StaticCallVisitor::class)
             ->setConstructorArgs([$stack, $context])
             ->setMethods(['inGlobalScope'])
             ->getMock();
@@ -64,21 +65,21 @@ class StaticCallVisitorTest extends PHPUnit\Framework\TestCase
     {
         $context = new RootContext ('/');
 
-        $stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+        $stack = $this->getMockBuilder(ContextStack::class)
             ->setConstructorArgs([$context])
             ->setMethods(['addIssue'])
             ->getMock();
 
         $stack->expects($this->never())->method('addIssue');
         /** @var \PhpParser\Node\Expr\StaticCall $node */
-        $node = $this->getMockBuilder('PhpParser\Node\Expr\StaticCall')
+        $node = $this->getMockBuilder(StaticCall::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $node->class = $this->getMockBuilder('PhpParser\Node\Name')->disableOriginalConstructor()->setMethods(['toString'])->getMock();
+        $node->class = $this->getMockBuilder(Name::class)->disableOriginalConstructor()->setMethods(['toString'])->getMock();
         $node->class->parts = ['parent'];
         $node->class->expects($this->once())->method('toString')->willReturn('parent');
 
-        $visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\StaticCallVisitor')
+        $visitor = $this->getMockBuilder(StaticCallVisitor::class)
             ->setConstructorArgs([$stack, $context])
             ->setMethods(['inGlobalScope'])
             ->getMock();

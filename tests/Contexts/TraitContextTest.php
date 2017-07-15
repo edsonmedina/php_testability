@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\TraitContext;
 class TraitContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\TraitContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\TraitContext::__construct
 	 */
 	public function testConstructor ()
 	{

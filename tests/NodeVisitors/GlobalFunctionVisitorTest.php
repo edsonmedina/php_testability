@@ -1,30 +1,37 @@
 <?php
-require_once __DIR__.'/../../vendor/autoload.php';
-
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\ClassMethod;
+use edsonmedina\php_testability\Contexts\FileContext;
+use edsonmedina\php_testability\ContextStack;
 use edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor;
+
+require_once __DIR__.'/../../vendor/autoload.php';
 
 class GlobalFunctionVisitorTest extends PHPUnit\Framework\TestCase
 {
-	public function setup ()
+    private $stack;
+    private $context;
+
+    public function setup ()
 	{
-		$this->stack = $this->getMockBuilder('edsonmedina\php_testability\ContextStack')
+		$this->stack = $this->getMockBuilder(ContextStack::class)
 		                    ->disableOriginalConstructor()
 		                    ->setMethods(['start','addIssue','end'])
 		                    ->getMock();
 
-		$this->context = $this->getMockBuilder('edsonmedina\php_testability\Contexts\FileContext')
+		$this->context = $this->getMockBuilder(FileContext::class)
 		                      ->disableOriginalConstructor()
 		                      ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::enterNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::enterNode
 	 */
 	public function testEnterNodeWithDifferentType ()
 	{
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\ClassMethod')
+		$node = $this->getMockBuilder (ClassMethod::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -33,13 +40,13 @@ class GlobalFunctionVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
 		$this->stack->expects($this->never())->method('end');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\ClassMethod')
+		$node = $this->getMockBuilder (ClassMethod::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -48,13 +55,13 @@ class GlobalFunctionVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
 		$this->stack->expects($this->once())->method('end');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
+		$node = $this->getMockBuilder (Function_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -63,13 +70,13 @@ class GlobalFunctionVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::enterNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\GlobalFunctionVisitor::enterNode
 	 */
 	public function testEnterNode ()
 	{
 		$this->stack->expects($this->once())->method('start');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Function_')
+		$node = $this->getMockBuilder (Function_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

@@ -1,28 +1,35 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
+use PhpParser\Node\Expr\ErrorSuppress;
+use PhpParser\Node\Expr\StaticCall;
 use edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
 use edsonmedina\php_testability\ContextStack;
 
+require_once __DIR__.'/../../vendor/autoload.php';
+
 class ErrorSuppressionVisitorTest extends PHPUnit\Framework\TestCase
 {
-	public function setup ()
+    private $context;
+    private $stack;
+    private $wrongNode;
+
+    public function setup ()
 	{
 		$this->context = new RootContext ('/');
 		
-		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$this->stack = $this->getMockBuilder (ContextStack::class)
 		                    ->setConstructorArgs([$this->context])
 		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 
-		$this->wrongNode = $this->getMockBuilder ('PhpParser\Node\Expr\StaticCall')
+		$this->wrongNode = $this->getMockBuilder (StaticCall::class)
 		                        ->disableOriginalConstructor()
 		                        ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
@@ -33,20 +40,20 @@ class ErrorSuppressionVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNodeInGlobalSpace ()
 	{
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
+		$visitor = $this->getMockBuilder(ErrorSuppressionVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (true);
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
+		$node = $this->getMockBuilder (ErrorSuppress::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -54,20 +61,20 @@ class ErrorSuppressionVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
 		$this->stack->expects($this->once())->method('addIssue');
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\ErrorSuppressionVisitor')
+		$visitor = $this->getMockBuilder(ErrorSuppressionVisitor::class)
 		                ->setConstructorArgs([$this->stack, $this->context])
 		                ->setMethods(['inGlobalScope'])
 		                ->getMock();
 
 		$visitor->expects($this->once())->method('inGlobalScope')->willReturn (false);
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\ErrorSuppress')
+		$node = $this->getMockBuilder (ErrorSuppress::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

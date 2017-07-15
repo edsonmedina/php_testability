@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 class AnonymousFunctionContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\AnonymousFunctionContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\AnonymousFunctionContext::__construct
 	 */
 	public function testConstructor ()
 	{

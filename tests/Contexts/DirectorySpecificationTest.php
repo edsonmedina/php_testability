@@ -10,7 +10,7 @@ use edsonmedina\php_testability\Contexts\ClassContext;
 class DirectorySpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\DirectorySpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\DirectorySpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedByInvalid ()
 	{
@@ -21,7 +21,7 @@ class DirectorySpecificationTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\DirectorySpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\DirectorySpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedBy ()
 	{

@@ -13,7 +13,7 @@ use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 class ProcedureSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\ProcedureSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\ProcedureSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedByInvalid ()
 	{
@@ -25,7 +25,7 @@ class ProcedureSpecificationTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\ProcedureSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\ProcedureSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedBy ()
 	{

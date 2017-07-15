@@ -1,21 +1,24 @@
 <?php
 
+use edsonmedina\php_testability\AbstractIssue;
+use PhpParser\Node\Expr\StaticCall;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 class AbstractIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\AbstractIssue::getLine
+	 * @covers \edsonmedina\php_testability\AbstractIssue::getLine
 	 */
 	public function testGetLine ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Expr\StaticCall')
+		$node = $this->getMockBuilder(StaticCall::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
 		$node->method('getLine')->willReturn (123);
 
-		$issue = $this->getMockBuilder('edsonmedina\php_testability\AbstractIssue')
+		$issue = $this->getMockBuilder(AbstractIssue::class)
 		              ->setConstructorArgs([$node])
 		              ->getMockForAbstractClass();
 

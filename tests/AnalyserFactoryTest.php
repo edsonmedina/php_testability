@@ -6,7 +6,7 @@ use edsonmedina\php_testability\AnalyserFactory;
 class AnalyserFactoryTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\AnalyserFactory::create
+	 * @covers \edsonmedina\php_testability\AnalyserFactory::create
 	 */
 	public function testCreate ()
 	{

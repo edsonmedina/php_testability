@@ -13,7 +13,7 @@ class AllTests
         return $suite;
     }
 
-	private static function addDir ($path, $suite)
+	private static function addDir ($path, PHPUnit\Framework\TestSuite $suite)
     {
         $dir = new RecursiveIteratorIterator (new RecursiveDirectoryIterator(realpath($path)));
         foreach ($dir as $file)
@@ -24,7 +24,7 @@ class AllTests
             }
 
             // skip non-tests
-            if (substr($file, -8) == 'Test.php')
+            if (substr($file, -8) === 'Test.php')
             {
                 // remove extension
                 $className = substr($file->getFilename(), 0, -4);

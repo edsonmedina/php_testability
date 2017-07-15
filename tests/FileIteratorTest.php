@@ -1,17 +1,19 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+use edsonmedina\php_testability\Analyser;
 use edsonmedina\php_testability\FileIterator;
+
+require_once __DIR__.'/../vendor/autoload.php';
 
 class FileIteratorTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\FileIterator::setExcludedDirs
-	 * @covers edsonmedina\php_testability\FileIterator::isDirExcluded
+	 * @covers \edsonmedina\php_testability\FileIterator::setExcludedDirs
+	 * @covers \edsonmedina\php_testability\FileIterator::isDirExcluded
 	 */
 	public function testIsDirExcluded ()
 	{
-		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
+		$analyser = $this->getMockBuilder(Analyser::class)->disableOriginalConstructor()->getMock();
 
 		$fileIterator = new FileIterator ($analyser);
 		$fileIterator->setExcludedDirs (['whatever/thirdparty', '', 'other']);
@@ -27,11 +29,11 @@ class FileIteratorTest extends PHPUnit\Framework\TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\FileIterator::isDirExcluded
+	 * @covers \edsonmedina\php_testability\FileIterator::isDirExcluded
 	 */
 	public function testIsDirExcludedDefaultValues ()
 	{
-		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
+		$analyser = $this->getMockBuilder(Analyser::class)->disableOriginalConstructor()->getMock();
 
 		$fileIterator = new FileIterator ($analyser);
 
@@ -44,12 +46,12 @@ class FileIteratorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\FileIterator::__construct
-	 * @covers edsonmedina\php_testability\FileIterator::getProcessedFilesCount 
+	 * @covers \edsonmedina\php_testability\FileIterator::__construct
+	 * @covers \edsonmedina\php_testability\FileIterator::getProcessedFilesCount
 	 */
 	public function testGetProcessedFilesCountAtStart ()
 	{
-		$analyser = $this->getMockBuilder('edsonmedina\php_testability\Analyser')->disableOriginalConstructor()->getMock();
+		$analyser = $this->getMockBuilder(Analyser::class)->disableOriginalConstructor()->getMock();
 
 		$fileIterator = new FileIterator ($analyser);
 

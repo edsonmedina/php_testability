@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\RootContext;
 class RootContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\RootContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\RootContext::__construct
 	 */
 	public function testConstructor ()
 	{

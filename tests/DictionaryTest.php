@@ -6,8 +6,8 @@ use edsonmedina\php_testability\Dictionary;
 class DictionaryTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Dictionary::__construct
-	 * @covers edsonmedina\php_testability\Dictionary::isInternalFunction
+	 * @covers \edsonmedina\php_testability\Dictionary::__construct
+	 * @covers \edsonmedina\php_testability\Dictionary::isInternalFunction
 	 */
 	public function testIsInternalFunction ()
 	{
@@ -24,8 +24,8 @@ class DictionaryTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Dictionary::__construct
-	 * @covers edsonmedina\php_testability\Dictionary::isClassSafeForInstantiation
+	 * @covers \edsonmedina\php_testability\Dictionary::__construct
+	 * @covers \edsonmedina\php_testability\Dictionary::isClassSafeForInstantiation
 	 */
 	public function testIsClassSafeForInstantiation ()
 	{
@@ -41,7 +41,7 @@ class DictionaryTest extends PHPUnit\Framework\TestCase
 		$this->assertFalse ($d->isClassSafeForInstantiation ('SoapClient'));
 
 		// user class
-		$this->assertFalse ($d->isClassSafeForInstantiation ('edsonmedina\php_testability\Dictionary'));
+		$this->assertFalse ($d->isClassSafeForInstantiation (Dictionary::class));
 		$this->assertFalse ($d->isClassSafeForInstantiation ('SomeClass'));
 	}	
 }

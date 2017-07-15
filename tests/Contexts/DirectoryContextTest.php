@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\DirectoryContext;
 class DirectoryContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\DirectoryContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\DirectoryContext::__construct
 	 */
 	public function testConstructor ()
 	{

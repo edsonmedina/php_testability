@@ -11,8 +11,8 @@ use edsonmedina\php_testability\Contexts\FileSpecification;
 class ContextStackTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\ContextStack::__construct
-	 * @covers edsonmedina\php_testability\ContextStack::current
+	 * @covers \edsonmedina\php_testability\ContextStack::__construct
+	 * @covers \edsonmedina\php_testability\ContextStack::current
 	 */
 	public function testConstructor ()
 	{
@@ -24,9 +24,9 @@ class ContextStackTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\ContextStack::__construct
-	 * @covers edsonmedina\php_testability\ContextStack::start
-	 * @covers edsonmedina\php_testability\ContextStack::current
+	 * @covers \edsonmedina\php_testability\ContextStack::__construct
+	 * @covers \edsonmedina\php_testability\ContextStack::start
+	 * @covers \edsonmedina\php_testability\ContextStack::current
 	 */
 	public function testStart ()
 	{
@@ -39,12 +39,12 @@ class ContextStackTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\ContextStack::__construct
-	 * @covers edsonmedina\php_testability\ContextStack::start
-	 * @covers edsonmedina\php_testability\ContextStack::end
-	 * @covers edsonmedina\php_testability\ContextStack::current
-	 * @uses edsonmedina\php_testability\ContextStack::addChild
-	 * @uses edsonmedina\php_testability\AbstractContext::getChildren
+	 * @covers \edsonmedina\php_testability\ContextStack::__construct
+	 * @covers \edsonmedina\php_testability\ContextStack::start
+	 * @covers \edsonmedina\php_testability\ContextStack::end
+	 * @covers \edsonmedina\php_testability\ContextStack::current
+	 * @uses \edsonmedina\php_testability\ContextStack::addChild
+	 * @uses \edsonmedina\php_testability\AbstractContext::getChildren
 	 */
 	public function testEnd ()
 	{
@@ -63,8 +63,8 @@ class ContextStackTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\ContextStack::__construct
-	 * @covers edsonmedina\php_testability\ContextStack::findContextOfType
+	 * @covers \edsonmedina\php_testability\ContextStack::__construct
+	 * @covers \edsonmedina\php_testability\ContextStack::findContextOfType
 	 */
 	public function testFindContextOfType ()
 	{
@@ -77,8 +77,8 @@ class ContextStackTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\ContextStack::__construct
-	 * @covers edsonmedina\php_testability\ContextStack::findContextOfType
+	 * @covers \edsonmedina\php_testability\ContextStack::__construct
+	 * @covers \edsonmedina\php_testability\ContextStack::findContextOfType
 	 */
 	public function testFindContextOfTypeNotFound ()
 	{

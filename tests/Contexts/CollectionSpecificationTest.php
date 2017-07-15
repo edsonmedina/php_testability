@@ -14,7 +14,7 @@ use edsonmedina\php_testability\Contexts\AnonymousFunctionContext;
 class CollectionSpecificationTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\CollectionSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\CollectionSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedByInvalid ()
 	{
@@ -28,7 +28,7 @@ class CollectionSpecificationTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\CollectionSpecification::isSatisfiedBy
+	 * @covers \edsonmedina\php_testability\Contexts\CollectionSpecification::isSatisfiedBy
 	 */
 	public function testIsSatisfiedBy ()
 	{

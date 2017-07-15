@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Expr\ErrorSuppress;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Issues\ErrorSuppressionIssue;
@@ -7,11 +9,11 @@ use edsonmedina\php_testability\Issues\ErrorSuppressionIssue;
 class ErrorSuppressionIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Issues\ErrorSuppressionIssue::getTitle
+	 * @covers \edsonmedina\php_testability\Issues\ErrorSuppressionIssue::getTitle
 	 */
 	public function testGetTitle ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Expr\ErrorSuppress')
+		$node = $this->getMockBuilder(ErrorSuppress::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -21,11 +23,11 @@ class ErrorSuppressionIssueTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Issues\ErrorSuppressionIssue::getID
+	 * @covers \edsonmedina\php_testability\Issues\ErrorSuppressionIssue::getID
 	 */
 	public function testGetID ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Expr\ErrorSuppress')
+		$node = $this->getMockBuilder(ErrorSuppress::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

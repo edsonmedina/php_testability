@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Stmt\Class_;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue;
@@ -7,11 +9,11 @@ use edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue;
 class CodeOnGlobalSpaceIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue::getTitle
+	 * @covers \edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue::getTitle
 	 */
 	public function testGetTitle ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Class_')
+		$node = $this->getMockBuilder(Class_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -21,11 +23,11 @@ class CodeOnGlobalSpaceIssueTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue::getID
+	 * @covers \edsonmedina\php_testability\Issues\CodeOnGlobalSpaceIssue::getID
 	 */
 	public function testGetID ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Class_')
+		$node = $this->getMockBuilder(Class_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

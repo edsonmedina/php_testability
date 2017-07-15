@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\FileContext;
 class FileContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\FileContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\FileContext::__construct
 	 */
 	public function testConstructor ()
 	{

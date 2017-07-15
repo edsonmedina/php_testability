@@ -7,8 +7,8 @@ use edsonmedina\php_testability\Contexts\DirectoryContext;
 class HTMLReportTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\HTMLReport::convertPathToRelative
-	 * @uses edsonmedina\php_testability\Contexts\DirectoryContext::__construct
+	 * @covers \edsonmedina\php_testability\HTMLReport::convertPathToRelative
+	 * @uses \edsonmedina\php_testability\Contexts\DirectoryContext::__construct
 	 */
 	public function testConvertPathToRelative ()
 	{

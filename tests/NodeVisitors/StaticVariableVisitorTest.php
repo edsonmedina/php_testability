@@ -1,30 +1,36 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
+use PhpParser\Node\Stmt\Static_;
+use PhpParser\Node\Expr\Eval_;
+use edsonmedina\php_testability\ContextStack;
 use edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor;
 use edsonmedina\php_testability\Contexts\RootContext;
-use edsonmedina\php_testability\ContextStack;
+
+require_once __DIR__.'/../../vendor/autoload.php';
 
 class StaticVariableVisitorTest extends PHPUnit\Framework\TestCase
 {
-	public function setup ()
+    private $context;
+    private $stack;
+
+    public function setup ()
 	{
 		$this->context = new RootContext ('/');
 
-		$this->stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$this->stack = $this->getMockBuilder (ContextStack::class)
 		                    ->setConstructorArgs([$this->context])
 		                    ->setMethods(['addIssue'])
 		                    ->getMock();
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNodeWithDifferentType ()
 	{
 		$this->stack->expects($this->never())->method('addIssue');
 
-		$node = $this->getMockBuilder('PhpParser\Node\Expr\Eval_')
+		$node = $this->getMockBuilder(Eval_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -33,7 +39,7 @@ class StaticVariableVisitorTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\StaticVariableVisitor::leaveNode
 	 */
 	public function testLeaveNode ()
 	{
@@ -41,7 +47,7 @@ class StaticVariableVisitorTest extends PHPUnit\Framework\TestCase
 		$this->stack->expects($this->once())->method('addIssue');
 
 		// node
-		$node = $this->getMockBuilder ('PhpParser\Node\Stmt\Static_')
+		$node = $this->getMockBuilder (Static_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

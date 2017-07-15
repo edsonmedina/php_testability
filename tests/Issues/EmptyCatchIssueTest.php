@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Stmt\Catch_;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Issues\EmptyCatchIssue;
@@ -7,11 +9,11 @@ use edsonmedina\php_testability\Issues\EmptyCatchIssue;
 class EmptyCatchIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Issues\EmptyCatchIssue::getTitle
+	 * @covers \edsonmedina\php_testability\Issues\EmptyCatchIssue::getTitle
 	 */
 	public function testGetTitle ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Catch_')
+		$node = $this->getMockBuilder(Catch_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -21,11 +23,11 @@ class EmptyCatchIssueTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @covers edsonmedina\php_testability\Issues\EmptyCatchIssue::getID
+	 * @covers \edsonmedina\php_testability\Issues\EmptyCatchIssue::getID
 	 */
 	public function testGetID ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Stmt\Catch_')
+		$node = $this->getMockBuilder(Catch_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

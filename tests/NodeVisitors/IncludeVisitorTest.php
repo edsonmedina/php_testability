@@ -1,30 +1,30 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
-use edsonmedina\php_testability\NodeVisitors\IncludeVisitor;
-use edsonmedina\php_testability\AnalyserAbstractFactory;
-use edsonmedina\php_testability\Contexts\RootContext;
-use edsonmedina\php_testability\ContextStack;
 use PhpParser\Node\Expr\Include_;
-use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Expr\Exit_;
+use edsonmedina\php_testability\ContextStack;
+use edsonmedina\php_testability\NodeVisitors\IncludeVisitor;
+use edsonmedina\php_testability\Contexts\RootContext;
+
+require_once __DIR__.'/../../vendor/autoload.php';
 
 class IncludeVisitorTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNodeWithDifferentType ()
 	{
 		$context = new RootContext ('/');
 
-		$stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$stack = $this->getMockBuilder (ContextStack::class)
 		              ->setConstructorArgs([$context])
 		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
 		              
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Exit_')
+		$node = $this->getMockBuilder (Exit_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
@@ -33,24 +33,24 @@ class IncludeVisitorTest extends PHPUnit\Framework\TestCase
 	}	
 
 	/**
-	 * @covers edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
+	 * @covers \edsonmedina\php_testability\NodeVisitors\IncludeVisitor::leaveNode
 	 */
 	public function testleaveNodeInGlobalSpace ()
 	{
 		$context = new RootContext ('/');
 
-		$stack = $this->getMockBuilder ('edsonmedina\php_testability\ContextStack')
+		$stack = $this->getMockBuilder (ContextStack::class)
 		              ->setConstructorArgs([$context])
 		              ->setMethods(['addIssue'])
 		              ->getMock();
 
 		$stack->expects($this->never())->method('addIssue');
 
-		$node = $this->getMockBuilder ('PhpParser\Node\Expr\Include_')
+		$node = $this->getMockBuilder (Include_::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-		$visitor = $this->getMockBuilder('edsonmedina\php_testability\NodeVisitors\IncludeVisitor')
+		$visitor = $this->getMockBuilder(IncludeVisitor::class)
 		                ->setConstructorArgs([$stack, $context])
 		                ->setMethods(['inGlobalScope'])
 		                ->getMock();

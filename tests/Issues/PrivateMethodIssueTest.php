@@ -1,5 +1,7 @@
 <?php
 
+use PhpParser\Node\Stmt\ClassMethod;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use edsonmedina\php_testability\Issues\PrivateMethodIssue;
@@ -7,11 +9,11 @@ use edsonmedina\php_testability\Issues\PrivateMethodIssue;
 class PrivateMethodIssueTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Issues\PrivateMethodIssue::getTitle
+	 * @covers \edsonmedina\php_testability\Issues\PrivateMethodIssue::getTitle
 	 */
 	public function testGetTitle ()
 	{
-		$node = $this->getMockBuilder('PhpParser\Node\Stmt\ClassMethod')
+		$node = $this->getMockBuilder(ClassMethod::class)
 		             ->disableOriginalConstructor()
 		             ->getMock();
 

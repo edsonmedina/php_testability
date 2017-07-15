@@ -7,7 +7,7 @@ use edsonmedina\php_testability\Contexts\FunctionContext;
 class FunctionContextTest extends PHPUnit\Framework\TestCase
 {
 	/**
-	 * @covers edsonmedina\php_testability\Contexts\FunctionContext::__construct
+	 * @covers \edsonmedina\php_testability\Contexts\FunctionContext::__construct
 	 */
 	public function testConstructor ()
 	{
