@@ -36,7 +36,7 @@ $cmd->setHelp ("PHP_Testability by Edson Medina.\n\nUsage: testability [options]
 $cmd->option()->require()->referToAs('path')->describeAs('A file or a directory to analyse')->default(getcwd()); 
 $cmd->option('output')->alias('o')->describeAs('Path for writing the report (default: report)')->default('./report');
 $cmd->option('exclude')->alias('x')->describeAs('Exclude (comma-separated) directories (default: tests,.git,.svn,vendor,tmp,temp)')->default('tests,.git,vendor,tmp,temp');
-$cmd->option('csvtotals')->describeAs('Output CSV files for total issue counts. This can be used with Jenkin\'s Plot plugin. Takes filename as argument. These files are generated under each directory of the HTML report.')->boolean();
+$cmd->option('csvtotals')->describeAs('Use to output CSV files for total issue counts. This can be used with Jenkin\'s Plot plugin. These files are generated under each directory of the HTML report, with a total in the root.')->boolean();
 $cmd->option('verbose')->alias('v')->describeAs('More verbose output.')->boolean();
 
 // run
