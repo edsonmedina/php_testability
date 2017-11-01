@@ -108,6 +108,10 @@ class NodeWrapper
 
 	public function isSameClassAs ($classname) 
 	{
+		if (empty($this->node->class->parts)) {
+			return false;
+		}
+
 		$name = end($this->node->class->parts);
 		return ($name === $classname || $name === 'self');
 	}
