@@ -23,8 +23,10 @@ class ClassVisitor extends VisitorAbstract
                 $this->stack->addIssue (new FinalClassIssue($node));
             }
 
-            if (!empty($node->extends))
-            {
+            if (
+                !empty($node->extends)
+                && !in_array($node->extends->toString(), ['TestCase', 'PHPUnit\\Framework\\TestCase', 'PHPUnit_Framework_TestCase'])
+            ) {
                 $this->stack->addIssue (new ExtendedClassIssue($node));
             }
         }
